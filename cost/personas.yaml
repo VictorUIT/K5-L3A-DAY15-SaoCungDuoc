@@ -8,29 +8,29 @@
 sessions: 50        # số phiên mô phỏng — bản nộp ≥50
 seed: 42            # giữ cố định để chạy lại ra cùng chuỗi phiên
 
-users:              # số gia đình dùng trợ lý mỗi tháng nếu đưa vào một khu vui chơi — 3 kịch bản
-  low: 500
-  base: 2000
-  high: 5000
-  source: "(tự ước tính) chưa có số lượt khách công khai đã kiểm cho một khu; thay bằng số có nguồn sau khảo sát của Phương Nam (câu 11: số lần đi/năm) và số khách công bố của một khu"
+users:              # số nhóm gia đình dùng trợ lý mỗi tháng ở chuỗi VinWonders — 3 kịch bản (mỗi nhóm-lượt đi chơi = 1 người dùng)
+  low: 1265         # 1% của ≈126.500 nhóm-lượt gia đình có trẻ / tháng
+  base: 6325        # 5%
+  high: 12650       # 10%
+  source: "Quy mô: chuỗi VinWonders 9,11 triệu lượt khách năm 2025 (Vinpearl, https://doanhnhan.baophapluat.vn/vinpearl-vpl-doanh-thu-nam-2025-vuot-15-500-ty-dong-mang-khach-san-tang-truong-34.html, 30/01/2026) ÷ 3 người/nhóm (phỏng vấn P1–P3) × 50% gia đình có trẻ (tự ước tính) ÷ 12 ≈ 126.500 nhóm-lượt/tháng — xem spec.md §2. Tỉ lệ dùng trợ lý 1% / 5% / 10% (tự ước tính)."
 
 personas:           # 3 kiểu dùng theo checklist C1; share cộng lại = 1
   - name: lap_lich_mot_lan
     share: 0.5              # xếp lịch một lần trước khi đi
     uses_per_month: 1
     turns_per_session: 2    # gửi yêu cầu, sửa một điều kiện
-    source: "(tự ước tính) chờ khảo sát câu 9 (số lần đổi kế hoạch) và câu 11 (số lần đi/năm)"
+    source: "share (tự ước tính). 2 lượt = 1 yêu cầu + 1 lần đổi nhỏ, như P3 (chuẩn bị kỹ, đổi kế hoạch 1 lần). 1 phiên / lượt đi chơi."
   - name: chinh_truoc_chuyen
     share: 0.3              # chỉnh nhiều lần trước ngày đi (đổi giờ về, ngân sách, điểm bắt buộc)
     uses_per_month: 1
     turns_per_session: 4
-    source: "(tự ước tính) chờ phỏng vấn P1–P3 về số lần sửa kế hoạch trước chuyến"
+    source: "(tự ước tính) phỏng vấn P1–P3 không hỏi số lần sửa kế hoạch trước chuyến; chuẩn bị mất 15–60 phút (P1–P3 câu 2)"
   - name: xep_lai_giua_buoi
     share: 0.2              # show huỷ, đến muộn: xếp lại phần còn lại của ngày
     uses_per_month: 1
     turns_per_session: 3
     types: [kho, thuong]
-    source: "(tự ước tính) R01, R07, R08 ở evidence/data-mining.md cho thấy có trò đóng và vào muộn; tần suất chờ khảo sát câu 7, 9"
+    source: "share (tự ước tính). 3 lượt = 1 yêu cầu + 2 lần xếp lại: P1 và P2 đổi kế hoạch giữa ngày 2 lần (P3: 1 lần); 3/3 có trò định chơi mà không chơi được (evidence/summary.md). R01, R07, R08 (data-mining.md) có trò đóng, vào muộn."
 # Mỗi lượt hỏi lấy ngẫu nhiên một đầu vào trong eval/benchmark.csv (type thuong và kho).
 # Persona hỏi kiểu riêng: thêm vào persona đó
 #     types: [thuong, kho, tu_choi]
