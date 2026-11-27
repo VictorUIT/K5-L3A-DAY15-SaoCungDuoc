@@ -2,15 +2,41 @@
 
 ## §0. Hiện tại
 
-Khi ghé khu, phụ huynh tra giờ show, chọn trò phù hợp rồi ghép giờ và quãng đi. Một gia đình cho biết họ chụp lịch show tại quầy vé để lên kế hoạch. [Nguồn R15](evidence/data-mining.md)
+Phụ huynh tự lên kế hoạch và tự xoay khi kế hoạch hỏng. Ba phụ huynh được phỏng vấn dùng ba cách khác nhau để biết giờ show, giờ đóng trò: chụp bảng thông tin ở cổng (P1), hỏi miệng bảo vệ / nhân viên (P2), app chính thức của khu có thời gian chờ thực tế (P3). Không ai dùng công cụ xếp lịch theo điều kiện riêng của gia đình (tuổi, chiều cao của con, giờ phải về). Review công khai cũng có khách khuyên chụp bảng giờ show (R15). [Phỏng vấn](evidence/summary.md) · [Review](evidence/data-mining.md)
 
 ## §1. Người dùng và bằng chứng
 
-Phụ huynh cần đưa cả nhà đến show mong muốn trong khoảng thời gian và ngân sách đã có. Hai trong 15 review ở lượt đọc thăm dò chủ động nhắc canh giờ. Việc từng gia đình mất bao nhiêu phút và tần suất xảy ra còn cần hỏi ở CP3. [Mẫu đã mã hóa](evidence/data-mining.md)
+Người dùng: phụ huynh tự lên kế hoạch khi đưa trẻ dưới 12 tuổi đi một khu vui chơi trong một buổi. Nguồn đạt ngưỡng: **phỏng vấn 3 phụ huynh ngoài nhóm** (27/11/2026, 3 khu khác nhau, lần đi 2–4 tuần trước).
+
+- **2/3** gặp lỗi giờ / điều kiện và nói được số phút xếp lại (P1 thiếu chiều cao 2 cm; P2 lỡ show xiếc vì giờ hỏi miệng sai + trò bảo trì) → đạt ngưỡng chốt trước ở [hypothesis.md](evidence/hypothesis.md).
+- **3/3** có trò / show định chơi mà không chơi được, mỗi người một lý do (chiều cao · bảo trì · hàng chờ). **3/3** đổi kế hoạch giữa ngày.
+- Riêng lỡ show vì sai giờ: **1/3**. Xếp hàng đông: **2/3**.
+- Review: 2/15 (13,3% mẫu thăm dò) kể hoặc khuyên canh giờ show (R04, R15).
+
+*"Lúc đo chiều cao cháu thiếu đúng 2cm không được vào trò tàu lượn làm cháu dỗi cả buổi chiều, thành ra kế hoạch xem nhạc nước buổi tối cũng phải hủy để đi về."* (P1)
+
+**Kết luận:** giả thuyết đúng một phần, đổi trọng tâm từ "canh giờ show" sang "trò định chơi mà không chơi được vì điều kiện". n = 3 là tín hiệu, chưa phải tỉ lệ; khảo sát ≥20 người chưa có số. [Tổng hợp và trích dẫn](evidence/summary.md)
 
 ## §2. Impact và lựa chọn sơ bộ
 
-Ưu tiên ghép show với đường đi (R04, R15). Hai hướng đối chiếu khi phỏng vấn là chọn hoạt động khi trò đóng (R01, R07) và xử lý vào khu muộn (R08). Các tín hiệu này có thể chồng nhau. Công thức impact tháng = số gia đình trong phạm vi × số lần phải xếp lịch/tháng × phút thực sự mất/lần. Chưa có số đo cho ba thừa số.
+**Công thức impact / tháng** = số gia đình trong phạm vi × số lần đi / tháng × (phút chuẩn bị + phút xếp lại giữa ngày) / lần.
+
+| Thừa số | Số có nguồn | Nguồn |
+|---|---|---|
+| Số lần đi / năm của một gia đình | 3 · 4 · khoảng 6–7 (trung vị 4 → khoảng 0,33 lần / tháng) | P1–P3 câu 8 |
+| Phút chuẩn bị trước khi đi | 15 · 45 · 60 | P1–P3 câu 2 |
+| Phút quyết định đổi kế hoạch giữa ngày | 2 · 5 · 10 | P1–P3 câu 4 |
+| Số gia đình trong phạm vi | __ chưa có nguồn | cần số công khai về lượt khách của khu, hoặc giữ ở mức một gia đình |
+
+Với một gia đình (trung vị): khoảng 0,33 lần / tháng × (45 + 5) phút ≈ 17 phút / tháng *(tính từ 3 phỏng vấn, chưa phải tỉ lệ chung)*. Impact không chỉ là phút: P1 và P2 kể con dỗi, cả nhà bỏ show buổi tối hoặc về sớm — mất một phần buổi đi đã trả tiền vé.
+
+**So ≥3 hướng**
+
+| Hướng | Bằng chứng | Bản chạy thử làm được? | Chọn |
+|---|---|---|---|
+| A. Xếp lịch thoả điều kiện trò: chiều cao, trò đóng / bảo trì, giờ show + đệm, giờ về, ngân sách | 3/3 có trò không chơi được; 2/3 vì chiều cao, bảo trì, lỡ show | Có — ràng buộc cứng kiểm bằng code | **Chọn** |
+| B. Báo thời gian chờ thực tế, né hàng đông | 2/3 (P1, P3) | Không — cần dữ liệu hàng chờ real-time của khu, không có ([DATA_CARD](data/DATA_CARD.md)); P3 cho thấy app chính thức đã làm phần này | Không chọn, ghi ở §9 |
+| C. Chỉ nhắc giờ show | 1/3 lỡ show; 2/15 review | Có nhưng hẹp — P1 chụp bảng, P3 dùng app đã đủ | Gộp vào A như một ràng buộc |
 
 ## §3. Giải pháp tương tự
 
@@ -81,7 +107,7 @@ Mô phỏng 50 phiên `simulate-1@20261127-191410` trên gemini-3.1-flash-lite: 
 
 ## §9. Rủi ro
 
-Danh mục công viên là mô phỏng; trả thời gian và giá do công cụ tính. Chỉ nhận thông tin nhóm cần thiết cho việc xếp lịch. Không yêu cầu mã đặt chỗ, tên trẻ hay dữ liệu thanh toán. Trẻ đi không có người lớn: sai thì trẻ là người chịu, nên `read_request` chặn bằng code khi lớn = 0, trước mọi bước xếp lịch hay gọi model (C22).
+Danh mục công viên là mô phỏng; trả thời gian và giá do công cụ tính. Chỉ nhận thông tin nhóm cần thiết cho việc xếp lịch. Không yêu cầu mã đặt chỗ, tên trẻ hay dữ liệu thanh toán. **Hàng chờ ngoài phạm vi:** 2/3 phụ huynh bỏ trò vì xếp hàng đông (P1, P3), nhưng bản chạy thử không có dữ liệu thời gian chờ, nên một lịch hợp lệ vẫn có thể hỏng vì hàng dài. Lịch hiển thị là tham khảo; khách gửi lại khung giờ còn lại và điểm cần bỏ (`đóng=`) để xếp lại. Trẻ đi không có người lớn: sai thì trẻ là người chịu, nên `read_request` chặn bằng code khi lớn = 0, trước mọi bước xếp lịch hay gọi model (C22).
 
 ## §10. Phân công và changelog
 
@@ -90,3 +116,4 @@ Danh mục công viên là mô phỏng; trả thời gian và giá do công cụ
 - 27/11, sau CP2 (a90a3c0), Sơn: (1) Ca không có lịch giờ nêu ràng buộc cụ thể kèm số (`explain_no_route`). Lý do: trước đây C06, C07, C10, các ca thiếu tiền phụ phí và các ca đóng hết điểm đều chỉ nhận câu "Hãy kiểm tra lại khung giờ…", nên không phân biệt được hệ thống chặn đúng hay sai lý do. (2) Show được nhận diện từ dữ liệu (khung mở–đóng bằng thời lượng), không viết cứng mã `chim`, `nhac`. (3) Model trả `{"index": n}`; JSON hỏng hoặc chỉ số ngoài danh sách thì báo chưa chọn được. (4) Viết nhánh gọi model thật theo docs/connect-model.md, giữ `@model_call` và chế độ fake; nhóm dùng Gemini `gemini-3.1-flash-lite` qua Interactions API, đã gọi thật ngày 27/11 (`eval --try 3` có token). (5) Thêm C13–C21 (cặp sát biên). Không đổi §7, metric_spec.yaml hay 12 câu CP2. Sơ đồ §4 vẽ lại theo code.
 - 27/11, Khanh quyết, áp dụng trong code: bắt buộc ≥1 người lớn. Lý do: trước đây `lớn=0; trẻ=1` vẫn ra lịch cho trẻ đi một mình. `read_request` giờ hỏi lại số người lớn khi lớn = 0; thêm C22 (`tu_choi`); cập nhật §5, §9 và DATA_CARD. Không đổi §7, metric_spec.yaml hay C01–C21.
 - 27/11 tối, Sơn, nhánh `son/cp3-web`: (1) Vô nghiệm thì thêm gợi ý đổi điều kiện do `suggest_fixes` tính, mỗi gợi ý đã chạy lại bộ kiểm là ra lịch. (2) Gộp bộ 26 câu của Bình An (C23–C26 từ review thật, 9/26 nguồn thật); bỏ C23, C24 cùng mã của Sơn vì trùng nguồn. (3) Lượt 1 `run-1@20261127-202533` bằng gemini-3.1-flash-lite, code trước cải tiến. (4) Web Streamlit `streamlit_app.py` dùng chung `answer()`. (5) Cải tiến lượt 2: model nhận bản tóm tắt lịch có phút đi bộ, giờ xong, số show (nhóm lỗi "ít đi bộ", "chỉ muốn xem show" bị chọn lịch nhiều điểm, 2/8 → 0/8 khi thử ngoài bộ); lượt 2 `run-2@20261127-202738`, cùng 26 câu. Hai lượt chờ Nam và An chấm. (6) Web chuyển sang chatbox: `extract_request` (model rút điều kiện, Python kiểm từng trường), `answer()` nhận cả câu tự nhiên; benchmark (dòng tên=giá trị) đi đường cũ. Không đổi §7, metric_spec.yaml hay C01–C22.
+- 27/11 tối (sau phỏng vấn P1–P3), Khanh: cập nhật §0, §1, §2, §9 theo [evidence/summary.md](evidence/summary.md). §1 thay số review bằng số phỏng vấn (2/3 đạt ngưỡng, 3/3 có trò không chơi được); §2 điền thừa số impact có nguồn và bảng so 3 hướng; §9 thêm rủi ro hàng chờ ngoài phạm vi. Không đổi §4–§7, metric_spec.yaml hay benchmark.
