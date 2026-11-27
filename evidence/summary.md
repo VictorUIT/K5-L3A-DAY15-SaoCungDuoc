@@ -8,7 +8,7 @@
 |---|---|---|---|---|
 | **Phỏng vấn phụ huynh ngoài nhóm** | 3 người (P1–P3), 27/11/2026, người hỏi Đỗ Phương Nam | ≥3 người, đúng người dùng, hỏi chuyện đã xảy ra | ✅ | [P1](interviews/P1.md) · [P2](interviews/P2.md) · [P3](interviews/P3.md) · [kịch bản](interviews/GUIDE.md) |
 | Đào review công khai | 15 review VinWonders Nha Trang trên Traveloka, xem 27/11/2026 | x/N + %, ≥5 ví dụ | Chưa: 2/15 ví dụ canh giờ (R04, R15). Không bắt buộc vì phỏng vấn đã đạt ngưỡng | [data-mining.md](data-mining.md) |
-| Khảo sát | Đã gửi 27/11 qua Group Facebook (mẫu học viên, rộng hơn phụ huynh), chưa tổng hợp kết quả | ≥20 người | Chưa | [survey/questions.md](survey/questions.md) |
+| Khảo sát | Đã gửi 27/11 qua Group Facebook cộng đồng dân cư (mẫu rộng hơn phụ huynh), chưa tổng hợp kết quả | ≥20 người | Chưa | [survey/questions.md](survey/questions.md) |
 
 **Nguồn đạt ngưỡng: phỏng vấn (3 người).** Với n = 3, mọi số dưới đây ghi x/3, không ghi %.
 

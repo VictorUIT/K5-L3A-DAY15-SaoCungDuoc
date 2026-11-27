@@ -5,10 +5,10 @@
 ## Thông tin gửi
 
 - Công cụ: Google Form — link: [docs.google.com/forms/d/e/1FAIpQLSc_UdRaiZ7ZeRFPPATjO4U9CpuUcU9_CsLsaD9aqsAe8LhfyA/viewform](https://docs.google.com/forms/d/e/1FAIpQLSc_UdRaiZ7ZeRFPPATjO4U9CpuUcU9_CsLsaD9aqsAe8LhfyA/viewform)
-- Kênh đã gửi: Group Facebook
+- Kênh đã gửi: Group Facebook cộng đồng dân cư
 - Mở: 18:00 27/11/2026 · Chốt: 23:59 27/11/2026
 - Người phụ trách: Đỗ Phương Nam
-- Đối tượng của bản đã phát: *học viên ngoài nhóm*, kể chuyến gần nhất **dù đi một mình, bạn bè, lớp hay gia đình** — **rộng hơn người dùng C1** (phụ huynh có trẻ dưới 12). Form không có câu lọc "đi cùng trẻ em".
+- Đối tượng của bản đã phát: thành viên **group cộng đồng dân cư trên Facebook** (ngoài nhóm), kể chuyến gần nhất **dù đi một mình, bạn bè, lớp hay gia đình** — **rộng hơn người dùng C1** (phụ huynh có trẻ dưới 12). Form không có câu lọc "đi cùng trẻ em". Mô tả form (giữ nguyên văn bên dưới) vẫn ghi "dành cho học viên ngoài nhóm".
 
 ## Bản đã phát
 
@@ -113,7 +113,7 @@ Bạn có thể viết một câu theo mẫu “Mình chọn ___ vì ___”. N�
 - Google Forms: tạo bốn phần A–D. Ở câu 1, hai đáp án đầu đi tiếp B, các đáp án còn lại gửi form. Ở câu 6, đáp án đầu đi tới C, các đáp án còn lại tới D. Sau C chuyển tới D. Câu 10 luôn tùy chọn.
 - Mục tiêu là ≥20 phản hồi ngoài nhóm qua sàng lọc và hoàn thành. Gọi tổng đó là N. Tỷ lệ phải đổi kế hoạch vì trở ngại = số chọn đáp án đầu câu 6 / N. Báo riêng số đổi ý, đi được theo kế hoạch và không biết hoặc không nhớ. Với câu 7–9, mẫu số chỉ gồm người vào phần C.
 - Báo thời gian chuẩn bị ở câu 5 và thời gian quyết định lại ở câu 9 theo từng khoảng. Câu 9 đo một lần gặp trở ngại; câu 2 đo số chuyến trong 30 ngày. Giữ nguyên đơn vị khi đưa số vào bảng impact.
-- Xuất phản hồi đã bỏ chi tiết nhận diện vào `evidence/survey/results.csv`. Lấy lời người trả lời tự viết ở câu 10 để trích dẫn, ghi mã phản hồi. Tổng hợp kết quả của mẫu học viên vào `evidence/summary.md`.
+- Xuất phản hồi đã bỏ chi tiết nhận diện vào `evidence/survey/results.csv`. Lấy lời người trả lời tự viết ở câu 10 để trích dẫn, ghi mã phản hồi. Tổng hợp kết quả của mẫu vào `evidence/summary.md`.
 
 ## Dùng ngưỡng của hypothesis cho bản đã phát *(chốt 28/11, trước khi mở kết quả)*
 
@@ -121,7 +121,7 @@ Bạn có thể viết một câu theo mẫu “Mình chọn ___ vì ___”. N�
 
 - **Số chính** = số người chọn đáp án đầu câu 6 (*"Có, ít nhất một lần vì gặp trở ngại"*) **và** ở câu 7 chọn một trong ba lý do đầu (đến sau giờ · trò đóng / suất hủy, đổi giờ · có người chưa đủ điều kiện) ÷ N.
 - Giữ ngưỡng của hypothesis: ≥1/2 → **đúng** · 1/4 đến dưới 1/2 → **phải đổi** · dưới 1/4 → **sai**. Đếm riêng "thời gian xếp hàng quá dài" ở câu 7 (pain hàng chờ, ngoài phạm vi bản chạy thử).
-- **Giới hạn phải ghi khi báo số:** mẫu là học viên, không phải phụ huynh có trẻ nhỏ; không tách được người đi cùng trẻ. Kết quả là nguồn kiểm lại, không thay số phỏng vấn P1–P3.
+- **Giới hạn phải ghi khi báo số:** mẫu là thành viên group cộng đồng dân cư, không chỉ phụ huynh có trẻ nhỏ; không tách được người đi cùng trẻ. Kết quả là nguồn kiểm lại, không thay số phỏng vấn P1–P3.
 
 ---
 
