@@ -1,24 +1,52 @@
 # SaoCungDuoc · Lịch gia đình tại khu vui chơi
 
-## Bản chạy CP2 của nhóm Sao Cũng Được
+## Bản chạy CP3 của nhóm Sao Cũng Được
 
-[Canvas](canvas.md) · [Thiết kế và chuẩn đạt §7](spec.md) · [12 câu thử](eval/benchmark.csv) · [Metric](eval/metric_spec.yaml) · [Data card](data/DATA_CARD.md) · [Bằng chứng ban đầu](evidence/data-mining.md) · [Phiếu chấm chéo](eval/README.md).
+[Canvas](canvas.md) · [Thiết kế và chuẩn đạt §7](spec.md) · [24 câu thử](eval/benchmark.csv) · [Metric](eval/metric_spec.yaml) · [Data card](data/DATA_CARD.md) · [Bằng chứng ban đầu](evidence/data-mining.md) · [Phiếu chấm chéo CP2](eval/README.md) · [Phiếu chấm lượt 1](eval/phieu-cham-run-1.md).
 
-Chạy ngay tại thư mục gốc bằng Python, dùng thư viện chuẩn. CP2 dùng model giả mặc định và khu vui chơi Vịnh Mây mô phỏng. Mỗi yêu cầu là một dòng độc lập. Có thể đổi điều kiện rồi gửi lại dòng đầy đủ.
+Một phụ huynh nhập khung giờ, nhóm khách, ngân sách và hoạt động bắt buộc. Python liệt kê và kiểm mọi lịch khả thi (giờ mở, giờ show, 10 phút đi bộ mỗi chặng, chiều cao, ngân sách). Model chọn một lịch theo sở thích. Không có lịch thì hệ thống nêu ràng buộc đang chặn và gợi ý thay đổi đã kiểm là ra lịch. **Dữ liệu khu Vịnh Mây là mô phỏng**, không phải giá hay lịch thật.
+
+## Chạy trong 3 phút
 
 ```sh
-python3 run.py
+cp .env.example .env        # điền MODEL_PROVIDER=gemini, MODEL_NAME=gemini-3.1-flash-lite, API_KEY=<key của nhóm>
+python3 run.py              # bản chạy thử dòng lệnh
 ```
 
 ```text
 giờ=09:00-12:00; lớn=2; trẻ=1; cao=110; đồng=500000; phải có=chim
 ```
 
-Bắt buộc: giờ đến–giờ kết thúc, số người lớn, số trẻ và ngân sách bằng đồng. Nếu có trẻ, nhập chiều cao thấp nhất bằng cm. Có thể nhập thêm `ưu tiên=Nhà tranh`, `phải có=chim,vuon`, `đóng=tau` hoặc `đệm=15` (phút đến trước show). Mã điểm: `vuon` Vườn hoa, `nha` Nhà tranh, `tau` Tàu lượn, `chim` Show chim, `nhac` Show nhạc. Bản này dùng trường có nhãn cho các ràng buộc cứng.
+Bắt buộc: giờ đến–giờ kết thúc, số người lớn (≥1), số trẻ và ngân sách bằng đồng. Nếu có trẻ, nhập chiều cao thấp nhất bằng cm. Có thể nhập thêm `ưu tiên=bé thích động vật`, `phải có=chim,vuon`, `đóng=tau` hoặc `đệm=15` (phút đến trước show). Mã điểm: `vuon` Vườn hoa, `nha` Nhà tranh, `tau` Tàu lượn, `chim` Show chim, `nhac` Show nhạc. Thiếu `.env` thì chạy model giả (0 token, không dùng để báo cáo).
 
-- `python3 run.py check` kiểm cấu trúc CP2 và nêu thêm các yêu cầu CP3.
-- `python3 run.py eval --try 12` đi qua cùng luồng demo và ghi kết quả thử trong `eval/run-try.csv`. Model giả có 0 token. Lượt đánh giá chính thức bắt đầu ở CP3.
-- Codex hỗ trợ dựng khung, đối chiếu nguồn và kiểm lệnh. Nam và An phụ trách đối chiếu dữ liệu và chấm độc lập. [Phân công](TEAMS.md)
+- `python3 run.py check` kiểm bộ câu thử và metric.
+- `python3 run.py eval --wait 4` chạy cả bộ bằng model thật → `eval/run-N.csv` + `traces/run-N.jsonl`. Lượt 1: `run-1@20261127-190323`, gemini-3.1-flash-lite, 24/24 câu chạy, 0 lỗi, **đang chờ Nam và An chấm**.
+- `python3 run.py simulate --wait 4` mô phỏng chi phí → `cost/simulate-N.csv`.
 
+## Web demo (Streamlit)
 
-[Phân công CP1](TEAMS.md) · [Sử dụng AI](docs/ai-usage.md) · [Hướng dẫn nối model cho CP3](docs/connect-model.md)
+Cùng gọi `answer(text)` trong `codebase/agent.py` như dòng lệnh và eval. File khởi động: **`streamlit_app.py`**.
+
+```sh
+python3 -m pip install -r requirements.txt     # cần Python 3.10+ (Streamlit)
+streamlit run streamlit_app.py                  # mở http://localhost:8501
+```
+
+Trên máy, web đọc model từ `.env` hoặc `.streamlit/secrets.toml` (mẫu: [.streamlit/secrets.toml.example](.streamlit/secrets.toml.example)). Không có model thật thì web báo lỗi và không chạy; chỉ khi thử trên máy mới đặt `DEMO_ALLOW_FAKE=1` để dùng model giả.
+
+| Biến / secret | Ý nghĩa | Mặc định |
+|---|---|---|
+| `MODEL_PROVIDER` | `gemini` (nhóm dùng), hoặc `openai`, `anthropic`, `ollama` | bắt buộc trên web |
+| `MODEL_NAME` | `gemini-3.1-flash-lite` | bắt buộc trên web |
+| `API_KEY` | key của nhóm, chỉ đặt ở secret phía máy chủ | bắt buộc trên web |
+| `DEMO_MAX_PER_SESSION` | số lần bấm "Tạo lịch" tối đa mỗi phiên | 10 |
+| `DEMO_MAX_PER_HOUR` | số lần tối đa mỗi giờ cho cả web | 60 |
+| `DEMO_ALLOW_FAKE` | `1` = cho phép model giả, chỉ dùng trên máy | tắt |
+
+Model chỉ được gọi khi bấm nút. Mỗi phiên có kết quả và trace riêng; trace của khung được bọc trong một khoá chung để hai người bấm cùng lúc không lẫn lượt. Hết quota thì web báo "Model đang hết lượt gọi", không hiện chi tiết key.
+
+**Deploy lên Streamlit Community Cloud** (share.streamlit.io): New app → repo `VictorUIT/K5-L3A-DAY15-SaoCungDuoc`, branch `son/cp3-web` (hoặc `main` sau khi gộp), main file `streamlit_app.py`, Advanced settings → Python 3.12 và dán nội dung secret theo mẫu ở trên vào ô Secrets.
+
+---
+
+Codex và Claude Code hỗ trợ dựng khung, viết code, đối chiếu nguồn và kiểm lệnh; thành viên đứng tên duyệt. Nam và An chấm độc lập. [Phân công](TEAMS.md) · [Sử dụng AI](docs/ai-usage.md) · [Nối model](docs/connect-model.md)
