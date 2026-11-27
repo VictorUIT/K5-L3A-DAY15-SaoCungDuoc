@@ -25,6 +25,8 @@ Bắt buộc: giờ đến–giờ kết thúc, số người lớn (≥1), số
 
 ## Web demo (Streamlit, dạng chatbox)
 
+**Video demo 26 giây** (thao tác thật, gọi model thật, dùng làm video dự phòng): https://drive.google.com/file/d/163YYxVCp81kX1ixeHPpIcfg5yK9pNAlm/view?usp=sharing
+
 Phụ huynh nhắn tự nhiên, ví dụ “2 người lớn, 1 bé cao 110 cm, 9h đến 12h, 500k, muốn xem Show chim”. Model rút điều kiện (`extract_request`), Python kiểm từng trường; web nhớ điều kiện qua nhiều tin (“đổi giờ về 11h” chỉ sửa giờ về) và hiện “Mình đang hiểu: …” để khách kiểm. Sau đó đi cùng `answer(text)` trong `codebase/agent.py` như dòng lệnh và eval. File khởi động: **`streamlit_app.py`** (điều hướng hai trang: `web/trang_chu.py` giới thiệu khu Vịnh Mây, mọi giờ và giá đọc từ `data/park.json`; `web/len_lich.py` chatbot lên lịch). CSS dùng chung ở `web/common.py`, theme ở `.streamlit/config.toml`. `python3 run.py` cũng nhận câu tự nhiên (không có dấu `=`).
 
 ```sh

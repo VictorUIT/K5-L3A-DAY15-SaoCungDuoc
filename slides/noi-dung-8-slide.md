@@ -21,7 +21,7 @@
 - Web: `streamlit run streamlit_app.py` (hoặc URL Streamlit Cloud **[CẦN NHÓM sau khi deploy]**). Nhãn “Dữ liệu mô phỏng” luôn hiện.
 - Ca thường (C01): 2 người lớn, 1 bé 110 cm, 09:00–12:00, 500.000 đ, phải có Show chim → Vườn hoa, Nhà tranh, Show chim 11:00–11:20, tổng 460.000 đ.
 - Ca khó (C14): đến cổng 10:51, show 11:00 → không có lịch, “đến sớm nhất 11:01”, gợi ý “đến cổng lúc 10:50 hoặc sớm hơn”. Sửa giờ ngay trên web rồi tạo lại.
-- **[CẦN NHÓM]** video dự phòng 30 giây (Khanh).
+- Video dự phòng 26 giây (gọi model thật): https://drive.google.com/file/d/163YYxVCp81kX1ixeHPpIcfg5yK9pNAlm/view?usp=sharing
 
 ## 5 · Đánh giá thế nào
 - Dataset: khu Vịnh Mây mô phỏng (5 điểm). Bộ câu thử 26 câu (10 thường, 13 khó, 3 từ chối), 9/26 từ data thật. 4 metric, chuẩn đạt khoá ở CP2 (`spec.md` §7).
