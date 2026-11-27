@@ -1,12 +1,12 @@
 # Khảo sát — Lần gần nhất bạn đi khu vui chơi
 
-> Guide bước 1.2. Ngưỡng nguồn: **≥20 người ngoài nhóm**. File này gộp hai bản ngày 28/11: **bản đã phát** (10 câu, Ngọc Sơn soạn) ở phần chính, bản nháp 12 câu (Phương Nam soạn, **không phát**) ở [phụ lục](#phu-luc).
+> Guide bước 1.2. Ngưỡng nguồn: **≥20 người ngoài nhóm**. File này gộp hai bản ngày 28/11: **bản đã phát** (10 câu) ở phần chính, bản nháp 12 câu (**không phát**) ở [phụ lục](#phu-luc).
 
 ## Thông tin gửi
 
 - Công cụ: Google Form — link: [docs.google.com/forms/d/e/1FAIpQLSc_UdRaiZ7ZeRFPPATjO4U9CpuUcU9_CsLsaD9aqsAe8LhfyA/viewform](https://docs.google.com/forms/d/e/1FAIpQLSc_UdRaiZ7ZeRFPPATjO4U9CpuUcU9_CsLsaD9aqsAe8LhfyA/viewform)
 - Kênh đã gửi: Group Facebook
-- Mở: 18:00 27/11/2026 · Chốt: 23:59
+- Mở: 18:00 27/11/2026 · Chốt: 23:59 27/11/2026
 - Người phụ trách: Đỗ Phương Nam
 - Đối tượng của bản đã phát: *học viên ngoài nhóm*, kể chuyến gần nhất **dù đi một mình, bạn bè, lớp hay gia đình** — **rộng hơn người dùng C1** (phụ huynh có trẻ dưới 12). Form không có câu lọc "đi cùng trẻ em".
 
