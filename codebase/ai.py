@@ -99,13 +99,14 @@ GEMINI_REVISION = "2026-05-20"   # Api-Revision trong ví dụ REST của aistud
 CHOICE_SCHEMA = {"type": "object", "properties": {"index": {"type": "integer"}}, "required": ["index"]}
 
 
-def call_gemini(system, user):
+def call_gemini(system, user, schema=None):
     """Gemini Interactions API (aistudio.google.com/docs/interactions-overview, xem 27/11/2026).
     Token: usage.total_input_tokens; ra = total_output_tokens + total_thought_tokens (aistudio.google.com/docs/tokens)."""
     data = post_json(URL_GEMINI,
                      {"x-goog-api-key": API_KEY, "Api-Revision": GEMINI_REVISION},
                      {"model": MODEL_NAME, "system_instruction": system or "", "input": user, "store": False,
-                      "response_format": {"type": "text", "mime_type": "application/json", "schema": CHOICE_SCHEMA}})
+                      "response_format": {"type": "text", "mime_type": "application/json",
+                                          "schema": schema or CHOICE_SCHEMA}})
     text = "".join(c.get("text", "")
                    for step in data.get("steps", []) if step.get("type") == "model_output"
                    for c in step.get("content", []) if c.get("type") == "text")
@@ -136,10 +137,35 @@ def fake_choice(user):
     return json.dumps({"index": best["i"]})
 
 
+def fake_extract(user):
+    """Model giả cho câu chat: luật đơn giản đủ để demo không cần key. Model thật hiểu câu tự nhiên tốt hơn."""
+    payload = json.loads(user)
+    text = payload["message"].casefold()
+    out = {}
+    times = re.findall(r"(\d{1,2})\s*(?:h|giờ|:)\s*(\d{2})?", text)
+    if len(times) >= 2:
+        (h1, m1), (h2, m2) = times[:2]
+        out["gio_den"], out["gio_ve"] = "%02d:%s" % (int(h1), m1 or "00"), "%02d:%s" % (int(h2), m2 or "00")
+    for key, pattern in (("nguoi_lon", r"(\d+)\s*người lớn"), ("tre", r"(\d+)\s*(?:bé|trẻ|con|cháu)"),
+                         ("cao_cm", r"(\d{2,3})\s*cm"), ("dem_phut", r"trước\s*(\d+)\s*phút")):
+        found = re.search(pattern, text)
+        if found:
+            out[key] = int(found.group(1))
+    money = re.search(r"(\d+(?:[.,]\d+)?)\s*(k|nghìn|ngàn|tr|triệu)\b", text)
+    if money:
+        out["ngan_sach"] = int(float(money.group(1).replace(",", ".")) * (1000 if money.group(2) in ("k", "nghìn", "ngàn") else 10 ** 6))
+    if "người lớn" in text and "tre" not in out and not re.search(r"bé|trẻ|con|cháu", text):
+        out["tre"] = 0
+    names = payload["activities"]
+    out["phai_co"] = [i for i, name in names.items() if name.casefold() in text]
+    return json.dumps(out, ensure_ascii=False)
+
+
 @model_call
-def call_model(system: str, user: str) -> dict:
+def call_model(system: str, user: str, schema=None) -> dict:
     if MODEL_PROVIDER == "fake":
-        return {"text": fake_choice(user), "model": "fake", "tokens_in": 0, "tokens_out": 0}
+        text = fake_extract(user) if "message" in json.loads(user) else fake_choice(user)
+        return {"text": text, "model": "fake", "tokens_in": 0, "tokens_out": 0}
     if MODEL_PROVIDER == "openai":
         r = call_openai(system, user)
     elif MODEL_PROVIDER == "anthropic":
@@ -147,7 +173,7 @@ def call_model(system: str, user: str) -> dict:
     elif MODEL_PROVIDER == "ollama":
         r = call_ollama(system, user)
     elif MODEL_PROVIDER == "gemini":
-        r = call_gemini(system, user)
+        r = call_gemini(system, user, schema)
     else:
         r = call_provider(system, user)
     return {"text": r["text"], "model": MODEL_NAME,

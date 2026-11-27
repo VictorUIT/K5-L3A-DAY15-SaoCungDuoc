@@ -8,44 +8,44 @@
 sessions: 50        # số phiên mô phỏng — bản nộp ≥50
 seed: 42            # giữ cố định để chạy lại ra cùng chuỗi phiên
 
-users:              # số người dùng thật nếu đưa vào dùng — 3 kịch bản, ở quy mô thật của sản phẩm
-                    # track A: khoá học · track B–F: người dùng của sản phẩm / nhóm nhắm tới, nguồn công khai có link
-  low: 300
-  base: 700
-  high: 1000
-  source: "(ví dụ) track A — thay bằng số của nhóm. Cơ sở: lớp L3 hơn 700 học viên (README hackathon); thấp, cao: (tự ước tính)"
+users:              # số gia đình dùng trợ lý mỗi tháng nếu đưa vào một khu vui chơi — 3 kịch bản
+  low: 500
+  base: 2000
+  high: 5000
+  source: "(tự ước tính) chưa có số lượt khách công khai đã kiểm cho một khu; thay bằng số có nguồn sau khảo sát của Phương Nam (câu 11: số lần đi/năm) và số khách công bố của một khu"
 
-personas:           # ≥3 kiểu người dùng; share cộng lại = 1
-  - name: dung_it
-    share: 0.5              # tỉ lệ người dùng kiểu này
-    uses_per_month: 4       # số phiên / người / tháng
-    turns_per_session: 1    # số lượt hỏi trong một phiên
-    source: "(ví dụ) phỏng vấn P1, P3 — thay bằng nguồn của nhóm"
-  - name: dung_vua
-    share: 0.3
-    uses_per_month: 10
+personas:           # 3 kiểu dùng theo checklist C1; share cộng lại = 1
+  - name: lap_lich_mot_lan
+    share: 0.5              # xếp lịch một lần trước khi đi
+    uses_per_month: 1
+    turns_per_session: 2    # gửi yêu cầu, sửa một điều kiện
+    source: "(tự ước tính) chờ khảo sát câu 9 (số lần đổi kế hoạch) và câu 11 (số lần đi/năm)"
+  - name: chinh_truoc_chuyen
+    share: 0.3              # chỉnh nhiều lần trước ngày đi (đổi giờ về, ngân sách, điểm bắt buộc)
+    uses_per_month: 1
+    turns_per_session: 4
+    source: "(tự ước tính) chờ phỏng vấn P1–P3 về số lần sửa kế hoạch trước chuyến"
+  - name: xep_lai_giua_buoi
+    share: 0.2              # show huỷ, đến muộn: xếp lại phần còn lại của ngày
+    uses_per_month: 1
     turns_per_session: 3
-    source: "(ví dụ) khảo sát n = 24, câu 3"
-  - name: dung_nhieu
-    share: 0.2
-    uses_per_month: 20
-    turns_per_session: 5
-    source: "(ví dụ) data/preclass: đếm số lượt / người — cách đếm ở evidence/data-mining.md"
+    types: [kho, thuong]
+    source: "(tự ước tính) R01, R07, R08 ở evidence/data-mining.md cho thấy có trò đóng và vào muộn; tần suất chờ khảo sát câu 7, 9"
 # Mỗi lượt hỏi lấy ngẫu nhiên một đầu vào trong eval/benchmark.csv (type thuong và kho).
 # Persona hỏi kiểu riêng: thêm vào persona đó
 #     types: [thuong, kho, tu_choi]
 # hoặc
 #     inputs: ["câu hỏi kiểu 1", "câu hỏi kiểu 2"]
 
-prices:             # USD / 1 triệu token — chép từ further-reading/model-prices.md của repo đề. ≥2 mức model
+prices:             # USD / 1 triệu token — further-reading/model-prices.csv của repo đề (BTC tra ngày 25/11/2026)
   - model: gemini-3.1-flash-lite
     input: 0.25
     output: 1.50
-    source: "(ví dụ) https://ai.google.dev/gemini-api/docs/pricing · xem 25/11/2026"
-  - model: gemini-4-hydrogen
+    source: "https://ai.google.dev/gemini-api/docs/pricing · paid tier · xem 25/11/2026 (model-prices.csv)"
+  - model: gemini-3.8-flash
     input: 1.50
     output: 7.50
-    source: "(ví dụ) https://ai.google.dev/gemini-api/docs/pricing · xem 25/11/2026"
+    source: "https://ai.google.dev/gemini-api/docs/pricing · giá từ 01/01/2027 · xem 25/11/2026 (model-prices.csv)"
 
 usd_to_vnd:         # tuỳ chọn: điền thì bản tóm tắt in thêm tiền Việt
   rate:
