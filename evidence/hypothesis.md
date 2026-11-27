@@ -3,9 +3,9 @@
 > Điền ở guide bước 1.1. Ôn lại: ngày 2 · lab ngày 2.
 > Viết **trước** khi đọc dòng data đầu tiên hay hỏi người đầu tiên, để không sửa cho khớp kết quả. Kết quả ngược giả thuyết vẫn đủ điểm nếu số là thật.
 
-- Ngày giờ viết: __
-- Người dùng chính (một vai cụ thể): __
-- **Mình nghĩ:** [ai] gặp khó khi [việc] vì [lý do], hậu quả là [mất gì].
-- **Có thể còn cách giải thích khác:** __
-- **Mình đúng nếu thấy:** [một con số nhóm tự chọn] — vd "≥2/3 người kể được một lần như thế trong 1 tháng qua" hoặc "≥x/N học viên bỏ ở bước này" *(ví dụ)*
-- **Nguồn sẽ dùng** (≥1 nguồn đạt ngưỡng, guide 1.2): [ ] đào data · [ ] phỏng vấn ≥3 · [ ] khảo sát ≥20 — nguồn chính: __ · nguồn để kiểm lại: __
+- Ngày giờ viết: 27/11/2026, người viết Đỗ Phương Nam. **Ghi chú trung thực:** file này điền *sau* lượt đọc thăm dò 15 review ở [data-mining.md](data-mining.md) và *trước* khi gửi khảo sát, phỏng vấn hay lấy mẫu 30 review mới. Giả thuyết gốc của nhóm có từ CP1 ([canvas CP1](https://github.com/VictorUIT/K5-L3A-DAY15-SaoCungDuoc/blob/effe341/canvas.md)); ngưỡng dưới đây áp cho các nguồn **chưa** thu.
+- Người dùng chính (một vai cụ thể): phụ huynh tự lên kế hoạch cho cả nhà khi đưa trẻ dưới 12 tuổi đi một khu vui chơi trong một buổi, có giờ vào và giờ phải về.
+- **Mình nghĩ:** phụ huynh đưa con đi khu vui chơi gặp khó khi tự ghép giờ show, giờ đóng trò, quãng đi bộ và giới hạn chiều cao của con, vì thông tin nằm rải rác (bản đồ, bảng giờ, biển ở từng trò) và thay đổi trong ngày, hậu quả là lỡ show, tới trò đã đóng hoặc con không chơi được, phải đổi kế hoạch giữa ngày.
+- **Có thể còn cách giải thích khác:** (a) phần lớn gia đình không lên lịch, tới đâu chơi đó, và không thấy tiếc khi lỡ; (b) cái khó thật là xếp hàng, thời tiết hoặc tiền, không phải giờ; (c) app/bảng giờ của khu đã đủ dùng; (d) người lên kế hoạch là tour hoặc người khác, không phải phụ huynh.
+- **Mình đúng nếu thấy:** trong khảo sát, ≥1/2 số phụ huynh qua sàng lọc chọn ít nhất một trong ba lỗi giờ/điều kiện ở câu 7 (lỡ show · trò đã đóng · con không đủ chiều cao/tuổi). 1/4 đến dưới 1/2 → phải đổi giả thuyết; dưới 1/4 → sai. *(ngưỡng nhóm tự chọn, chốt cùng [survey/questions.md](survey/questions.md))*. Phỏng vấn: ≥2/3 người kể được một lần như thế và nói được số phút mất để xếp lại.
+- **Nguồn sẽ dùng** (≥1 nguồn đạt ngưỡng, guide 1.2): [x] đào data · [x] phỏng vấn ≥3 · [x] khảo sát ≥20 — nguồn chính: khảo sát ≥20 phụ huynh ngoài nhóm · nguồn để kiểm lại: 30 review Traveloka liên tiếp (gắn nhãn tay, đo độ khớp với nhãn AI bằng [label_reviews.py](label_reviews.py)) và phỏng vấn ≥3 phụ huynh theo [interviews/GUIDE.md](interviews/GUIDE.md).
