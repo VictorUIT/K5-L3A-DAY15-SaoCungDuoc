@@ -4,13 +4,15 @@
 > Số lấy từ `python run.py score eval/run-1.csv` (và `run-2.csv`) sau khi điền cột `pass`. **Kết quả thấp ghi thật vẫn đủ điểm.**
 > Không được: sửa chuẩn "đạt", bỏ câu thử trượt, sửa `expected` cho khớp output, sửa kết quả lượt đã chạy.
 
+**Cập nhật 28/11:** lượt 1 đã chấm tay bởi Bình An và Tuấn Khanh (chấm thay Phương Nam), đồng thuận 25/26; câu lệch C21 (An 0, Khanh 1) do đội trưởng chốt 1 → `score` 26/26 (100%). Nếu chốt C21 = 0 thì 25/26 (96%). Chi tiết: [phiếu lượt 1](phieu-cham-run-1.md). Lượt 2 vẫn chờ chấm.
+
 **Trạng thái 27/11 tối:** cả hai lượt đã chạy bằng model thật, **chưa có nhãn của người chấm**. Các ô "chờ chấm" điền sau khi Phương Nam và Bình An chấm tay theo [phiếu lượt 1](phieu-cham-run-1.md) và ghi kết quả thống nhất vào cột `pass`, rồi chạy `python3 run.py score`. Phần "kiểm tự động" bên dưới là bộ kiểm độc lập của Sơn (tính lại giờ và tiền từ `park.json`), **không thay cho chấm của người**.
 
 ## 1. Kết quả
 
 | Lượt | Run ID | Đạt / tổng | % | thuong | kho | tu_choi | So với chuẩn "đạt" |
 |---|---|---|---|---|---|---|---|
-| 1 | `run-1@20261127-202533` | chờ chấm / 26 | | __/10 | __/13 | __/3 | chờ chấm |
+| 1 | `run-1@20261127-202533` | 26/26 | 100% | 10/10 | 13/13 | 3/3 | Đạt (≥22/26) |
 | 2 | `run-2@20261127-202738` | chờ chấm / 26 | | __/10 | __/13 | __/3 | chờ chấm |
 
 Cả hai lượt: model `gemini-3.1-flash-lite`, 26/26 câu chạy, 0 lỗi kỹ thuật. Lượt 1 chạy bằng code trước cải tiến (commit `ffa1586`), lượt 2 bằng code sau cải tiến, cùng bộ 26 câu. 12/26 câu gọi model; 12 câu Python báo không có lịch trước bước gọi model; 2 câu hỏi lại (C08 thiếu chiều cao, C22 thiếu người lớn).
