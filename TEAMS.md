@@ -4,16 +4,17 @@
 > Giữ nguyên tên file `TEAMS.md` ở thư mục gốc repo, giữ nguyên các dòng `- Tên nhóm:` … và tiêu đề cột của bảng. Chỉ thay chỗ `____`.
 > Kiểm bằng `python run.py check`: phần "Kiểm TEAMS.md" không báo gì là đúng format.
 
-- Tên nhóm: ____
-- Lớp: ____
-- Track: ____
-- Link repo: ____
+- Tên nhóm: SaoCungDuoc
+- Lớp: L3A
+- Track: C
+- Link repo: https://github.com/VictorUIT/K5-L3A-DAY15-SaoCungDuoc
 
 | STT | Họ và tên | Mã học viên | Vai trò | Phần việc chính |
 |---|---|---|---|---|
-| 1 | ____ | ____ | Đội trưởng | ____ |
-| 2 | ____ | ____ | Thành viên | ____ |
-| 3 | ____ | ____ | Thành viên | ____ |
+| 1 | Trần Quốc Tuấn Khanh | 2A202603625 | Đội trưởng | Điều phối, canvas, spec, slide và demo |
+| 2 | Đỗ Phương Nam | 2A202603621 | Thành viên | Bằng chứng pain: phỏng vấn, khảo sát, đếm review (evidence/) |
+| 3 | Nguyễn Bình An | 2A202603606 | Thành viên | Data card, dữ liệu dựng, bộ câu thử, metric và báo cáo đánh giá (data/, eval/) |
+| 4 | Nguyễn Văn Ngọc Sơn | 2A202603600 | Thành viên | Bản chạy thử và mô phỏng chi phí (codebase/, cost/) |
 
 **Quy tắc điền**
 - **Lớp:** `L3A` hoặc `L3B`. **Track:** một chữ `A` (EdTech), `B` (Y tế), `C` (Du lịch), `D` (Thương mại điện tử), `E` (Tài chính) hoặc `F` (Làn khác). **Link repo:** link GitHub công khai của nhóm.
