@@ -178,7 +178,9 @@ def parse_choice(text, count):
     return value
 
 
-def answer(text):
+def answer(text, park_id="vinh_may"):
+    if park_id != "vinh_may":
+        return answer_for_park(text, park_id=park_id)
     park = load_park()
     if "=" not in text:  # câu chat tự nhiên: model rút trường, Python kiểm, rồi đi cùng luồng
         fields = extract_request(text, {}, park)
@@ -209,3 +211,29 @@ def answer(text):
     lines.extend(f"{s['start']}–{s['end']}  {s['name']}" for s in route["stops"])
     lines.append("Tổng cho cả nhóm: " + money(route["total"]))
     return {"output": "\n".join(lines)}
+
+
+def answer_for_park(text, park_id="vinh_may", request_override=None):
+    """Multi-park entrypoint preserving default Vịnh Mây behavior while failing closed on Nha Trang snapshot."""
+    if (park_id or "vinh_may") == "vinh_may":
+        return answer(text)
+    from park_provider import load_park_provider
+    from planning import plan_nha_trang
+
+    dataset = load_park_provider(park_id)
+    req = dict(request_override or {})
+    req.setdefault("preference", text or "")
+    plan = plan_nha_trang(dataset, req)
+    lines = [
+        f"{dataset['park']['name']} · snapshot công khai ({dataset['park']['snapshot_date']}) · chưa xác minh trực tiếp",
+        plan["message"],
+    ]
+    if plan["readiness"]["blockers"]:
+        lines.append("Dữ liệu còn thiếu / cần xác minh:")
+        lines.extend(f"- {b}" for b in plan["readiness"]["blockers"])
+    if plan.get("show_references"):
+        lines.append("Các suất biểu diễn có giờ công bố (cần kiểm tra lại theo ngày đi):")
+        for s in plan["show_references"]:
+            warn = " [cảnh báo xung đột giờ]" if s.get("has_discrepancy") else ""
+            lines.append(f"- {s['name']}: {s['start']}–{s['end']} (nguồn {s['source_id']}){warn}")
+    return {"output": "\n".join(lines), "plan": plan}

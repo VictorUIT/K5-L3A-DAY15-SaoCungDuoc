@@ -1,0 +1,98 @@
+[
+  {
+    "id": "MAP",
+    "url": "https://static.vinwonders.com/production/2026/03/VWNT_Update_Guidemap_QR_compressed.pdf",
+    "note": "official map March 2026; directory and published schedules; not live",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "HOME",
+    "url": "https://vinwonders.com/vi/vinwonders-nha-trang/",
+    "note": "official indexed park overview",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "RULES",
+    "url": "https://vinwonders.com/en/wonderpedia/news/information-attraction-requirements-at-vinwonders-nha-trang/",
+    "note": "official indexed operating article 21 July 2026; partial snippets",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "RULES_VI",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/quy-dinh-tro-choi-vinwonders-nha-trang/",
+    "note": "official indexed operating article; direct fetch 403",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "RIVER",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/thong-tin-van-hanh-tai-vinwonders-nha-trang/",
+    "note": "official indexed operating article",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "PRICE",
+    "url": "https://vinwonders.com/vi/vinwonders-nha-trang-price-and-regulations/",
+    "note": "official indexed ticket table; direct fetch 403",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "PRICE_NOTICE",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/vinwonders-nha-trang-thong-bao-cap-nhat-gia-ve-khu-vui-choi-2026-va-chuong-trinh-tang-voucher-am-thuc/",
+    "note": "official indexed age threshold; reconcile before sale",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "SHOW",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/lich-bieu-dien-vinpearl-nha-trang-moi-nhat/",
+    "note": "official indexed show article; direct fetch 403",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "AQUARIUM",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/thuy-cung-vinpearl-nha-trang-gia-ve-huong-dan-tham-quan-2026/",
+    "note": "official indexed mermaid schedule",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "FOOD",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/vinwonders-nha-trang-co-gi/",
+    "note": "official indexed restaurants and hours",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "FOOD2",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/an-gi-o-vinpearl-nha-trang/",
+    "note": "official indexed dining information",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "FOOD3",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/danh-sach-nha-hang-tai-vinwonders-nha-trang/",
+    "note": "official restaurant article; direct fetch 403",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "TVL1",
+    "url": "https://www.traveloka.com/en-en/user/review/consumption/EXPERIENCE/ATTRACTIONS/5981189656926",
+    "note": "accessible cached page; 21 total shown; 15 text records",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "TVL2",
+    "url": "https://www.traveloka.com/en-en/user/review/consumption/EXPERIENCE/ATTRACTIONS/2000684219858",
+    "note": "accessible cached page; 1289 shown in opened snapshot; index count 1416; 20 text records",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "KLOOK",
+    "url": "https://www.klook.com/activity/11988-vinwonders-nha-trang-ticket/",
+    "note": "accessible cached product page; 6.8K shown; 8 visible reviews; conflicting show time",
+    "accessed_on": "2026-11-27"
+  },
+  {
+    "id": "TA",
+    "url": "https://www.tripadvisor.com/Attraction_Review-g293928-d1451754-Reviews-VinWonders_Nha_Trang-Nha_Trang_Khanh_Hoa_Province.html",
+    "note": "accessible cached page; 7528 shown; non-random detailed reviews; historical",
+    "accessed_on": "2026-11-27"
+  }
+]

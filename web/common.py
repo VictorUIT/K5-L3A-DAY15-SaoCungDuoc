@@ -1,9 +1,18 @@
 """Phần dùng chung của web Vịnh Mây: CSS, dữ liệu khu chơi (đọc từ data/park.json qua tools.load_park)."""
 import streamlit as st
 
+from park_provider import (  # noqa: F401
+    DEFAULT_PARK_ID,
+    NHA_TRANG_PARK_ID,
+    list_parks,
+    load_nha_trang_dataset,
+    load_park_provider,
+)
+from review_intel import build_knowledge_base, load_reviews  # noqa: F401
 from tools import is_show, load_park, money  # noqa: F401  (money, is_show dùng ở các trang)
 
 START_EXAMPLE = "vm_start_example"   # trang chủ đặt khoá này để trang Lên lịch điền sẵn ca mẫu
+PARK_KEY = "selected_park_id"
 
 
 # Nền bãi biển tự vẽ (SVG): trời, mặt trời, biển xanh trong, bãi cát, hai cây dừa. Không dùng ảnh bên ngoài.
@@ -152,14 +161,56 @@ def park_data():
     return load_park()
 
 
+@st.cache_data
+def nha_trang_data():
+    return load_nha_trang_dataset()
+
+
+@st.cache_data
+def nha_trang_reviews():
+    return load_reviews()
+
+
+@st.cache_data
+def nha_trang_kb():
+    return build_knowledge_base(nha_trang_reviews())
+
+
 def names():
     return {a["id"]: a["name"] for a in park_data()["activities"]}
 
 
-def header(title, subtitle):
-    """Đầu trang có nền bãi biển: tên trợ lý to, dòng phụ nhỏ, nhãn dữ liệu mô phỏng."""
+def park_selector(key_suffix="top"):
+    """Bộ chọn công viên dùng chung giữa Trang chủ và Lên lịch. Mặc định là Vịnh Mây."""
+    parks = list_parks()
+    ids = [p["id"] for p in parks]
+    labels = {p["id"]: p["label"] for p in parks}
+    st.session_state.setdefault(PARK_KEY, DEFAULT_PARK_ID)
+    current = st.session_state[PARK_KEY]
+    if current not in ids:
+        current = DEFAULT_PARK_ID
+        st.session_state[PARK_KEY] = current
+
+    def _on_change():
+        st.session_state[PARK_KEY] = st.session_state[f"park_pick_{key_suffix}"]
+
+    st.selectbox(
+        "Chọn công viên",
+        options=ids,
+        index=ids.index(current),
+        format_func=labels.get,
+        key=f"park_pick_{key_suffix}",
+        on_change=_on_change,
+        help="Mặc định giữ Vịnh Mây (dữ liệu mô phỏng CP2/CP3). Chuyển sang VinWonders Nha Trang để xem snapshot dữ liệu công khai.",
+    )
+    return st.session_state[PARK_KEY]
+
+
+def header(title, subtitle, badge="Dữ liệu mô phỏng",
+           badge_title="Giờ, giá và quãng đi bộ do nhóm dựng để thử, không phải dữ liệu thật"):
+    """Đầu trang có nền bãi biển: tên trợ lý to, dòng phụ nhỏ, nhãn nguồn dữ liệu."""
     st.markdown(beach_css(".vm-head"), unsafe_allow_html=True)
     st.markdown('<div class="vm-head"><div class="vm-title"><h1>%s</h1>'
-                '<span class="vm-badge" title="Giờ, giá và quãng đi bộ do nhóm dựng để thử, không phải dữ liệu thật">'
-                'Dữ liệu mô phỏng</span></div><p class="vm-sub">%s</p></div>' % (title, subtitle),
+                '<span class="vm-badge" title="%s">%s</span></div><p class="vm-sub">%s</p></div>'
+                % (title, badge_title, badge, subtitle),
                 unsafe_allow_html=True)

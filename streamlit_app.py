@@ -33,7 +33,7 @@ from web.common import CSS  # noqa: E402
 st.set_page_config(page_title="Vivu · Gợi ý hoạt động cho chuyến du lịch tuyệt vời", page_icon="🌊", layout="centered")
 # Giữ giá trị form khi đổi trang: Streamlit dọn trạng thái của ô nhập khi trang đổi; gán lại ở đầu mỗi lượt vẽ
 # để trang chủ và trang Lên lịch dùng chung điều kiện chuyến đi.
-for _key in [k for k in st.session_state if k.startswith("t_") or k == "regen_end"]:
+for _key in [k for k in st.session_state if k.startswith("t_") or k in ("regen_end", "selected_park_id")]:
     st.session_state[_key] = st.session_state[_key]
 st.markdown(CSS, unsafe_allow_html=True)
 

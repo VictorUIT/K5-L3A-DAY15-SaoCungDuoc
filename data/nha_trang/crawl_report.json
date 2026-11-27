@@ -1,0 +1,50 @@
+{
+  "snapshot_date": "2026-11-27",
+  "method": "web-assisted factual extraction and manual normalization; not full automated crawl",
+  "catalog_count": 159,
+  "main_map_codes": 99,
+  "sub_map_codes": 15,
+  "unnumbered_children": 45,
+  "kind_counts": {
+    "transport": 3,
+    "gate": 5,
+    "sight": 25,
+    "shop": 22,
+    "cluster": 5,
+    "food": 38,
+    "ride": 55,
+    "show_venue": 4,
+    "placeholder": 1,
+    "facility": 1
+  },
+  "park_zone_count": 6,
+  "adjacent_zone_count": 1,
+  "ride_sight_count": 80,
+  "show_records": 8,
+  "show_records_with_times": 5,
+  "price_rows": 4,
+  "review_records": 53,
+  "review_counts": {
+    "TVL1": 15,
+    "TVL2": 20,
+    "KLOOK": 8,
+    "TA": 10
+  },
+  "catalog_points_with_hours": 8,
+  "catalog_points_with_min_height": 4,
+  "scheduling_ready_points": 0,
+  "missing_travel_matrix": true,
+  "blocked_direct_sources": [
+    "RULES_VI",
+    "PRICE",
+    "SHOW",
+    "FOOD3"
+  ],
+  "limitations": [
+    "Not an exhaustive review crawl. No access-control bypass or unapproved API used.",
+    "Cross-platform identity deduplication not possible; no duplicate IDs or identical summaries within source claimed beyond simple ID checks.",
+    "Map includes facilities, shop and cluster records; not all are playable or open.",
+    "Do not treat review tags as human labels, current safety rules or representative prevalence.",
+    "R01–R15 overlap team evidence; R15 wording differs from prior team notes."
+  ]
+}
