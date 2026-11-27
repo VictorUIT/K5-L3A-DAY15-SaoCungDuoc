@@ -19,6 +19,9 @@ Nối model thật: điền .env (chép từ .env.example), rồi viết nhánh 
 """
 import json
 import os
+import re
+import urllib.error
+import urllib.request
 
 from tracing import model_call
 
@@ -44,20 +47,108 @@ MODEL_NAME = (os.environ.get("MODEL_NAME") or "").strip()
 API_KEY = (os.environ.get("API_KEY") or "").strip()
 
 
+SHOW_RAW = False   # đổi thành True để in nguyên phản hồi của API khi cần tìm tên trường
+URL_OPENAI = "https://api.openai.com/v1/chat/completions"
+URL_CLAUDE = "https://api.anthropic.com/v1/messages"
+URL_OLLAMA = "http://localhost:11434/api/chat"
+
+
+def post_json(url, headers, body, timeout=60):
+    """Gửi POST JSON, trả về JSON phản hồi. Chỉ dùng thư viện chuẩn (urllib)."""
+    req = urllib.request.Request(
+        url, data=json.dumps(body).encode("utf-8"), method="POST",
+        headers=dict({"Content-Type": "application/json"}, **headers))
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            data = json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        raise RuntimeError("HTTP %d: %s" % (e.code, e.read().decode("utf-8", "replace")[:300]))
+    if SHOW_RAW:
+        print(json.dumps(data, ensure_ascii=False, indent=2)[:3000])
+    return data
+
+
+def call_openai(system, user):
+    messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": user}]
+    data = post_json(URL_OPENAI, {"Authorization": "Bearer " + API_KEY},
+                     {"model": MODEL_NAME, "messages": messages})
+    u = data["usage"]
+    return {"text": data["choices"][0]["message"]["content"],
+            "tokens_in": u["prompt_tokens"], "tokens_out": u["completion_tokens"]}
+
+
+def call_claude(system, user):
+    data = post_json(URL_CLAUDE,
+                     {"x-api-key": API_KEY, "anthropic-version": "2023-06-01"},
+                     {"model": MODEL_NAME, "max_tokens": 1024, "system": system or "",
+                      "messages": [{"role": "user", "content": user}]})
+    text = "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
+    u = data["usage"]
+    return {"text": text, "tokens_in": u["input_tokens"], "tokens_out": u["output_tokens"]}
+
+
+def call_ollama(system, user):
+    messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": user}]
+    data = post_json(URL_OLLAMA, {}, {"model": MODEL_NAME, "messages": messages, "stream": False}, timeout=300)
+    return {"text": data["message"]["content"],
+            "tokens_in": data.get("prompt_eval_count", 0), "tokens_out": data.get("eval_count", 0)}
+
+
+URL_GEMINI = "https://generativelanguage.googleapis.com/v1beta/interactions"
+GEMINI_REVISION = "2026-05-20"   # Api-Revision trong ví dụ REST của aistudio.google.com/docs (xem 27/11/2026)
+CHOICE_SCHEMA = {"type": "object", "properties": {"index": {"type": "integer"}}, "required": ["index"]}
+
+
+def call_gemini(system, user):
+    """Gemini Interactions API (aistudio.google.com/docs/interactions-overview, xem 27/11/2026).
+    Token: usage.total_input_tokens; ra = total_output_tokens + total_thought_tokens (aistudio.google.com/docs/tokens)."""
+    data = post_json(URL_GEMINI,
+                     {"x-goog-api-key": API_KEY, "Api-Revision": GEMINI_REVISION},
+                     {"model": MODEL_NAME, "system_instruction": system or "", "input": user, "store": False,
+                      "response_format": {"type": "text", "mime_type": "application/json", "schema": CHOICE_SCHEMA}})
+    text = "".join(c.get("text", "")
+                   for step in data.get("steps", []) if step.get("type") == "model_output"
+                   for c in step.get("content", []) if c.get("type") == "text")
+    u = data["usage"]
+    return {"text": text, "tokens_in": u["total_input_tokens"],
+            "tokens_out": u.get("total_output_tokens", 0) + u.get("total_thought_tokens", 0)}
+
+
+def call_provider(system, user):
+    """Nhà cung cấp khác (Gemini…): chép ví dụ quickstart theo docs/connect-model.md mục 2.4."""
+    raise NotImplementedError(
+        "chưa viết phần gọi model thật cho MODEL_PROVIDER=%s trong codebase/ai.py — xem docs/connect-model.md mục 2.4"
+        % MODEL_PROVIDER)
+
+
+def fake_choice(user):
+    """Model giả: chọn lịch khớp nhiều điểm trong sở thích nhất (theo tên hoặc mã điểm), rồi nhiều điểm hơn, rồi rẻ hơn."""
+    payload = json.loads(user)
+    preference = payload["preference"].casefold()
+
+    def hit(stop):
+        return stop["name"].casefold() in preference or re.search(r"\b%s\b" % re.escape(stop["id"]), preference)
+
+    def rank(route):
+        return sum(bool(hit(s)) for s in route["stops"]), len(route["stops"]), -route["total"]
+
+    options = payload["options"]
+    return json.dumps({"index": max(range(len(options)), key=lambda i: rank(options[i]))})
+
+
 @model_call
 def call_model(system: str, user: str) -> dict:
     if MODEL_PROVIDER == "fake":
-        payload = json.loads(user)
-        preference = payload["preference"].casefold()
-        def rank(route):
-            hits = sum(stop["name"].casefold() in preference for stop in route["stops"])
-            return hits, len(route["stops"]), -route["total"]
-        options = payload["options"]
-        index = max(range(len(options)), key=lambda i: rank(options[i]))
-        return {"text": str(index), "model": "fake", "tokens_in": 0, "tokens_out": 0}
-
-    # NHÓM VIẾT: gọi model thật ở đây (theo MODEL_PROVIDER, MODEL_NAME, API_KEY) rồi trả đúng 4 khoá.
-    # Ví dụ chép được cho từng nhà cung cấp: docs/connect-model.md mục 2.
-    raise NotImplementedError(
-        "chưa viết phần gọi model thật cho MODEL_PROVIDER=%s trong codebase/ai.py — xem docs/connect-model.md"
-        % MODEL_PROVIDER)
+        return {"text": fake_choice(user), "model": "fake", "tokens_in": 0, "tokens_out": 0}
+    if MODEL_PROVIDER == "openai":
+        r = call_openai(system, user)
+    elif MODEL_PROVIDER == "anthropic":
+        r = call_claude(system, user)
+    elif MODEL_PROVIDER == "ollama":
+        r = call_ollama(system, user)
+    elif MODEL_PROVIDER == "gemini":
+        r = call_gemini(system, user)
+    else:
+        r = call_provider(system, user)
+    return {"text": r["text"], "model": MODEL_NAME,
+            "tokens_in": int(r["tokens_in"]), "tokens_out": int(r["tokens_out"])}

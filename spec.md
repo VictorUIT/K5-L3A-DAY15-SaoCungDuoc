@@ -20,27 +20,33 @@ Bản đồ và lịch biểu diễn tại điểm đến cho khách biết đi�
 
 Một phụ huynh nhập điều kiện đi chơi; AI chọn lịch theo ưu tiên từ các lịch khả thi, phụ huynh nhận giờ và tổng tiền cho cả nhà. Ngoài phạm vi: đặt vé, thanh toán, lên lịch nhiều khu. CP2 dùng một khu giả lập và chặng 1–3 điểm.
 
+Sơ đồ dưới đi theo đúng code. Demo (`python3 run.py`), eval (`run.py eval`) và mô phỏng chi phí (`run.py simulate`) đều gọi cùng một hàm `answer(text)` trong `codebase/agent.py`.
+
 ```mermaid
 flowchart TD
-    A[Phụ huynh nhập điều kiện] --> B[Đọc danh mục và kiểm trường nhập]
-    B -->|Thiếu hoặc mã lạ| C[Hỏi lại hoặc báo thiếu dữ liệu]
-    B -->|Đủ| D[Python liệt kê lịch hợp lệ]
-    D -->|Rỗng| E[Nêu vướng mắc để khách sửa]
-    D -->|Có lịch| F[Model chọn một lịch theo ưu tiên]
-    F --> G{Chỉ số có trong danh sách?}
-    G -->|Có| H[Hiện giờ và tổng tiền từ lịch đã kiểm]
-    G -->|Sai| C
-    H --> I[Khách chọn dùng hoặc gửi điều kiện mới]
+    A["Phụ huynh gõ một dòng<br/>run.py → app.py · run_eval.py · simulate.py"] --> B["answer(text) · read_request<br/>tách trường tên=giá trị, kiểm số, giờ, mã điểm"]
+    B -->|"Thiếu trường, sai dạng, mã lạ,<br/>có trẻ mà thiếu chiều cao"| Q["Hỏi lại đúng trường<br/>vd: Bé thấp nhất cao bao nhiêu cm?<br/>chưa công bố lịch"]
+    B -->|Đủ| L["load_park · đọc data/park.json"]
+    L --> F["feasible_routes · PYTHON<br/>liệt kê mọi lịch 1–3 điểm, mỗi chặng +10 phút đi bộ<br/>loại: điểm đóng · trẻ thấp hơn min_cm<br/>show: đến + đệm phải ≤ giờ diễn · xong trước giờ đóng và giờ về<br/>vé cổng + phụ phí ≤ ngân sách · đủ điểm bắt buộc"]
+    F -->|Rỗng| X["explain_no_route · PYTHON<br/>tìm ràng buộc đang chặn và tính lại số:<br/>điểm đóng · quá 3 điểm · thiếu bao nhiêu cm<br/>thiếu bao nhiêu đồng · đến show lúc mấy giờ"]
+    X --> XO["Không có lịch hợp lệ + lý do cụ thể<br/>khách sửa điều kiện rồi gửi lại"]
+    F -->|Có N lịch| M["call_model · @model_call · MODEL<br/>vào: sở thích + N lịch đã kiểm<br/>ra: JSON {index}<br/>fake: luật cố định, 0 token"]
+    M --> P{"parse_choice<br/>JSON đúng dạng và index trong 0..N-1?"}
+    P -->|Không| E["Báo chưa chọn được lịch, mời gửi lại<br/>ghi note vào trace"]
+    P -->|Có| H["Hiện giờ từng điểm + tổng tiền<br/>lấy từ lịch Python đã kiểm<br/>bỏ mọi chữ model viết thêm"]
+    H --> K["Khách tự quyết: dùng lịch hoặc gửi điều kiện mới"]
 ```
 
-Chọn workflow cố định vì có thể kiểm hết tổ hợp tối đa ba điểm trong danh mục nhỏ. Một quyết định có ích của AI là chọn lịch phù hợp sở thích; thêm một agent phối hợp không tạo thêm dữ liệu để kiểm. Bộ lọc chặn giờ, đi bộ, chiều cao và chi phí **trước** bước chọn. Đầu ra model chỉ được tham chiếu một lịch hợp lệ.
+Chọn workflow cố định vì có thể kiểm hết tổ hợp tối đa ba điểm trong danh mục nhỏ. Quyết định duy nhất của AI là chọn một lịch hợp với sở thích trong các lịch Python đã kiểm. Thêm một agent phối hợp không tạo thêm dữ liệu để kiểm. Giờ, giá, chiều cao và quãng đi bộ đều được kiểm **trước** bước chọn. Model chỉ trả chỉ số của một lịch trong danh sách. Chữ tự do model viết thêm không được hiển thị.
 
 | Thành phần | Đầu vào | Đầu ra | Tác động |
 |---|---|---|---|
+| read_request | Một dòng tên=giá trị | Yêu cầu chuẩn hoá, hoặc câu hỏi lại đúng trường | Tính cục bộ |
 | load_park | Không có | Danh mục, quy tắc vé và đi bộ | Đọc file |
-| feasible_routes | Danh mục, gia đình, giờ, điểm bắt buộc/đóng | Các lịch hợp lệ, từng mốc giờ và giá cả nhóm | Tính cục bộ |
-| call_model | Lịch ứng viên và sở thích, ví dụ Nhà tranh | Chỉ số phương án | CP2 giả lập tại máy, CP3 cần API thật |
-| Hiển thị và quyết định | Chỉ số đã kiểm giới hạn | Lịch tham khảo | Khách tự quyết |
+| feasible_routes | Danh mục, gia đình, giờ, điểm bắt buộc/đóng, đệm | Các lịch hợp lệ, từng mốc giờ và giá cả nhóm | Tính cục bộ |
+| explain_no_route | Danh mục và yêu cầu không có lịch | Ràng buộc đang chặn kèm giờ hoặc số tiền tính lại | Tính cục bộ |
+| call_model | Sở thích (chỉ là dữ liệu) và các lịch đã kiểm | `{"index": n}` | Fake tại máy; nhóm dùng Gemini (Interactions API, gemini-3.1-flash-lite); nhánh OpenAI/Claude/Ollama theo docs/connect-model.md |
+| parse_choice và hiển thị | Trả lời của model, số lịch N | Lịch tham khảo, hoặc báo chưa chọn được | Khách tự quyết |
 
 G10 hỏi chiều cao hoặc khung giờ khi thiếu; G9 khách đổi khung giờ, đóng điểm rồi gửi lại; G11 nêu xung đột đóng điểm, chiều cao hoặc tiền vé nếu được phát hiện. Dữ liệu và model đều giả ở CP2. Lịch khả thi chỉ trong giả định của data card.
 
@@ -74,3 +80,5 @@ Danh mục công viên là mô phỏng; trả thời gian và giá do công cụ
 ## §10. Phân công và changelog
 
 [Thành viên và phân công](TEAMS.md). Nguyễn Văn Ngọc Sơn phụ trách luồng AI từ nhận yêu cầu, lọc lịch, gọi model chọn phương án, kiểm đầu ra đến đo chi phí. Trần Quốc Tuấn Khanh là đội trưởng, phụ trách canvas/spec, slide và nộp. Đỗ Phương Nam phụ trách bằng chứng. Nguyễn Bình An phụ trách dữ liệu, benchmark và đánh giá. CP2: thu hẹp từ kịch bản du lịch nhiều dịch vụ về một quyết định chọn lịch. Các thay đổi sau mốc sẽ ghi giờ, nội dung và lý do tại đây.
+
+- 27/11, sau CP2 (a90a3c0), Sơn: (1) Ca không có lịch giờ nêu ràng buộc cụ thể kèm số (`explain_no_route`). Lý do: trước đây C06, C07, C10, các ca thiếu tiền phụ phí và các ca đóng hết điểm đều chỉ nhận câu "Hãy kiểm tra lại khung giờ…", nên không phân biệt được hệ thống chặn đúng hay sai lý do. (2) Show được nhận diện từ dữ liệu (khung mở–đóng bằng thời lượng), không viết cứng mã `chim`, `nhac`. (3) Model trả `{"index": n}`; JSON hỏng hoặc chỉ số ngoài danh sách thì báo chưa chọn được. (4) Viết nhánh gọi model thật theo docs/connect-model.md, giữ `@model_call` và chế độ fake; nhóm dùng Gemini `gemini-3.1-flash-lite` qua Interactions API, đã gọi thật ngày 27/11 (`eval --try 3` có token). (5) Thêm C13–C21 (cặp sát biên). Không đổi §7, metric_spec.yaml hay 12 câu CP2. Sơ đồ §4 vẽ lại theo code.
