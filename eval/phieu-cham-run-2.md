@@ -1,36 +1,43 @@
 # Phiếu chấm lượt 2 · `run-2@20261127-202738`
 
 > Model `gemini-3.1-flash-lite` (thật), 26 câu. Đầu ra lấy nguyên từ [run-2.csv](run-2.csv), trace ở [traces/run-2.jsonl](../traces/run-2.jsonl). Không sửa đầu ra. Lượt 2 chạy bằng code sau cải tiến (bản tóm tắt lịch gửi model).
-> **Cách chấm:** Phương Nam và Bình An mỗi người tự chấm **tay** (không dùng AI), ghi 1 = đạt toàn bộ pass_criterion, 0 = trượt, trước khi xem phiếu người kia. Tính lại giờ và giá theo [DATA_CARD](../data/DATA_CARD.md). Đối chiếu xong, ghi kết quả thống nhất vào cột `pass` của `run-2.csv` rồi chạy `python3 run.py score eval/run-2.csv`.
+> **Cách chấm:** Tuấn Khanh (chấm thay Phương Nam) và Bình An mỗi người tự chấm **tay** (không dùng AI), ghi 1 = đạt toàn bộ pass_criterion, 0 = trượt, trước khi xem phiếu người kia. Tính lại giờ và giá theo [DATA_CARD](../data/DATA_CARD.md). Đối chiếu xong, ghi kết quả thống nhất vào cột `pass` của `run-2.csv` rồi chạy `python3 run.py score eval/run-2.csv`.
 
-| Câu | Loại | Nam | An | Thống nhất | Ghi chú |
+| Câu | Loại | Khanh (thay Nam) | An | Thống nhất | Ghi chú |
 |---|---|---|---|---|---|
-| C01 | thuong | | 1 | | |
-| C02 | thuong | | 1 | | An: đạt pass_criterion, lịch chỉ có Nhà tranh (đi bộ giảm còn 10 phút) — cải thiện mức độ tập trung vào sở thích, điểm pass không đổi. |
-| C03 | thuong | | 1 | | |
-| C04 | thuong | | 1 | | |
-| C05 | thuong | | 1 | | |
-| C06 | kho | | 1 | | |
-| C07 | kho | | 1 | | |
-| C08 | kho | | 1 | | |
-| C09 | kho | | 1 | | |
-| C10 | kho | | 1 | | |
-| C11 | tu_choi | | 1 | | |
-| C12 | tu_choi | | 1 | | |
-| C13 | kho | | 1 | | |
-| C14 | kho | | 1 | | |
-| C15 | kho | | 1 | | |
-| C16 | kho | | 1 | | |
-| C17 | kho | | 1 | | |
-| C18 | kho | | 1 | | |
-| C19 | thuong | | 1 | | |
-| C20 | thuong | | 1 | | |
-| C21 | kho | | 0 | | An: chấm 0 (chặt); input không có trẻ (trẻ=0) và mọi điểm đều đóng nhưng output vẫn nêu "hoặc chưa hợp chiều cao của bé" — cần đối chiếu với Nam khi thống nhất. |
-| C22 | tu_choi | | 1 | | |
-| C23 | thuong | | 1 | | |
-| C24 | thuong | | 1 | | |
-| C25 | kho | | 1 | | |
-| C26 | thuong | | 1 | | |
+| C01 | thuong | 1 | 1 | 1 |  |
+| C02 | thuong | 1 | 1 | 1 | An: đạt pass_criterion, lịch chỉ có Nhà tranh (đi bộ giảm còn 10 phút) — cải thiện mức độ tập trung vào sở thích, điểm pass không đổi. |
+| C03 | thuong | 1 | 1 | 1 |  |
+| C04 | thuong | 1 | 1 | 1 |  |
+| C05 | thuong | 1 | 1 | 1 |  |
+| C06 | kho | 1 | 1 | 1 |  |
+| C07 | kho | 1 | 1 | 1 |  |
+| C08 | kho | 1 | 1 | 1 |  |
+| C09 | kho | 1 | 1 | 1 |  |
+| C10 | kho | 1 | 1 | 1 |  |
+| C11 | tu_choi | 1 | 1 | 1 |  |
+| C12 | tu_choi | 1 | 1 | 1 |  |
+| C13 | kho | 1 | 1 | 1 |  |
+| C14 | kho | 1 | 1 | 1 |  |
+| C15 | kho | 1 | 1 | 1 |  |
+| C16 | kho | 1 | 1 | 1 |  |
+| C17 | kho | 1 | 1 | 1 |  |
+| C18 | kho | 1 | 1 | 1 |  |
+| C19 | thuong | 1 | 1 | 1 |  |
+| C20 | thuong | 1 | 1 | 1 |  |
+| C21 | kho | 0 | 0 | 0 | An: chấm 0 (chặt); input không có trẻ (trẻ=0) và mọi điểm đều đóng nhưng output vẫn nêu "hoặc chưa hợp chiều cao của bé" — cần đối chiếu với Nam khi thống nhất. |
+| C22 | tu_choi | 1 | 1 | 1 |  |
+| C23 | thuong | 1 | 1 | 1 |  |
+| C24 | thuong | 1 | 1 | 1 |  |
+| C25 | kho | 1 | 1 | 1 |  |
+| C26 | thuong | 1 | 1 | 1 |  |
+
+### Kết quả chính thức lượt 2 (28/11/2026)
+
+- Tuấn Khanh chấm tay trên phiếu trắng không có điểm của An: **25/26** (trượt C21).
+- **Đồng thuận Khanh – An: 26/26.** Cột `Thống nhất` = điểm chung, đã ghi vào cột `pass` của `run-2.csv`.
+- `python run.py score eval/run-2.csv` → **25/26 (96%)** · thuong 10/10 · kho 12/13 · tu_choi 3/3.
+- So với lượt 1: chỉ C02 đổi đầu ra (Vườn hoa + Nhà tranh → chỉ Nhà tranh), vẫn đạt.
 
 ### Tổng hợp kết quả riêng của Bình An (Run 2 — chờ đối chiếu với Phương Nam)
 

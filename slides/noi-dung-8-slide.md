@@ -26,19 +26,18 @@
 ## 5 · Đánh giá thế nào
 - Dataset: khu Vịnh Mây mô phỏng (5 điểm). Bộ câu thử 26 câu (10 thường, 13 khó, 3 từ chối), 9/26 từ data thật. 4 metric, chuẩn đạt khoá ở CP2 (`spec.md` §7).
 - Lượt 1 `run-1@20261127-202533` → lượt 2 `run-2@20261127-202738`, cùng 26 câu, cùng model, 0 lỗi kỹ thuật. Kiểm tự động: 12/12 lịch hợp lệ và khớp số ở cả hai lượt.
-- **Lượt 1: 26/26 (100%)** — thuong 10/10 · kho 13/13 · tu_choi 3/3, đạt chuẩn ≥22/26. Hai người chấm tay (Bình An, Tuấn Khanh), đồng thuận 25/26; câu lệch C21 do đội trưởng chốt (nếu tính 0 thì 25/26). Nguồn: `eval/phieu-cham-run-1.md`, `python run.py score eval/run-1.csv`.
-- **[CẦN NHÓM]** điểm người chấm lượt 2 x/26.
-- **Vì sao 100% không có nghĩa là AI không sai:**
+- **Lượt 1: 25/26 (96%) → Lượt 2: 25/26 (96%)** — mỗi lượt thuong 10/10 · kho 12/13 · tu_choi 3/3, đạt chuẩn ≥22/26. Câu trượt duy nhất ở cả hai lượt: C21. Hai người chấm tay (Bình An, Tuấn Khanh), cùng cách chấm, đồng thuận 26/26 mỗi lượt. Nguồn: `eval/phieu-cham-run-1.md`, `eval/phieu-cham-run-2.md`, `python run.py score`.
+- **Vì sao điểm benchmark cao mà AI vẫn sai:**
   - Ràng buộc cứng (giờ, đi bộ, chiều cao, tiền, điểm đóng) do **Python kiểm**; AI chỉ chọn 1 lịch trong danh sách đã hợp lệ. Benchmark chủ yếu đo phần này nên điểm cao là do thiết kế.
   - Lỗi thật của AI nằm ở **hiểu sở thích**, ngoài benchmark: thử thêm 8 câu sở thích → 2/8 sai (khách dặn "ít đi bộ, bé nhanh mệt" mà nhận lịch đi bộ nhiều nhất).
-  - Lỗi diễn đạt C21: không có trẻ nhưng lý do nhắc "chiều cao của bé" — chính vì vậy hai người chấm lệch nhau.
+  - C21 trượt cả hai lượt: không có trẻ nhưng lý do nhắc "chiều cao của bé" (lỗi câu giải thích trong code, chưa sửa).
   - Giới hạn tự nhận: bộ câu thử đo **hợp lệ**, chưa đo **khớp sở thích**. Việc tiếp: thêm câu có tiêu chí kiểm được (vd "ít đi bộ → lịch ít điểm nhất trong các lịch hợp lệ").
-- *Câu nói khi demo:* "26/26 vì ràng buộc cứng do code kiểm, không phải AI. Lỗi thật của AI là hiểu sở thích — nhóm tìm được 2/8 câu sai ngoài bộ thử và sửa ở lượt 2. Bộ câu thử chưa đo được phần này, đó là việc tiếp theo."
+- *Câu nói khi demo:* "25/26 vì ràng buộc cứng do code kiểm, không phải AI; câu trượt là lỗi câu giải thích. Lỗi thật của AI là hiểu sở thích — nhóm tìm được 2/8 câu sai ngoài bộ thử và sửa ở lượt 2. Bộ câu thử chưa đo được phần này, đó là việc tiếp theo."
 - Lỗi chính và cải tiến: “ít đi bộ”, “chỉ muốn xem show” bị chọn lịch nhiều điểm (2/8 → 0/8 sau khi gửi model bản tóm tắt có phút đi bộ, giờ xong, số show). Nguồn: `eval/report.md`, `eval/explore-preferences.md`.
 
 ## 6 · Chi phí khi dùng thật
 - Đo token trên `gemini-3.1-flash-lite`, tính giá gemini-3.1-flash-lite và gemini-3.8-flash (giá từ 01/01/2027), nguồn bảng giá BTC xem 25/11/2026.
-- Số: lấy từ `cost/cost-estimate.md` (mô phỏng 50 phiên, seed 42). Chi phí / task thành công cần tỉ lệ đạt lượt 2 **[CẦN NHÓM chấm xong]**.
+- Số: lấy từ `cost/cost-estimate.md` (mô phỏng 50 phiên, seed 42). Chi phí / task thành công dùng tỉ lệ đạt lượt 2 = **25/26 (96%)**.
 - Số người dùng và persona đang là *(tự ước tính)* **[CẦN NHÓM thay bằng số khảo sát]**.
 
 ## 7 · Kết luận

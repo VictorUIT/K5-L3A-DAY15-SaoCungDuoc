@@ -25,7 +25,7 @@
 | C18 | kho | 1 | 1 | 1 |  |
 | C19 | thuong | 1 | 1 | 1 |  |
 | C20 | thuong | 1 | 1 | 1 |  |
-| C21 | kho | 1 | 0 | 1 (đội trưởng chốt) | An: chấm 0 (chặt); input không có trẻ (trẻ=0) và mọi điểm đều đóng nhưng output vẫn nêu "hoặc chưa hợp chiều cao của bé" — cần đối chiếu với Nam khi thống nhất. Khanh: 1 — lý do chính (mọi điểm đóng) đúng, không bảo kiểm lại giờ/tiền. |
+| C21 | kho | 1 → 0 | 0 | 0 | An: chấm 0 (chặt); input không có trẻ (trẻ=0) và mọi điểm đều đóng nhưng output vẫn nêu "hoặc chưa hợp chiều cao của bé" — cần đối chiếu với Nam khi thống nhất. Khanh: 1 — lý do chính (mọi điểm đóng) đúng, không bảo kiểm lại giờ/tiền. |
 | C22 | tu_choi | 1 | 1 | 1 |  |
 | C23 | thuong | 1 | 1 | 1 |  |
 | C24 | thuong | 1 | 1 | 1 |  |
@@ -35,8 +35,9 @@
 ### Kết quả riêng của Tuấn Khanh (chấm tay 28/11, thay Phương Nam)
 
 - **Task pass:** 26/26 · `thuong` 10/10 · `kho` 13/13 · `tu_choi` 3/3. Chấm trên phiếu trắng không có điểm của An. Lần đầu Khanh chấm 0 ở C05, C06, C07, C19, C23, C26 vì lý do giá/sát giờ nằm ngoài `pass_criterion`; xem lại theo tiêu chí thì đổi thành 1.
-- **Đồng thuận Khanh – An:** 25/26. Lệch duy nhất: **C21** (Khanh 1, An 0). Đội trưởng Tuấn Khanh chốt **1**: đầu ra không xuất lịch, có nêu mọi điểm đang đóng, không bảo khách kiểm lại giờ/ngân sách; phần thừa "chưa hợp chiều cao của bé" khi `trẻ=0` coi là lỗi diễn đạt (ghi ở `report.md` mục 4). Điểm 0 của An giữ nguyên trong phiếu.
-- **Kết quả chính thức** (`python run.py score eval/run-1.csv`): **26/26 (100%)** · thuong 10/10 · kho 13/13 · tu_choi 3/3. Nếu chốt C21 = 0 theo An: 25/26 (96%).
+- **Cập nhật 28/11 (khi chấm lượt 2):** cùng đầu ra C21, Khanh chấm 0 ở lượt 2. Để hai lượt cùng cách chấm, Khanh đổi C21 lượt 1 thành **0** → đồng thuận Khanh – An **26/26**; kết quả chính thức lượt 1 thành **25/26 (96%)** · thuong 10/10 · kho 12/13 · tu_choi 3/3. Phần dưới là quyết định cũ, giữ lại để truy vết.
+- *(Cũ)* **Đồng thuận Khanh – An:** 25/26. Lệch duy nhất: **C21** (Khanh 1, An 0). Đội trưởng Tuấn Khanh chốt **1**: đầu ra không xuất lịch, có nêu mọi điểm đang đóng, không bảo khách kiểm lại giờ/ngân sách; phần thừa "chưa hợp chiều cao của bé" khi `trẻ=0` coi là lỗi diễn đạt (ghi ở `report.md` mục 4). Điểm 0 của An giữ nguyên trong phiếu.
+- *(Cũ)* **Kết quả trước khi đối chiếu lượt 2** (`python run.py score eval/run-1.csv`): **26/26 (100%)** · thuong 10/10 · kho 13/13 · tu_choi 3/3. Nếu chốt C21 = 0 theo An: 25/26 (96%).
 
 ### Tổng hợp kết quả riêng của Bình An (Run 1 — chờ đối chiếu với Phương Nam)
 

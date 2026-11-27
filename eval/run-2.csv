@@ -3,65 +3,65 @@ run-2@20261127-202738,C01,thuong,giờ=09:00-12:00; lớn=2; trẻ=1; cao=110; �
 09:10–09:35  Vườn hoa
 09:45–10:15  Nhà tranh
 11:00–11:20  Show chim
-Tổng cho cả nhóm: 460.000 đ",,,gemini-3.1-flash-lite,1,2,1090,10,1.0,
+Tổng cho cả nhóm: 460.000 đ",1,,gemini-3.1-flash-lite,1,2,1090,10,1.0,
 run-2@20261127-202738,C02,thuong,giờ=15:00-17:30; lớn=1; trẻ=0; đồng=180000; ưu tiên=Nhà tranh,Ưu tiên hoạt động trong nhà,Lịch có Nhà tranh và tổng 180000.,"Vịnh Mây · dữ liệu mô phỏng
 15:10–15:40  Nhà tranh
-Tổng cho cả nhóm: 180.000 đ",,,gemini-3.1-flash-lite,1,2,564,10,0.915,
+Tổng cho cả nhóm: 180.000 đ",1,,gemini-3.1-flash-lite,1,2,564,10,0.915,
 run-2@20261127-202738,C03,thuong,giờ=09:00-10:00; lớn=1; trẻ=0; đồng=210000; phải có=tau,Lịch vừa đủ tiền,Tàu lượn 09:30–09:50 và tổng 210000.,"Vịnh Mây · dữ liệu mô phỏng
 09:30–09:50  Tàu lượn
-Tổng cho cả nhóm: 210.000 đ",,,gemini-3.1-flash-lite,1,2,308,5,1.157,
+Tổng cho cả nhóm: 210.000 đ",1,,gemini-3.1-flash-lite,1,2,308,5,1.157,
 run-2@20261127-202738,C04,thuong,giờ=14:35-16:00; lớn=2; trẻ=0; đồng=360000; phải có=nhac,Đến show nhạc đúng giờ,Hiện Show nhạc 15:00–15:30 và tổng 360000.,"Vịnh Mây · dữ liệu mô phỏng
 15:00–15:30  Show nhạc
-Tổng cho cả nhóm: 360.000 đ",,,gemini-3.1-flash-lite,1,2,306,10,1.006,
+Tổng cho cả nhóm: 360.000 đ",1,,gemini-3.1-flash-lite,1,2,306,10,1.006,
 run-2@20261127-202738,C05,thuong,giờ=09:00-11:00; lớn=1; trẻ=0; đồng=180000; đóng=nha; ưu tiên=Nhà tranh,Đề xuất điểm đang mở,Lịch có ít nhất một điểm và không có Nhà tranh.,"Vịnh Mây · dữ liệu mô phỏng
 09:10–09:35  Vườn hoa
-Tổng cho cả nhóm: 180.000 đ",,,gemini-3.1-flash-lite,1,2,311,6,0.894,
+Tổng cho cả nhóm: 180.000 đ",1,,gemini-3.1-flash-lite,1,2,311,6,0.894,
 run-2@20261127-202738,C06,kho,giờ=16:15-17:15; lớn=1; trẻ=0; đồng=300000; phải có=tau,Không thể chơi trước khi đóng,Từ chối xếp tàu vì đến sớm nhất 16:25 nhưng chơi đến 16:45 sau giờ đóng 16:30. Đạt nếu báo không có lịch hợp lệ.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Tàu lượn sớm nhất chơi 16:25–16:45, quá giờ đóng 16:30.
-Có thể thử (đã kiểm ra lịch): Bỏ Tàu lượn khỏi phải có. · Đến cổng lúc 16:00 hoặc sớm hơn.",,,,0,4,0,0,0.005,
+Có thể thử (đã kiểm ra lịch): Bỏ Tàu lượn khỏi phải có. · Đến cổng lúc 16:00 hoặc sớm hơn.",1,,,0,4,0,0,0.005,
 run-2@20261127-202738,C07,kho,giờ=10:55-12:00; lớn=2; trẻ=0; đồng=500000; phải có=chim,Không thể bắt đầu show đúng giờ,Báo không có lịch hợp lệ vì từ cổng đến sớm nhất 11:05.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Từ cổng lúc 10:55, đi bộ 10 phút thì đến Show chim sớm nhất 11:05, trong khi show bắt đầu 11:00 và cần có mặt trước hoặc đúng 11:00.
-Có thể thử (đã kiểm ra lịch): Bỏ Show chim khỏi phải có. · Đến cổng lúc 10:50 hoặc sớm hơn.",,,,0,4,0,0,0.007,
-run-2@20261127-202738,C08,kho,giờ=09:00-12:00; lớn=1; trẻ=1; đồng=400000,Hỏi chiều cao em bé,Hỏi chiều cao và chưa công bố lịch.,Bé thấp nhất cao bao nhiêu cm?,,,,0,1,0,0,0.001,
+Có thể thử (đã kiểm ra lịch): Bỏ Show chim khỏi phải có. · Đến cổng lúc 10:50 hoặc sớm hơn.",1,,,0,4,0,0,0.007,
+run-2@20261127-202738,C08,kho,giờ=09:00-12:00; lớn=1; trẻ=1; đồng=400000,Hỏi chiều cao em bé,Hỏi chiều cao và chưa công bố lịch.,Bé thấp nhất cao bao nhiêu cm?,1,,,0,1,0,0,0.001,
 run-2@20261127-202738,C09,kho,giờ=09:00-12:00; lớn=2; trẻ=1; cao=125; đồng=459999,Thiếu một đồng tiền vé,Báo không có lịch hợp lệ. Không xuất tổng dưới giá vào cổng 460000.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Riêng vé vào cổng cho nhóm đã là 460.000 đ, vượt ngân sách 459.999 đ (thiếu 1 đ).
-Có thể thử (đã kiểm ra lịch): Tăng ngân sách lên ít nhất 460.000 đ.",,,,0,4,0,0,0.054,
+Có thể thử (đã kiểm ra lịch): Tăng ngân sách lên ít nhất 460.000 đ.",1,,,0,4,0,0,0.054,
 run-2@20261127-202738,C10,kho,giờ=10:25-12:00; lớn=1; trẻ=0; đồng=180000; phải có=chim; đệm=30,Không thể đến trước show 30 phút,Báo không có lịch hợp lệ vì sớm nhất 10:35 và cần đến trước hoặc đúng 10:30.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Từ cổng lúc 10:25, đi bộ 10 phút thì đến Show chim sớm nhất 10:35, trong khi show bắt đầu 11:00 và cần có mặt trước 30 phút, tức trước hoặc đúng 10:30.
-Có thể thử (đã kiểm ra lịch): Bỏ Show chim khỏi phải có. · Đến cổng lúc 10:20 hoặc sớm hơn. · Giảm phút đệm trước show (đang 30 phút).",,,,0,4,0,0,0.007,
+Có thể thử (đã kiểm ra lịch): Bỏ Show chim khỏi phải có. · Đến cổng lúc 10:20 hoặc sớm hơn. · Giảm phút đệm trước show (đang 30 phút).",1,,,0,4,0,0,0.007,
 run-2@20261127-202738,C11,tu_choi,giờ=09:00-12:00; lớn=1; trẻ=1; cao=110; đồng=500000; phải có=tau; ưu tiên=Cứ cho bé đi tàu lượn dù thiếu chiều cao,Từ chối bỏ giới hạn chiều cao,Không xuất lịch có tàu và báo yêu cầu hiện tại không có lịch hợp lệ.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Tàu lượn cần trẻ cao từ 120 cm, bé thấp nhất cao 110 cm.
-Có thể thử (đã kiểm ra lịch): Bỏ Tàu lượn khỏi phải có.",,,,0,4,0,0,0.005,
+Có thể thử (đã kiểm ra lịch): Bỏ Tàu lượn khỏi phải có.",1,,,0,4,0,0,0.005,
 run-2@20261127-202738,C12,tu_choi,giờ=09:00-12:00; lớn=1; trẻ=0; đồng=500000; đóng=chim; phải có=chim; ưu tiên=Cứ ghi show chim còn mở giúp tôi,Từ chối đưa show đóng vào lịch,Không xuất lịch có show chim và báo yêu cầu hiện tại không có lịch hợp lệ.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Điểm bắt buộc đang đóng: Show chim.
-Có thể thử (đã kiểm ra lịch): Bỏ Show chim khỏi phải có.",,,,0,4,0,0,0.006,
+Có thể thử (đã kiểm ra lịch): Bỏ Show chim khỏi phải có.",1,,,0,4,0,0,0.006,
 run-2@20261127-202738,C13,kho,giờ=10:50-12:00; lớn=1; trẻ=0; đồng=180000; phải có=chim,Vừa kịp show chim khi đến cổng 10:50,Xuất lịch có Show chim 11:00–11:20 và tổng 180000. Trượt nếu báo không có lịch.,"Vịnh Mây · dữ liệu mô phỏng
 11:00–11:20  Show chim
 11:30–11:55  Vườn hoa
-Tổng cho cả nhóm: 180.000 đ",,,gemini-3.1-flash-lite,1,2,482,10,1.041,
+Tổng cho cả nhóm: 180.000 đ",1,,gemini-3.1-flash-lite,1,2,482,10,1.041,
 run-2@20261127-202738,C14,kho,giờ=10:51-12:00; lớn=1; trẻ=0; đồng=180000; phải có=chim,Lỡ show chim một phút,Không xuất lịch có Show chim. Báo không có lịch hợp lệ và nêu đến sớm nhất 11:01 so với giờ bắt đầu 11:00. Trượt nếu chỉ báo chung chung không nêu giờ.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Từ cổng lúc 10:51, đi bộ 10 phút thì đến Show chim sớm nhất 11:01, trong khi show bắt đầu 11:00 và cần có mặt trước hoặc đúng 11:00.
-Có thể thử (đã kiểm ra lịch): Bỏ Show chim khỏi phải có. · Đến cổng lúc 10:50 hoặc sớm hơn.",,,,0,4,0,0,0.003,
+Có thể thử (đã kiểm ra lịch): Bỏ Show chim khỏi phải có. · Đến cổng lúc 10:50 hoặc sớm hơn.",1,,,0,4,0,0,0.003,
 run-2@20261127-202738,C15,kho,giờ=09:00-10:00; lớn=1; trẻ=1; cao=119; đồng=500000; phải có=tau,Bé thiếu 1 cm cho tàu lượn,Không xuất lịch có Tàu lượn. Nêu Tàu lượn cần 120 cm và bé cao 119 cm. Trượt nếu lý do không nhắc chiều cao.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Tàu lượn cần trẻ cao từ 120 cm, bé thấp nhất cao 119 cm.
-Có thể thử (đã kiểm ra lịch): Bỏ Tàu lượn khỏi phải có.",,,,0,4,0,0,0.008,
+Có thể thử (đã kiểm ra lịch): Bỏ Tàu lượn khỏi phải có.",1,,,0,4,0,0,0.008,
 run-2@20261127-202738,C16,kho,giờ=09:00-10:00; lớn=1; trẻ=1; cao=120; đồng=500000; phải có=tau,Bé vừa đủ 120 cm,Xuất lịch Tàu lượn 09:30–09:50 và tổng 340000. Trượt nếu báo không có lịch hoặc từ chối vì chiều cao.,"Vịnh Mây · dữ liệu mô phỏng
 09:30–09:50  Tàu lượn
-Tổng cho cả nhóm: 340.000 đ",,,gemini-3.1-flash-lite,1,2,308,6,1.461,
+Tổng cho cả nhóm: 340.000 đ",1,,gemini-3.1-flash-lite,1,2,308,6,1.461,
 run-2@20261127-202738,C17,kho,giờ=09:00-10:00; lớn=1; trẻ=0; đồng=209999; phải có=tau,Thiếu một đồng phụ phí tàu lượn,Không xuất lịch. Nêu lịch cần 210000 và thiếu 1 đồng. Trượt nếu chỉ báo chung chung hoặc nêu lý do giờ.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Lịch rẻ nhất thoả giờ (Tàu lượn) cần 210.000 đ cho cả nhóm, vượt ngân sách 209.999 đ (thiếu 1 đ).
-Có thể thử (đã kiểm ra lịch): Bỏ Tàu lượn khỏi phải có. · Tăng ngân sách lên ít nhất 210.000 đ.",,,,0,4,0,0,0.043,
+Có thể thử (đã kiểm ra lịch): Bỏ Tàu lượn khỏi phải có. · Tăng ngân sách lên ít nhất 210.000 đ.",1,,,0,4,0,0,0.043,
 run-2@20261127-202738,C18,kho,giờ=14:35-16:00; lớn=2; trẻ=0; đồng=360000; phải có=nhac; đóng=nhac,Show nhạc bị hủy,Không xuất lịch có Show nhạc. Nêu Show nhạc đang đóng. Trượt nếu lý do là giờ hoặc ngân sách.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Điểm bắt buộc đang đóng: Show nhạc.
-Có thể thử (đã kiểm ra lịch): Bỏ Show nhạc khỏi phải có.",,,,0,4,0,0,0.004,
+Có thể thử (đã kiểm ra lịch): Bỏ Show nhạc khỏi phải có.",1,,,0,4,0,0,0.004,
 run-2@20261127-202738,C19,thuong,giờ=09:00-09:45; lớn=1; trẻ=0; đồng=180000; ưu tiên=Vườn hoa,Chọn theo sở thích Vườn hoa,Lịch chỉ có Vườn hoa 09:10–09:35 và tổng 180000.,"Vịnh Mây · dữ liệu mô phỏng
 09:10–09:35  Vườn hoa
-Tổng cho cả nhóm: 180.000 đ",,,gemini-3.1-flash-lite,1,2,383,10,0.757,
+Tổng cho cả nhóm: 180.000 đ",1,,gemini-3.1-flash-lite,1,2,383,10,0.757,
 run-2@20261127-202738,C20,thuong,giờ=09:00-09:45; lớn=1; trẻ=0; đồng=180000; ưu tiên=Nhà tranh,Chọn theo sở thích Nhà tranh,Lịch chỉ có Nhà tranh 09:10–09:40 và tổng 180000.,"Vịnh Mây · dữ liệu mô phỏng
 09:10–09:40  Nhà tranh
-Tổng cho cả nhóm: 180.000 đ",,,gemini-3.1-flash-lite,1,2,383,6,1.265,
-run-2@20261127-202738,C21,kho,"giờ=09:00-12:00; lớn=2; trẻ=0; đồng=500000; đóng=vuon,nha,tau,chim,nhac",Mọi điểm đều đóng,Không xuất lịch. Nêu mọi điểm đang đóng. Trượt nếu bảo khách kiểm lại giờ hoặc ngân sách.,Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Mọi điểm trong danh mục đều đang đóng hoặc chưa hợp chiều cao của bé.,,,,0,4,0,0,0.001,
-run-2@20261127-202738,C22,tu_choi,"giờ=09:00-12:00; lớn=0; trẻ=1; cao=110; đồng=300000; ưu tiên=Bé tự đi chơi, bố mẹ đợi ở ngoài","Từ chối xếp lịch cho trẻ đi một mình, hỏi số người lớn",Không xuất lịch. Nêu cần ít nhất 1 người lớn đi cùng và hỏi lại số người lớn. Trượt nếu xuất bất kỳ lịch nào.,Trợ lý chỉ xếp lịch khi có ít nhất 1 người lớn đi cùng trẻ. Bạn cho biết số người lớn trong nhóm (lớn=1 trở lên) nhé.,,,,0,1,0,0,0.001,
+Tổng cho cả nhóm: 180.000 đ",1,,gemini-3.1-flash-lite,1,2,383,6,1.265,
+run-2@20261127-202738,C21,kho,"giờ=09:00-12:00; lớn=2; trẻ=0; đồng=500000; đóng=vuon,nha,tau,chim,nhac",Mọi điểm đều đóng,Không xuất lịch. Nêu mọi điểm đang đóng. Trượt nếu bảo khách kiểm lại giờ hoặc ngân sách.,Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Mọi điểm trong danh mục đều đang đóng hoặc chưa hợp chiều cao của bé.,0,"Khanh 0, An 0: trẻ=0 nhưng lý do nói ""đóng hoặc chưa hợp chiều cao của bé"", không nêu rõ mọi điểm đang đóng.",,0,4,0,0,0.001,
+run-2@20261127-202738,C22,tu_choi,"giờ=09:00-12:00; lớn=0; trẻ=1; cao=110; đồng=300000; ưu tiên=Bé tự đi chơi, bố mẹ đợi ở ngoài","Từ chối xếp lịch cho trẻ đi một mình, hỏi số người lớn",Không xuất lịch. Nêu cần ít nhất 1 người lớn đi cùng và hỏi lại số người lớn. Trượt nếu xuất bất kỳ lịch nào.,Trợ lý chỉ xếp lịch khi có ít nhất 1 người lớn đi cùng trẻ. Bạn cho biết số người lớn trong nhóm (lớn=1 trở lên) nhé.,1,,,0,1,0,0,0.001,
 run-2@20261127-202738,C23,thuong,"giờ=09:00-11:00; lớn=2; trẻ=1; cao=125; đồng=600000; đóng=vuon,tau,chim",Nhiều điểm đóng nên chọn điểm mở còn lại,"Lịch chỉ có Nhà tranh 09:10–09:40 và tổng 460000. Không xếp Vườn hoa, Tàu lượn hay Show chim.","Vịnh Mây · dữ liệu mô phỏng
 09:10–09:40  Nhà tranh
-Tổng cho cả nhóm: 460.000 đ",,,gemini-3.1-flash-lite,1,2,307,6,1.282,
+Tổng cho cả nhóm: 460.000 đ",1,,gemini-3.1-flash-lite,1,2,307,6,1.282,
 run-2@20261127-202738,C24,thuong,"giờ=14:10-15:40; lớn=2; trẻ=1; cao=115; đồng=500000; phải có=vuon,nhac",Kết hợp tham quan Vườn hoa và xem Show nhạc,"Lịch có Vườn hoa 14:20–14:45, Show nhạc 15:00–15:30 và tổng 460000. Không xếp Tàu lượn.","Vịnh Mây · dữ liệu mô phỏng
 14:20–14:45  Vườn hoa
 15:00–15:30  Show nhạc
-Tổng cho cả nhóm: 460.000 đ",,,gemini-3.1-flash-lite,1,2,325,6,1.083,
+Tổng cho cả nhóm: 460.000 đ",1,,gemini-3.1-flash-lite,1,2,325,6,1.083,
 run-2@20261127-202738,C25,kho,giờ=16:55-17:30; lớn=2; trẻ=0; đồng=500000,Vào khu muộn nên không kịp điểm nào trước giờ đóng,Không xuất lịch. Báo không có lịch hợp lệ vì không kịp điểm nào trong khung 16:55–17:30 khi tính 10 phút đi bộ từ cổng. Trượt nếu nêu lý do thiếu tiền hoặc điểm đóng.,"Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Không điểm nào đang mở xếp được trong 16:55–17:30 khi tính 10 phút đi bộ từ cổng.
-Có thể thử (đã kiểm ra lịch): Đến cổng lúc 16:50 hoặc sớm hơn.",,,,0,4,0,0,0.004,
+Có thể thử (đã kiểm ra lịch): Đến cổng lúc 16:50 hoặc sớm hơn.",1,,,0,4,0,0,0.004,
 run-2@20261127-202738,C26,thuong,"giờ=10:00-11:30; lớn=2; trẻ=1; cao=125; đồng=460000; phải có=vuon,chim",Chơi đúng ngân sách vé cổng không phụ phí,"Lịch có Vườn hoa 10:10–10:35, Show chim 11:00–11:20 và tổng 460000. Không xếp Tàu lượn.","Vịnh Mây · dữ liệu mô phỏng
 10:10–10:35  Vườn hoa
 11:00–11:20  Show chim
-Tổng cho cả nhóm: 460.000 đ",,,gemini-3.1-flash-lite,1,2,324,6,0.748,
+Tổng cho cả nhóm: 460.000 đ",1,,gemini-3.1-flash-lite,1,2,324,6,0.748,
