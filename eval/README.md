@@ -57,5 +57,3 @@ Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Điểm bắt 
 | C08 | 1 | | |
 | C09 | 1 | | |
 | C12 | 1 | | |
-
-Trạng thái: phiếu Phương Nam đã có (AI đề xuất theo pass_criterion, Phương Nam duyệt — xem [docs/ai-usage.md](../docs/ai-usage.md)); chờ phiếu Bình An. Mức đồng thuận: chưa đo.
