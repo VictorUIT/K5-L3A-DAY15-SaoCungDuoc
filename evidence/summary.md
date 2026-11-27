@@ -36,7 +36,7 @@ Review (nguồn kiểm lại, chưa đạt ngưỡng): 2/15 review (13,3% của 
 2. "Tôi hỏi chú bảo vệ thì bảo tầm 2h có suất xiếc, ai ngờ tới nơi show chạy từ 1h30 và xong mất rồi. Hỏi miệng nên thông tin bị sai lệch làm trật hết lịch." — [P2](interviews/P2.md)
 3. "Nhờ xem app biết trước trò đó phải chờ tới 45 phút nên nhà tôi né luôn, chuyển sang trò khác chơi ngay chứ đứng xếp hàng nắng nôi bé chịu không nổi." — [P3](interviews/P3.md)
 4. "Making sure you take photos of the show timetables" — review R15, Traveloka, VinWonders Nha Trang, xem 27/11/2026 ([data-mining.md](data-mining.md))
-5. __ *(còn thiếu — cần ≥5. Lấy từ mẫu 30 review mới hoặc câu 10 khảo sát; không tự viết)*
+5. "apart from the long lines everything was fun and great However many rides are closed" — review R07 (10/10), Traveloka, VinWonders Nha Trang, đăng khoảng 77 tuần trước ngày xem 27/11/2026, bản tiếng Anh hiển thị trên trang ([data-mining.md](data-mining.md)). Ghi chú: R07 được gắn nhãn 0 ở bảng "canh giờ" — dùng làm trích dẫn cho pain "trò không chơi được / hàng chờ", không đếm lại vào tỉ lệ 2/15.
 
 ## Kết luận: giả thuyết **đúng một phần — phải đổi trọng tâm**
 
