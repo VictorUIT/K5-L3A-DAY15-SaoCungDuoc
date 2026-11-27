@@ -52,10 +52,10 @@ Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Điểm bắt 
 
 | Câu | Phương Nam | Bình An | Khớp? |
 |---|---|---|---|
-| C01 | | | |
-| C06 | | | |
-| C08 | | | |
-| C09 | | | |
-| C12 | | | |
+| C01 | 1 | | |
+| C06 | 1 | | |
+| C08 | 1 | | |
+| C09 | 1 | | |
+| C12 | 1 | | |
 
-Trạng thái: chờ hai phiếu thật. Mức đồng thuận: chưa đo.
+Trạng thái: phiếu Phương Nam đã có (AI đề xuất theo pass_criterion, Phương Nam duyệt — xem [docs/ai-usage.md](../docs/ai-usage.md)); chờ phiếu Bình An. Mức đồng thuận: chưa đo.
