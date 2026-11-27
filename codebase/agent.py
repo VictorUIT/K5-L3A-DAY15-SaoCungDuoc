@@ -3,7 +3,7 @@ import json
 import re
 
 from ai import call_model
-from tools import explain_no_route, feasible_routes, load_park, minutes, money
+from tools import explain_no_route, feasible_routes, load_park, minutes, money, suggest_fixes
 from tracing import note
 
 
@@ -90,7 +90,11 @@ def answer(text):
         return {"output": str(error)}
     options = feasible_routes(park, request)
     if not options:
-        return {"output": "Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. " + explain_no_route(park, request)}
+        tips = suggest_fixes(park, request)
+        text = "Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. " + explain_no_route(park, request)
+        if tips:
+            text += "\nCó thể thử (đã kiểm ra lịch): " + " · ".join(tips)
+        return {"output": text}
     prompt = json.dumps({"preference": request["preference"], "options": options}, ensure_ascii=False)
     reply = call_model(SYSTEM, prompt)
     chosen = parse_choice(reply["text"], len(options))
