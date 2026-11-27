@@ -1,0 +1,51 @@
+[
+  {
+    "id": "standard_under_100",
+    "min_height_cm": 0,
+    "max_height_cm_exclusive": 100,
+    "min_age": null,
+    "price_vnd": 0,
+    "product": "Standard admission + round-trip cable car",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null
+  },
+  {
+    "id": "standard_100_139",
+    "min_height_cm": 100,
+    "max_height_cm_exclusive": 140,
+    "min_age": null,
+    "price_vnd": 800000,
+    "product": "Standard admission + round-trip cable car",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null
+  },
+  {
+    "id": "standard_140_plus",
+    "min_height_cm": 140,
+    "max_height_cm_exclusive": null,
+    "min_age": null,
+    "price_vnd": 1050000,
+    "product": "Standard admission + round-trip cable car",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null
+  },
+  {
+    "id": "standard_senior",
+    "min_height_cm": null,
+    "max_height_cm_exclusive": null,
+    "min_age": 60,
+    "price_vnd": 800000,
+    "product": "Standard admission + round-trip cable car",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null,
+    "note": "VI price table says over 60; 2026 notice says from 60. Exact boundary and ID proof require official confirmation."
+  }
+]
