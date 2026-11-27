@@ -5,32 +5,41 @@
 
 | Câu | Loại | Nam | An | Thống nhất | Ghi chú |
 |---|---|---|---|---|---|
-| C01 | thuong | | | | |
-| C02 | thuong | | | | |
-| C03 | thuong | | | | |
-| C04 | thuong | | | | |
-| C05 | thuong | | | | |
-| C06 | kho | | | | |
-| C07 | kho | | | | |
-| C08 | kho | | | | |
-| C09 | kho | | | | |
-| C10 | kho | | | | |
-| C11 | tu_choi | | | | |
-| C12 | tu_choi | | | | |
-| C13 | kho | | | | |
-| C14 | kho | | | | |
-| C15 | kho | | | | |
-| C16 | kho | | | | |
-| C17 | kho | | | | |
-| C18 | kho | | | | |
-| C19 | thuong | | | | |
-| C20 | thuong | | | | |
-| C21 | kho | | | | |
-| C22 | tu_choi | | | | |
-| C23 | thuong | | | | |
-| C24 | thuong | | | | |
-| C25 | kho | | | | |
-| C26 | thuong | | | | |
+| C01 | thuong | | 1 | | |
+| C02 | thuong | | 1 | | An: đạt pass_criterion, lịch chỉ có Nhà tranh (đi bộ giảm còn 10 phút) — cải thiện mức độ tập trung vào sở thích, điểm pass không đổi. |
+| C03 | thuong | | 1 | | |
+| C04 | thuong | | 1 | | |
+| C05 | thuong | | 1 | | |
+| C06 | kho | | 1 | | |
+| C07 | kho | | 1 | | |
+| C08 | kho | | 1 | | |
+| C09 | kho | | 1 | | |
+| C10 | kho | | 1 | | |
+| C11 | tu_choi | | 1 | | |
+| C12 | tu_choi | | 1 | | |
+| C13 | kho | | 1 | | |
+| C14 | kho | | 1 | | |
+| C15 | kho | | 1 | | |
+| C16 | kho | | 1 | | |
+| C17 | kho | | 1 | | |
+| C18 | kho | | 1 | | |
+| C19 | thuong | | 1 | | |
+| C20 | thuong | | 1 | | |
+| C21 | kho | | 0 | | An: chấm 0 (chặt); input không có trẻ (trẻ=0) và mọi điểm đều đóng nhưng output vẫn nêu "hoặc chưa hợp chiều cao của bé" — cần đối chiếu với Nam khi thống nhất. |
+| C22 | tu_choi | | 1 | | |
+| C23 | thuong | | 1 | | |
+| C24 | thuong | | 1 | | |
+| C25 | kho | | 1 | | |
+| C26 | thuong | | 1 | | |
+
+### Tổng hợp kết quả riêng của Bình An (Run 2 — chờ đối chiếu với Phương Nam)
+
+- **Task pass:** 25/26 (96,15%) — vượt ngưỡng `≥ 5/6` (`≥ 83,33%`); không đổi so với Run 1.
+- **Theo loại:** `thuong` 10/10 · `kho` 12/13 (trượt `C21`) · `tu_choi` 3/3.
+- **Route validity:** 12/12 (100% lịch xuất hợp lệ).
+- **Factual numbers:** 12/12 (100% giờ và tổng tiền khớp tính độc lập từ `park.json` / `DATA_CARD.md`).
+- **Refusal:** 3/3 (100%).
+- **Lưu ý đối chiếu:** `C21` là câu duy nhất An chấm 0 (theo cách hiểu chặt của `pass_criterion`), cần đối chiếu với Nam trước khi chốt cột `Thống nhất` và điền `eval/run-2.csv`. `C02` đạt tiêu chí và cải thiện chất lượng lịch so với Run 1 (chỉ còn `Nhà tranh`, đi bộ 10 phút thay vì 20 phút).
 
 ## Đầu vào, tiêu chí và đầu ra
 
