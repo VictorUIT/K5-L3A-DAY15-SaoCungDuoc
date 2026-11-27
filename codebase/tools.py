@@ -150,3 +150,38 @@ def explain_no_route(park, request):
                 f"{clock(request['start'])}–{clock(request['end'])} khi tính {park['walk_minutes']} phút đi bộ mỗi chặng.")
     return (f"Không điểm nào đang mở xếp được trong {clock(request['start'])}–{clock(request['end'])} "
             f"khi tính {park['walk_minutes']} phút đi bộ từ cổng.")
+
+
+def _feasible(park, request, **changes):
+    return bool(enumerate_routes(park, dict(request, **changes)))
+
+
+@tool
+def suggest_fixes(park, request):
+    """suggest_fixes · đầu vào: khu chơi + yêu cầu không có lịch · đầu ra: tối đa 3 gợi ý đổi điều kiện, mỗi gợi ý
+    đã được kiểm lại bằng enumerate_routes là ra ít nhất một lịch · chỉ tính toán, không tác động ra ngoài."""
+    by_id = {a["id"]: a for a in park["activities"]}
+    tips = []
+    if len(request["required"]) > MAX_STOPS:
+        return ["Giữ tối đa %d điểm trong phải có." % MAX_STOPS]
+    for i in sorted(request["required"]):
+        rest = request["required"] - {i}
+        if _feasible(park, request, required=rest):
+            tips.append("Bỏ %s khỏi phải có." % by_id[i]["name"])
+    late = dict(request, budget=NO_LIMIT)
+    priced = enumerate_routes(park, late)
+    if priced:
+        need = min(r["total"] for r in priced)
+        tips.append("Tăng ngân sách lên ít nhất %s." % money(need))
+    longer = enumerate_routes(park, dict(request, end=24 * 60 - 1))
+    if longer:
+        need = min(minutes(r["stops"][-1]["end"]) for r in longer)
+        if need > request["end"]:
+            tips.append("Lùi giờ về đến %s hoặc muộn hơn." % clock(need))
+    for gate in range(request["start"] - 1, max(request["start"] - 180, 0) - 1, -1):
+        if _feasible(park, request, start=gate):
+            tips.append("Đến cổng lúc %s hoặc sớm hơn." % clock(gate))
+            break
+    if request["buffer"] and _feasible(park, request, buffer=0):
+        tips.append("Giảm phút đệm trước show (đang %d phút)." % request["buffer"])
+    return tips[:3]

@@ -1,0 +1,18 @@
+[browser]
+gatherUsageStats = false
+
+# Giao diện "Vịnh Mây" kiểu app đặt vé du lịch: xanh dương sáng, nút đặt màu cam, thẻ trắng.
+# Màu riêng của nhóm, không dùng logo hay bộ nhận diện của hãng nào.
+[theme]
+base = "light"
+primaryColor = "#0B84D9"
+backgroundColor = "#F3F6F9"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1C2B39"
+borderColor = "#DCE3EA"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "12px"
+buttonRadius = "10px"
+baseFontSize = 16
+font = "Be Vietnam Pro:https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif"
