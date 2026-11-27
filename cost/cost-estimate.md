@@ -9,7 +9,7 @@
 - **Persona** (`cost/personas.yaml`): 3 kiểu theo checklist C1 — lập lịch một lần (50%, 2 lượt/phiên), chỉnh trước chuyến (30%, 4 lượt), xếp lại giữa buổi (20%, 3 lượt, câu thường và khó). Mỗi người 1 phiên/tháng. Nguồn: *(tự ước tính)*, chờ khảo sát câu 9, 11 và phỏng vấn P1–P3 của Phương Nam.
 - **Số người dùng thật** 3 kịch bản (gia đình dùng trợ lý mỗi tháng ở một khu): thấp 500 · cơ sở 2.000 · cao 5.000. Nguồn: *(tự ước tính)*; chưa có số khách công khai đã kiểm cho một khu.
 - **Giá** 2 mức model, từ `further-reading/model-prices.csv` của repo đề (BTC tra https://ai.google.dev/gemini-api/docs/pricing ngày 25/11/2026): gemini-3.1-flash-lite vào $0,25 · ra $1,50 / 1M token · gemini-3.8-flash (giá từ 01/01/2027) vào $1,50 · ra $7,50 / 1M token.
-- **Tỉ lệ đạt** dùng để tính: **chờ chấm** — lượt `run-2@20261127-191131` chưa có nhãn của người chấm.
+- **Tỉ lệ đạt** dùng để tính: **chờ chấm** — lượt `run-2@20261127-202738` chưa có nhãn của người chấm.
 - Đo token trên model gemini-3.1-flash-lite, tính giá gemini-3.1-flash-lite và gemini-3.8-flash.
 
 ## 2. Kết quả mô phỏng
@@ -39,5 +39,5 @@ Chi phí / task thành công = chi phí trung bình mỗi phiên ÷ tỉ lệ đ
 
 ## 4. *(Muốn sâu hơn, không bắt buộc)*
 
-- Cần gạt lớn nhất là độ dài prompt chọn lịch: lượt 2 tăng token vào 33% so với lượt 1 vì bản tóm tắt dài hơn; khung 09:00–12:00 có 34 lịch ứng viên (khoảng 3.600 token vào mỗi lần chọn), cả ngày 09:00–17:30 có 73 lịch. Rút gọn bản tóm tắt hoặc chỉ gửi 20 lịch tốt nhất theo luật sẽ giảm mạnh.
+- Cần gạt lớn nhất là độ dài prompt chọn lịch: lượt 2 tăng token vào 39% so với lượt 1 vì bản tóm tắt dài hơn; khung 09:00–12:00 có 34 lịch ứng viên (khoảng 3.600 token vào mỗi lần chọn), cả ngày 09:00–17:30 có 73 lịch. Rút gọn bản tóm tắt hoặc chỉ gửi 20 lịch tốt nhất theo luật sẽ giảm mạnh.
 - Chi phí ngoài model: hosting Streamlit Community Cloud gói miễn phí cho demo; dùng thật cần máy chủ riêng (chưa ước tính).

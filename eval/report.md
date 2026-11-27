@@ -10,19 +10,19 @@
 
 | Lượt | Run ID | Đạt / tổng | % | thuong | kho | tu_choi | So với chuẩn "đạt" |
 |---|---|---|---|---|---|---|---|
-| 1 | `run-1@20261127-190323` | chờ chấm / 24 | | __/8 | __/13 | __/3 | chờ chấm |
-| 2 | `run-2@20261127-191131` | chờ chấm / 24 | | __/8 | __/13 | __/3 | chờ chấm |
+| 1 | `run-1@20261127-202533` | chờ chấm / 26 | | __/10 | __/13 | __/3 | chờ chấm |
+| 2 | `run-2@20261127-202738` | chờ chấm / 26 | | __/10 | __/13 | __/3 | chờ chấm |
 
-Cả hai lượt: model `gemini-3.1-flash-lite`, 24/24 câu chạy, 0 lỗi kỹ thuật. 11/24 câu gọi model; 11 câu Python báo không có lịch trước bước gọi model; 2 câu hỏi lại (C08 thiếu chiều cao, C22 thiếu người lớn).
+Cả hai lượt: model `gemini-3.1-flash-lite`, 26/26 câu chạy, 0 lỗi kỹ thuật. Lượt 1 chạy bằng code trước cải tiến (commit `ffa1586`), lượt 2 bằng code sau cải tiến, cùng bộ 26 câu. 12/26 câu gọi model; 12 câu Python báo không có lịch trước bước gọi model; 2 câu hỏi lại (C08 thiếu chiều cao, C22 thiếu người lớn).
 
 | Chỉ số (kiểm tự động, chờ người xác nhận) | Lượt 1 | Lượt 2 |
 |---|---|---|
-| Lịch xuất hợp lệ (route_validity) | 11/11 | 11/11 |
-| Giờ và tổng tiền khớp tính độc lập (factual_numbers) | 11/11 | 11/11 |
-| Câu "không có lịch" mà thật sự không có lịch | 11/11 | 11/11 |
-| Token vào / ra cả bộ | 4.202 / 86 | 5.572 / 93 |
+| Lịch xuất hợp lệ (route_validity) | 12/12 | 12/12 |
+| Giờ và tổng tiền khớp tính độc lập (factual_numbers) | 12/12 | 12/12 |
+| Câu "không có lịch" mà thật sự không có lịch | 12/12 | 12/12 |
+| Token vào / ra cả bộ | 3.674 / 108 | 5.091 / 91 |
 
-Kết quả từng câu: `eval/run-1.csv`, `eval/run-2.csv`. Trace: `traces/run-1.jsonl`, `traces/run-2.jsonl`. Hai câu đổi đầu ra giữa hai lượt: C02 (ưu tiên Nhà tranh: Vườn hoa + Nhà tranh → chỉ Nhà tranh) và C24 (đổi thứ tự điểm); cả hai vẫn hợp lệ theo kiểm tự động.
+Kết quả từng câu: `eval/run-1.csv`, `eval/run-2.csv`. Trace: `traces/run-1.jsonl`, `traces/run-2.jsonl`. Một câu đổi đầu ra giữa hai lượt: C02 (ưu tiên Nhà tranh: Vườn hoa + Nhà tranh → chỉ Nhà tranh), vẫn hợp lệ theo kiểm tự động. Hai lượt chạy trước đó trên bộ 24 câu (chưa chấm) đã được thay bằng hai lượt này sau khi gộp bộ 26 câu của Bình An; bản cũ còn trong commit `ffa1586` và `671f0f9`.
 
 ## 2. Lỗi lượt 1 — gom thành nhóm có tên
 
@@ -31,7 +31,7 @@ Kiểm tự động không thấy câu benchmark nào vi phạm giờ, tiền ha
 | Nhóm lỗi | Số câu | Câu |
 |---|---|---|
 | Sở thích về nhịp độ bị lấn bởi lịch nhiều điểm | 2/8 câu thử sở thích | "ít đi bộ, bé nhanh mệt", "chỉ muốn xem show" |
-| Lý do vô nghiệm nói sai đối tượng | 1/24 | C21 |
+| Lý do vô nghiệm nói sai đối tượng | 1/26 | C21 |
 | Benchmark không phân biệt lịch "khớp sở thích" với lịch "hợp lệ" | cả bộ | C02, C19, C20 chỉ kiểm có điểm được nhắc tên |
 
 **≥3 lỗi cụ thể:**
@@ -49,9 +49,9 @@ Nguyên nhân chung của nhóm lỗi đầu: model nhận danh sách lịch d�
 - Nhắm vào nhóm lỗi: **sở thích về nhịp độ bị lấn bởi lịch nhiều điểm** — vì sao là nhóm **đau nhất với người dùng**: người dùng là phụ huynh có trẻ nhỏ; "bé nhanh mệt" mà nhận lịch đi bộ nhiều nhất là đúng cái pain nhóm muốn giải (ghép lịch hợp với cả nhà). Lỗi C21 chỉ sai chữ, không đổi quyết định.
 - Đã sửa gì (commit `671f0f9`): `describe()` trong `codebase/agent.py` gửi mỗi lịch thành một dòng có số điểm, phút đi bộ, giờ xong, tổng tiền, số show do Python tính; prompt hệ thống nêu cách hiểu các loại sở thích chung (tên điểm, ít đi bộ, về sớm, chỉ show, không show, tiết kiệm). Không thêm câu nào của benchmark vào prompt. Python vẫn kiểm mọi lịch trước bước chọn.
 - Kết quả: nhóm lỗi đó **2/8 → 0/8** câu sai trên bộ thử sở thích ([explore-preferences.md](explore-preferences.md)) · benchmark tổng: chờ chấm lượt 1 và lượt 2.
-- Câu nào **tệ đi** sau khi sửa: theo kiểm tự động, không câu benchmark nào thành không hợp lệ. Chi phí tệ đi: token vào cả bộ tăng 33% (4.202 → 5.572) vì bản tóm tắt dài hơn ở lịch ngắn.
+- Câu nào **tệ đi** sau khi sửa: theo kiểm tự động, không câu benchmark nào thành không hợp lệ. Chi phí tệ đi: token vào cả bộ tăng 39% (3.674 → 5.091) vì bản tóm tắt dài hơn ở lịch ngắn.
 
 ## 4. Còn lại
 
-- Lỗi chưa sửa + nguy hiểm thế nào: C21 nhắc "chiều cao của bé" khi không có trẻ (gây khó hiểu, không gây sai lịch). Sở thích không có trong dữ liệu (vd "trong nhà", "chỗ mát") không kiểm được vì `park.json` không có thuộc tính này. Benchmark chưa có câu đo mức khớp sở thích, nên cải tiến lượt 2 chưa thể hiện trong điểm benchmark. Tỉ lệ câu từ data thật mới 7/24 (cần ≥8).
+- Lỗi chưa sửa + nguy hiểm thế nào: C21 nhắc "chiều cao của bé" khi không có trẻ (gây khó hiểu, không gây sai lịch). Sở thích không có trong dữ liệu (vd "trong nhà", "chỗ mát") không kiểm được vì `park.json` không có thuộc tính này. Benchmark chưa có câu đo mức khớp sở thích, nên cải tiến lượt 2 chưa thể hiện trong điểm benchmark. 
 - Nếu có thêm 1 tuần: thêm câu benchmark về sở thích nhịp độ với tiêu chí kiểm được (vd "ít đi bộ → lịch có ít điểm nhất trong các lịch hợp lệ"); rút gọn bản tóm tắt để giảm token; thêm thuộc tính trong nhà/ngoài trời vào dữ liệu sau khi hỏi phụ huynh có cần không; dùng phỏng vấn của Phương Nam để thêm câu có nguồn `nguoi_dung`.

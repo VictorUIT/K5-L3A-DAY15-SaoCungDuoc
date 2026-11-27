@@ -2,7 +2,7 @@
 
 ## Bản chạy CP3 của nhóm Sao Cũng Được
 
-[Canvas](canvas.md) · [Thiết kế và chuẩn đạt §7](spec.md) · [24 câu thử](eval/benchmark.csv) · [Metric](eval/metric_spec.yaml) · [Data card](data/DATA_CARD.md) · [Bằng chứng ban đầu](evidence/data-mining.md) · [Phiếu chấm chéo CP2](eval/README.md) · [Phiếu chấm lượt 1](eval/phieu-cham-run-1.md).
+[Canvas](canvas.md) · [Thiết kế và chuẩn đạt §7](spec.md) · [26 câu thử](eval/benchmark.csv) · [Metric](eval/metric_spec.yaml) · [Data card](data/DATA_CARD.md) · [Bằng chứng ban đầu](evidence/data-mining.md) · [Phiếu chấm chéo CP2](eval/README.md) · [Phiếu chấm lượt 1](eval/phieu-cham-run-1.md) · [lượt 2](eval/phieu-cham-run-2.md).
 
 Một phụ huynh nhập khung giờ, nhóm khách, ngân sách và hoạt động bắt buộc. Python liệt kê và kiểm mọi lịch khả thi (giờ mở, giờ show, 10 phút đi bộ mỗi chặng, chiều cao, ngân sách). Model chọn một lịch theo sở thích. Không có lịch thì hệ thống nêu ràng buộc đang chặn và gợi ý thay đổi đã kiểm là ra lịch. **Dữ liệu khu Vịnh Mây là mô phỏng**, không phải giá hay lịch thật.
 
@@ -20,7 +20,7 @@ giờ=09:00-12:00; lớn=2; trẻ=1; cao=110; đồng=500000; phải có=chim
 Bắt buộc: giờ đến–giờ kết thúc, số người lớn (≥1), số trẻ và ngân sách bằng đồng. Nếu có trẻ, nhập chiều cao thấp nhất bằng cm. Có thể nhập thêm `ưu tiên=bé thích động vật`, `phải có=chim,vuon`, `đóng=tau` hoặc `đệm=15` (phút đến trước show). Mã điểm: `vuon` Vườn hoa, `nha` Nhà tranh, `tau` Tàu lượn, `chim` Show chim, `nhac` Show nhạc. Thiếu `.env` thì chạy model giả (0 token, không dùng để báo cáo).
 
 - `python3 run.py check` kiểm bộ câu thử và metric.
-- `python3 run.py eval --wait 4` chạy cả bộ bằng model thật → `eval/run-N.csv` + `traces/run-N.jsonl`. Lượt 1: `run-1@20261127-190323`, gemini-3.1-flash-lite, 24/24 câu chạy, 0 lỗi, **đang chờ Nam và An chấm**.
+- `python3 run.py eval --wait 4` chạy cả bộ bằng model thật → `eval/run-N.csv` + `traces/run-N.jsonl`. Lượt 1 `run-1@20261127-202533` và lượt 2 `run-2@20261127-202738`: gemini-3.1-flash-lite, 26/26 câu chạy, 0 lỗi, **đang chờ Nam và An chấm** ([phiếu lượt 1](eval/phieu-cham-run-1.md) · [phiếu lượt 2](eval/phieu-cham-run-2.md)).
 - `python3 run.py simulate --wait 4` mô phỏng chi phí → `cost/simulate-N.csv`.
 
 ## Web demo (Streamlit, dạng chatbox)

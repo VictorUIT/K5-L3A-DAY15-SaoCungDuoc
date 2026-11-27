@@ -24,9 +24,9 @@
 - **[CẦN NHÓM]** video dự phòng 30 giây (Khanh).
 
 ## 5 · Đánh giá thế nào
-- Dataset: khu Vịnh Mây mô phỏng (5 điểm). Bộ câu thử 24 câu (8 thường, 13 khó, 3 từ chối), 7/24 từ data thật. 4 metric, chuẩn đạt khoá ở CP2 (`spec.md` §7).
-- Lượt 1 `run-1@20261127-190323` → lượt 2 `run-2@20261127-191131`, cùng 24 câu, cùng model, 0 lỗi kỹ thuật. Kiểm tự động: 11/11 lịch hợp lệ và khớp số ở cả hai lượt.
-- **[CẦN NHÓM]** điểm người chấm x/24 mỗi lượt và so với chuẩn 20/24 (`python3 run.py score`).
+- Dataset: khu Vịnh Mây mô phỏng (5 điểm). Bộ câu thử 26 câu (10 thường, 13 khó, 3 từ chối), 9/26 từ data thật. 4 metric, chuẩn đạt khoá ở CP2 (`spec.md` §7).
+- Lượt 1 `run-1@20261127-202533` → lượt 2 `run-2@20261127-202738`, cùng 26 câu, cùng model, 0 lỗi kỹ thuật. Kiểm tự động: 12/12 lịch hợp lệ và khớp số ở cả hai lượt.
+- **[CẦN NHÓM]** điểm người chấm x/26 mỗi lượt và so với chuẩn ≥5/6 (22/26) (`python3 run.py score`).
 - Lỗi chính và cải tiến: “ít đi bộ”, “chỉ muốn xem show” bị chọn lịch nhiều điểm (2/8 → 0/8 sau khi gửi model bản tóm tắt có phút đi bộ, giờ xong, số show). Nguồn: `eval/report.md`, `eval/explore-preferences.md`.
 
 ## 6 · Chi phí khi dùng thật
@@ -39,6 +39,6 @@
 
 ## 8 · Nếu có thêm 1 tuần
 - Thêm câu benchmark đo mức khớp sở thích nhịp độ (lỗi lượt 1 chưa có trong bộ).
-- Rút gọn bản tóm tắt gửi model để giảm token (lượt 2 tăng 33%).
-- Thêm câu có nguồn từ phỏng vấn để đạt ≥1/3 nguồn thật; hỏi phụ huynh có cần lọc trong nhà/ngoài trời không.
+- Rút gọn bản tóm tắt gửi model để giảm token (lượt 2 tăng 39%).
+- Thêm câu có nguồn từ phỏng vấn (`nguoi_dung`); hỏi phụ huynh có cần lọc trong nhà/ngoài trời không.
 - **[CẦN NHÓM]** phản hồi người dùng thử ở `validation/log.md`.
