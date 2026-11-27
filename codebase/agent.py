@@ -37,6 +37,10 @@ def read_request(text, park):
     adults, children = integer("lớn"), integer("trẻ")
     if adults + children == 0:
         raise InputError("Có bao nhiêu người trong nhóm đi chơi?")
+    if adults == 0:
+        # Quyết định nhóm 27/11: trẻ phải đi cùng ≥1 người lớn — không xếp lịch cho trẻ đi một mình.
+        raise InputError("Trợ lý chỉ xếp lịch khi có ít nhất 1 người lớn đi cùng trẻ. "
+                         "Bạn cho biết số người lớn trong nhóm (lớn=1 trở lên) nhé.")
     if children and not integer("cao"):
         raise InputError("Bé thấp nhất cao bao nhiêu cm?")
     names = {a["id"] for a in park["activities"]}

@@ -57,6 +57,7 @@ G10 hỏi chiều cao hoặc khung giờ khi thiếu; G9 khách đổi khung gi�
 | Dữ liệu | C05, C12 | Trò đóng kể cả khi khách dụ bỏ qua |
 | Thiếu thông tin | C08 | Hỏi chiều cao bé thấp nhất |
 | Thẩm quyền | C11 | Từ chối bỏ tiêu chuẩn vào trò |
+| Đặc thù lĩnh vực (an toàn trẻ) | C22 | Không xếp lịch cho trẻ đi không có người lớn, hỏi lại số người lớn |
 | Ràng buộc thực tế | C06, C07, C09, C10 | Giờ đóng, đi bộ trễ show, thiếu tiền cổng, đệm trước show |
 
 ## §6. Trải nghiệm
@@ -75,10 +76,11 @@ Sẽ đo ở CP3–CP4 khi chạy model thật. Ở CP2 mô hình giả trả 0 
 
 ## §9. Rủi ro
 
-Danh mục công viên là mô phỏng; trả thời gian và giá do công cụ tính. Chỉ nhận thông tin nhóm cần thiết cho việc xếp lịch. Không yêu cầu mã đặt chỗ, tên trẻ hay dữ liệu thanh toán.
+Danh mục công viên là mô phỏng; trả thời gian và giá do công cụ tính. Chỉ nhận thông tin nhóm cần thiết cho việc xếp lịch. Không yêu cầu mã đặt chỗ, tên trẻ hay dữ liệu thanh toán. Trẻ đi không có người lớn: sai thì trẻ là người chịu, nên `read_request` chặn bằng code khi lớn = 0, trước mọi bước xếp lịch hay gọi model (C22).
 
 ## §10. Phân công và changelog
 
 [Thành viên và phân công](TEAMS.md). Nguyễn Văn Ngọc Sơn phụ trách luồng AI từ nhận yêu cầu, lọc lịch, gọi model chọn phương án, kiểm đầu ra đến đo chi phí. Trần Quốc Tuấn Khanh là đội trưởng, phụ trách canvas/spec, slide và nộp. Đỗ Phương Nam phụ trách bằng chứng. Nguyễn Bình An phụ trách dữ liệu, benchmark và đánh giá. CP2: thu hẹp từ kịch bản du lịch nhiều dịch vụ về một quyết định chọn lịch. Các thay đổi sau mốc sẽ ghi giờ, nội dung và lý do tại đây.
 
 - 27/11, sau CP2 (a90a3c0), Sơn: (1) Ca không có lịch giờ nêu ràng buộc cụ thể kèm số (`explain_no_route`). Lý do: trước đây C06, C07, C10, các ca thiếu tiền phụ phí và các ca đóng hết điểm đều chỉ nhận câu "Hãy kiểm tra lại khung giờ…", nên không phân biệt được hệ thống chặn đúng hay sai lý do. (2) Show được nhận diện từ dữ liệu (khung mở–đóng bằng thời lượng), không viết cứng mã `chim`, `nhac`. (3) Model trả `{"index": n}`; JSON hỏng hoặc chỉ số ngoài danh sách thì báo chưa chọn được. (4) Viết nhánh gọi model thật theo docs/connect-model.md, giữ `@model_call` và chế độ fake; nhóm dùng Gemini `gemini-3.1-flash-lite` qua Interactions API, đã gọi thật ngày 27/11 (`eval --try 3` có token). (5) Thêm C13–C21 (cặp sát biên). Không đổi §7, metric_spec.yaml hay 12 câu CP2. Sơ đồ §4 vẽ lại theo code.
+- 27/11, Khanh quyết, áp dụng trong code: bắt buộc ≥1 người lớn. Lý do: trước đây `lớn=0; trẻ=1` vẫn ra lịch cho trẻ đi một mình. `read_request` giờ hỏi lại số người lớn khi lớn = 0; thêm C22 (`tu_choi`); cập nhật §5, §9 và DATA_CARD. Không đổi §7, metric_spec.yaml hay C01–C21.

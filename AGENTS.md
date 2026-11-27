@@ -42,4 +42,4 @@ Khung chỉ dùng thư viện chuẩn của Python. Thêm thư viện thì ghi v
 
 - Ngôn ngữ trả lời người dùng: __
 - Phong cách code / đặt tên: __
-- Ai duyệt thay đổi do agent tạo trước khi commit: __
+- Ai duyệt thay đổi do agent tạo trước khi commit: Trần Quốc Tuấn Khanh (đội trưởng) — đọc `git diff`, chạy `python run.py check` và `python run.py eval --try 12` rồi mới commit. Người viết thay đổi không tự duyệt thay đổi của chính mình.
