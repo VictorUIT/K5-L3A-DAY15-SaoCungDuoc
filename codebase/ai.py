@@ -126,14 +126,14 @@ def fake_choice(user):
     payload = json.loads(user)
     preference = payload["preference"].casefold()
 
-    def hit(stop):
-        return stop["name"].casefold() in preference or re.search(r"\b%s\b" % re.escape(stop["id"]), preference)
-
-    def rank(route):
-        return sum(bool(hit(s)) for s in route["stops"]), len(route["stops"]), -route["total"]
+    def hits(option):
+        names = [part.rsplit(" ", 1)[0].casefold() for part in option["plan"].split(" → ")]
+        return sum(name in preference or bool(re.search(r"\b%s\b" % re.escape(i), preference))
+                   for name, i in zip(names, option["ids"]))
 
     options = payload["options"]
-    return json.dumps({"index": max(range(len(options)), key=lambda i: rank(options[i]))})
+    best = max(options, key=lambda o: (hits(o), o["so_diem"], -o["tong_tien"]))
+    return json.dumps({"index": best["i"]})
 
 
 @model_call
