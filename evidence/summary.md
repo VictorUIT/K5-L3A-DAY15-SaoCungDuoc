@@ -50,7 +50,8 @@ Review (nguồn kiểm lại, chưa đạt ngưỡng): 2/15 review (13,3% của 
 
 - 3 người đều là người quen của nhóm, hỏi trong cùng một ngày; không đại diện cho mọi phụ huynh.
 - Dựa trên trí nhớ về lần đi 2–4 tuần trước; số phút là ước lượng của người kể.
-- P2 và P3 chưa ghi câu trả lời cho câu hỏi đào sâu; P2 có chỗ lệch giờ trễ (15 hay 30 phút) cần hỏi lại.
+- P2: show 1h30–1h45, đến 2h — "trễ 15 phút" ở câu 5 tính từ lúc show kết thúc (trễ 30 phút so với giờ bắt đầu).
+- Câu hỏi đào sâu (P1–P3, cập nhật 28/11): P1 không nắm mốc chiều cao từ trước; P2 không tra web/app vì đang bế con, sóng yếu, tin nhân viên; P3 thấy thời gian chờ trên app đúng khoảng 80–90% (cảm nhận của người được hỏi).
 
 ## Việc tiếp
 
