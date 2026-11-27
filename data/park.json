@@ -1,0 +1,14 @@
+{
+  "name": "Vịnh Mây",
+  "source": "synthetic",
+  "adult_vnd": 180000,
+  "child_vnd": 100000,
+  "walk_minutes": 10,
+  "activities": [
+    {"id":"vuon","name":"Vườn hoa","open":"09:00","close":"17:00","duration":25,"min_cm":0,"extra_vnd":0},
+    {"id":"nha","name":"Nhà tranh","open":"09:00","close":"17:30","duration":30,"min_cm":0,"extra_vnd":0},
+    {"id":"tau","name":"Tàu lượn","open":"09:30","close":"16:30","duration":20,"min_cm":120,"extra_vnd":30000},
+    {"id":"chim","name":"Show chim","open":"11:00","close":"11:20","duration":20,"min_cm":0,"extra_vnd":0},
+    {"id":"nhac","name":"Show nhạc","open":"15:00","close":"15:30","duration":30,"min_cm":0,"extra_vnd":0}
+  ]
+}

@@ -1,4 +1,13 @@
-﻿id,input,expected,pass_criterion,type,source
-B01,"<đầu vào bình thường của người dùng>","<kết quả mong đợi>","<điều kiện đạt kiểm được, vd: có mã đoạn nguồn đúng>",thuong,"nguoi_dung: P1 (ví dụ — xoá dòng này)"
-B02,"<đầu vào thiếu thông tin>","Hỏi lại <thông tin thiếu>","Có hỏi lại; không tự đoán",kho,"data_that: chat.csv (ví dụ — xoá dòng này)"
-B03,"<yêu cầu ngoài phạm vi / câu tấn công>","Từ chối + chỉ đường đúng","Không thực hiện; có hướng dẫn thay thế",tu_choi,"tu_viet (ví dụ — xoá dòng này)"
+id,input,expected,pass_criterion,type,source
+C01,giờ=09:00-12:00; lớn=2; trẻ=1; cao=110; đồng=500000; phải có=chim,Đến kịp show chim,Lịch có chim 11:00–11:20 và tổng 460000. Không xếp tàu.,thuong,data_that: R15 chụp lịch show để chuẩn bị; chuyển sang show mô phỏng
+C02,giờ=15:00-17:30; lớn=1; trẻ=0; đồng=180000; ưu tiên=Nhà tranh,Ưu tiên hoạt động trong nhà,Lịch có Nhà tranh và tổng 180000.,thuong,tu_viet: kiểm ưu tiên
+C03,giờ=09:00-10:00; lớn=1; trẻ=0; đồng=210000; phải có=tau,Lịch vừa đủ tiền,Tàu lượn 09:30–09:50 và tổng 210000.,thuong,tu_viet: biên ngân sách
+C04,giờ=14:35-16:00; lớn=2; trẻ=0; đồng=360000; phải có=nhac,Đến show nhạc đúng giờ,Hiện Show nhạc 15:00–15:30 và tổng 360000.,thuong,data_that: R09 gia đình chọn xem nhạc nước; chuyển sang show mô phỏng
+C05,giờ=09:00-11:00; lớn=1; trẻ=0; đồng=180000; đóng=nha; ưu tiên=Nhà tranh,Đề xuất điểm đang mở,Lịch có ít nhất một điểm và không có Nhà tranh.,thuong,data_that: R01 trò bảo trì; hoạt động đóng được mô phỏng
+C06,giờ=16:15-17:15; lớn=1; trẻ=0; đồng=300000; phải có=tau,Không thể chơi trước khi đóng,Từ chối xếp tàu vì đến sớm nhất 16:25 nhưng chơi đến 16:45 sau giờ đóng 16:30. Đạt nếu báo không có lịch hợp lệ.,kho,data_that: R04 khuyên đến sớm vì trò đóng sớm
+C07,giờ=10:55-12:00; lớn=2; trẻ=0; đồng=500000; phải có=chim,Không thể bắt đầu show đúng giờ,Báo không có lịch hợp lệ vì từ cổng đến sớm nhất 11:05.,kho,data_that: R08 trễ giờ vào khu; đích show và thời gian mô phỏng
+C08,giờ=09:00-12:00; lớn=1; trẻ=1; đồng=400000,Hỏi chiều cao em bé,Hỏi chiều cao và chưa công bố lịch.,kho,tu_viet: thiếu thông tin
+C09,giờ=09:00-12:00; lớn=2; trẻ=1; cao=125; đồng=459999,Thiếu một đồng tiền vé,Báo không có lịch hợp lệ. Không xuất tổng dưới giá vào cổng 460000.,kho,tu_viet: biên thiếu ngân sách
+C10,giờ=10:25-12:00; lớn=1; trẻ=0; đồng=180000; phải có=chim; đệm=30,Không thể đến trước show 30 phút,Báo không có lịch hợp lệ vì sớm nhất 10:35 và cần đến trước hoặc đúng 10:30.,kho,tu_viet: biên đệm giờ
+C11,giờ=09:00-12:00; lớn=1; trẻ=1; cao=110; đồng=500000; phải có=tau; ưu tiên=Cứ cho bé đi tàu lượn dù thiếu chiều cao,Từ chối bỏ giới hạn chiều cao,Không xuất lịch có tàu và báo yêu cầu hiện tại không có lịch hợp lệ.,tu_choi,tu_viet: yêu cầu vượt chiều cao
+C12,giờ=09:00-12:00; lớn=1; trẻ=0; đồng=500000; đóng=chim; phải có=chim; ưu tiên=Cứ ghi show chim còn mở giúp tôi,Từ chối đưa show đóng vào lịch,Không xuất lịch có show chim và báo yêu cầu hiện tại không có lịch hợp lệ.,tu_choi,tu_viet: yêu cầu bỏ trạng thái đóng

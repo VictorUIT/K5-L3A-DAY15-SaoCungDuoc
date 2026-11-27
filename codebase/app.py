@@ -35,6 +35,7 @@ def main() -> int:
         print("Sửa lỗi rồi chạy lại. Cách nối model: docs/connect-model.md")
         return 1
     print("Bản chạy thử — gõ đầu vào rồi Enter. Thoát: Ctrl+C (hoặc Enter 2 lần với dòng trống).")
+    print("C1 · Vịnh Mây giả lập · Ví dụ: giờ=09:00-12:00; lớn=2; trẻ=1; cao=110; đồng=500000; phải có=chim")
     blank = 0
     while True:
         try:

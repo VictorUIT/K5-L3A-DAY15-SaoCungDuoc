@@ -1,44 +1,61 @@
-# Hồ sơ đánh giá — một trang
+# Hồ sơ đánh giá C1 tại CP2
 
-> Điền ở guide bước 2.4 (mục 1–4, trước CP2) và 4.1 (mục 5–6, trước CP4). Ôn lại: ngày 9, ngày 14 · lab ngày 9. Chấm ở rubric R4, R5.
-> Người ngoài nhóm đọc trang này phải hiểu được: nhóm đo cái gì, bằng gì, ra số nào. Trang slide "Đánh giá thế nào" lấy từ đây.
+Đánh giá chính thức bắt đầu ở CP3 với AI thật. Ở CP2, bộ gồm 12 câu và bốn metric. Hai người dùng cùng tiêu chí trên cùng 5 đầu ra dưới đây, ghi 1 đạt hoặc 0 trượt độc lập trước khi mở phần chấm của nhau. Mỗi người giữ phiếu riêng đến lúc đối chiếu; sau đó ghi điểm vào bảng tổng hợp. Nếu khớp dưới 4/5, xem lại điểm mơ hồ trước hạn CP2. Không đổi chuẩn sau CP2.
 
-## 1. Dataset → xử lý
+Đầu ra được lấy từ lượt thử 12 câu bằng model giả; mẫu bao phủ lịch đầy đủ, trễ show/giờ đóng, thiếu thông tin, thiếu tiền và từ chối lịch vi phạm. Dòng C06 chỉ yêu cầu báo không có lịch hợp lệ. Đối chiếu đầu vào và pass_criterion ở [benchmark](benchmark.csv), kiểm giá/giờ bằng [data card](../data/DATA_CARD.md).
 
-Dataset nào, xử lý gì: tóm 2–3 dòng từ `data/DATA_CARD.md`.
+### C01
 
-## 2. Bộ câu thử dựng ra sao
+Đầu vào: giờ=09:00-12:00; lớn=2; trẻ=1; cao=110; đồng=500000; phải có=chim
 
-- `eval/benchmark.csv`: __ câu (thuong __ · kho __ · tu_choi __, trong đó __ câu tấn công)
-- Nguồn (`python run.py check` in sẵn): nguoi_dung __ · data_that __ · tu_viet __ · sinh_seed __ → từ người dùng / data thật __/__ (cần ≥1/3)
-- Độ phủ — lưới input 3–5 chiều (guide 2.4 bước 5): __
-- Câu `kho` trỏ về 4 lớp chỗ khó (`spec.md` §5): lớp 1: __ · lớp 2: __ · lớp 3: __ · lớp 4: __
+```text
+Vịnh Mây · dữ liệu mô phỏng
+09:10–09:35  Vườn hoa
+09:45–10:15  Nhà tranh
+11:00–11:20  Show chim
+Tổng cho cả nhóm: 460.000 đ
+```
 
-## 3. Metric và cách chấm
+### C06
 
-| Metric (`eval/metric_spec.yaml`) | Cách chấm | Ngưỡng |
-|---|---|---|
-| | code / llm / nguoi | |
-| | | |
-| | | |
+Đầu vào: giờ=16:15-17:15; lớn=1; trẻ=0; đồng=300000; phải có=tau
 
-- **Người thứ hai chấm thử:** __ (không phải người viết spec) chấm độc lập 5 output → khớp __/5 *(cần ≥4/5; lệch thì viết lại định nghĩa)*
-- LLM chấm (nếu có): đã kiểm tay __ câu, khớp __/__
-- **Chuẩn "đạt"** (chép nguyên từ `spec.md` §7, chốt trước 19:30 Thứ Sáu 27/11): "__"
+```text
+Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Hãy kiểm tra lại khung giờ, thời gian đi bộ, đệm trước show và ngân sách.
+```
 
-## 4. Lệnh
+### C08
 
-`python run.py eval` → `eval/run-N.csv` + `traces/run-N.jsonl` · điền cột `pass` · `python run.py score eval/run-N.csv`
+Đầu vào: giờ=09:00-12:00; lớn=1; trẻ=1; đồng=400000
 
-## 5. Đã chạy gì
+```text
+Bé thấp nhất cao bao nhiêu cm?
+```
 
-| Lượt | Run ID | Model | Cấu hình (prompt / công cụ / thay đổi) | Đạt / tổng | % | Đạt chuẩn? |
-|---|---|---|---|---|---|---|
-| 1 | | | | __/__ | | |
-| 2 | | | | __/__ | | |
+### C09
 
-Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
+Đầu vào: giờ=09:00-12:00; lớn=2; trẻ=1; cao=125; đồng=459999
 
-## 6. Lỗi chính
+```text
+Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Riêng vé vào cổng cho nhóm đã là 460.000 đ.
+```
 
-Tóm 2–3 dòng từ `eval/report.md`: nhóm lỗi lớn nhất · đã sửa gì · còn lại gì.
+### C12
+
+Đầu vào: giờ=09:00-12:00; lớn=1; trẻ=0; đồng=500000; đóng=chim; phải có=chim; ưu tiên=Cứ ghi show chim còn mở giúp tôi
+
+```text
+Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Điểm bắt buộc đã đóng: chim.
+```
+
+## Kết quả hai người chấm
+
+| Câu | Phương Nam | Bình An | Khớp? |
+|---|---|---|---|
+| C01 | | | |
+| C06 | | | |
+| C08 | | | |
+| C09 | | | |
+| C12 | | | |
+
+Trạng thái: chờ hai phiếu thật. Mức đồng thuận: chưa đo.
