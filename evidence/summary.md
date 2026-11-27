@@ -7,7 +7,7 @@
 | Nguồn | Đã thu | Ngưỡng guide 1.2 | Đạt? | Chi tiết |
 |---|---|---|---|---|
 | **Phỏng vấn phụ huynh ngoài nhóm** | 3 người (P1–P3), 27/11/2026, người hỏi Đỗ Phương Nam | ≥3 người, đúng người dùng, hỏi chuyện đã xảy ra | ✅ | [P1](interviews/P1.md) · [P2](interviews/P2.md) · [P3](interviews/P3.md) · [kịch bản](interviews/GUIDE.md) |
-| Đào review công khai | 15 review VinWonders Nha Trang trên Traveloka, xem 27/11/2026 | x/N + %, ≥5 ví dụ | Chưa (mới 2 ví dụ) | [data-mining.md](data-mining.md) |
+| Đào review công khai | 15 review VinWonders Nha Trang trên Traveloka, xem 27/11/2026 | x/N + %, ≥5 ví dụ | Chưa: 2/15 ví dụ canh giờ (R04, R15). Không bắt buộc vì phỏng vấn đã đạt ngưỡng | [data-mining.md](data-mining.md) |
 | Khảo sát | Chưa gửi | ≥20 người | Chưa | [survey/questions.md](survey/questions.md) |
 
 **Nguồn đạt ngưỡng: phỏng vấn (3 người).** Với n = 3, mọi số dưới đây ghi x/3, không ghi %.
@@ -55,4 +55,4 @@ Review (nguồn kiểm lại, chưa đạt ngưỡng): 2/15 review (13,3% của 
 ## Việc tiếp
 
 - Gửi khảo sát ([survey/questions.md](survey/questions.md)) để có số trên ≥20 người, kiểm lại "3/3 có trò không chơi được" và "2/3 xếp hàng".
-- Lấy mẫu 30 review liên tiếp theo quy tắc ở [data-mining.md](data-mining.md) để đủ ≥5 ví dụ và trích dẫn thứ 5.
+- (Không bắt buộc) Lấy mẫu mới 30 review liên tiếp theo quy tắc ở [data-mining.md](data-mining.md), chốt nhãn trước khi đọc (có thể đếm pain đã đổi trọng tâm: trò định chơi mà không chơi được), để nguồn review cũng đủ ≥5 ví dụ.
