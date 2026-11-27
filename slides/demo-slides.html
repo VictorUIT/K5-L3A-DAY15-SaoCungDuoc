@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vivu · Sao Cũng Được · Track C1 · demo-slides</title>
+<!-- Nguồn của demo-slides.pdf. Sửa số ở đây rồi xuất lại PDF (Chrome: In → Lưu dưới dạng PDF, khổ giấy theo trang, lề Không).
+     Ô màu vàng [CẦN NHÓM] = số hoặc lời người dùng chưa có, nhóm điền bằng kết quả thật. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+<style>
+  @page { size: 1600px 900px; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Be Vietnam Pro", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #1C2B39; background: #d9e1ea; }
+  .slide { width: 1600px; height: 900px; position: relative; overflow: hidden; background: #F3F6F9;
+    padding: 56px 72px 70px; display: flex; flex-direction: column; page-break-after: always; break-after: page; margin: 0 auto 24px; }
+  @media print { body { background: none; } .slide { margin: 0; } }
+  .kicker { display: inline-block; align-self: flex-start; background: #0B84D9; color: #fff; font-weight: 700; font-size: 17px;
+    letter-spacing: .06em; text-transform: uppercase; padding: 6px 16px; border-radius: 999px; margin-bottom: 18px; }
+  .kicker.orange { background: #F96D00; }
+  h1 { font-size: 46px; line-height: 1.15; font-weight: 800; color: #0F3550; margin-bottom: 14px; }
+  .lead { font-size: 23px; color: #3D5568; line-height: 1.5; max-width: 1300px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 22px; flex: 1; min-height: 0; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 22px; }
+  .card { background: #fff; border: 1px solid #E3E9EF; border-radius: 18px; padding: 24px 28px; box-shadow: 0 4px 14px rgba(28,43,57,.07); }
+  .card h3 { font-size: 24px; font-weight: 800; color: #0B5E96; margin-bottom: 12px; }
+  .card.orange { background: linear-gradient(135deg, #FF7A1A, #E85D00); color: #fff; border: none; }
+  .card.orange h3 { color: #fff; }
+  ul.l { list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 21px; line-height: 1.45; }
+  ul.l li { padding-left: 26px; position: relative; }
+  ul.l li::before { content: ""; position: absolute; left: 4px; top: 12px; width: 10px; height: 10px; border-radius: 50%; background: #0B84D9; }
+  .card.orange ul.l li::before { background: #fff; }
+  .big { font-size: 64px; font-weight: 800; color: #F96D00; line-height: 1; font-variant-numeric: tabular-nums; }
+  .big small { display: block; font-size: 23px; color: #5B6B7A; font-weight: 600; line-height: 1.35; margin-top: 10px; }
+  .quote { font-size: 26px; font-style: italic; color: #0F3550; border-left: 5px solid #F96D00; padding: 6px 0 6px 20px; line-height: 1.45; }
+  .todo { background: #FFF4C2; border: 2px dashed #D9A400; color: #6B4E00; border-radius: 12px; padding: 12px 16px; font-size: 19px; font-weight: 600; line-height: 1.45; }
+  .todo b { color: #8A5A00; }
+  .src { position: absolute; left: 72px; right: 72px; bottom: 22px; display: flex; justify-content: space-between; font-size: 14.5px; color: #6B7C8C; }
+  .src span:first-child { max-width: 1250px; }
+  code { font-family: Menlo, Consolas, monospace; font-size: .86em; background: #E7F3FD; color: #0B5E96; padding: 1px 6px; border-radius: 5px; }
+  table { border-collapse: collapse; width: 100%; font-size: 19.5px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #E3E9EF; font-variant-numeric: tabular-nums; }
+  th { color: #5B6B7A; font-weight: 600; font-size: 16.5px; text-transform: uppercase; letter-spacing: .03em; }
+  .flow { display: flex; align-items: stretch; gap: 14px; margin-top: 24px; }
+  .step { flex: 1; background: #fff; border: 2px solid #CFE7F5; border-radius: 16px; padding: 18px 18px; font-size: 19px; line-height: 1.4; }
+  .step b { display: block; font-size: 15px; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 6px; }
+  .step.ai { border-color: #F96D00; background: #FFF6EE; } .step.ai b { color: #D35A00; }
+  .step.py { border-color: #0B84D9; background: #EEF7FE; } .step.py b { color: #0B5E96; }
+  .arrow { align-self: center; font-size: 30px; color: #0B84D9; font-weight: 800; }
+  .shot { width: 100%; border-radius: 14px; border: 1px solid #DCE3EA; box-shadow: 0 6px 18px rgba(28,43,57,.12); display: block; }
+</style>
+</head>
+<body>
+
+<!-- 1 · NGƯỜI DÙNG & PAIN -->
+<section class="slide">
+  <span class="kicker">Sao Cũng Được · Track C · C1 · Vivu</span>
+  <h1>Phụ huynh tự ghép giờ show, giờ đóng trò, đường đi và chiều cao của bé</h1>
+  <p class="lead">Người dùng: phụ huynh tự lên kế hoạch đưa trẻ dưới 12 tuổi đi một khu vui chơi trong một buổi, có giờ vào và giờ phải về.</p>
+  <div class="grid2">
+    <div class="card">
+      <h3>Tín hiệu từ review công khai</h3>
+      <div class="big">2/15 <small>review (13%) chủ động kể hoặc khuyên canh giờ show, giờ trò</small></div>
+      <p style="font-size:18px;color:#5B6B7A;margin:12px 0 18px">Lượt đọc thăm dò, 15 review đọc được, sắp theo mới nhất · tiêu chí đếm ghi trước khi đếm</p>
+      <p class="quote">“Making sure you take photos of the show timetables”</p>
+      <p style="font-size:17px;color:#5B6B7A;margin-top:8px">— R15, một gia đình đi VinWonders Nha Trang (đã bỏ tên)</p>
+    </div>
+    <div class="card">
+      <h3>Nguồn đạt ngưỡng (CP3)</h3>
+      <div class="todo"><b>[CẦN NHÓM]</b> Kết quả khảo sát phụ huynh (≥20 người ngoài nhóm): x/N người gặp lỡ show, trò đóng hoặc bé thiếu chiều cao (câu 7), hoặc ≥3 phỏng vấn ghi x/n người.</div>
+      <div class="todo" style="margin-top:14px"><b>[CẦN NHÓM]</b> ≥1 trích dẫn nguyên văn từ phỏng vấn hoặc khảo sát (đã bỏ tên).</div>
+    </div>
+  </div>
+  <div class="src"><span>Nguồn: evidence/data-mining.md · Traveloka, đánh giá VinWonders Nha Trang, xem 27/11/2026 · evidence/hypothesis.md</span><span>1 / 8</span></div>
+</section>
+
+<!-- 2 · VÌ SAO CHỌN BÀI NÀY -->
+<section class="slide">
+  <span class="kicker">Vì sao chọn bài này</span>
+  <h1>Ghép show với đường đi: chỗ gia đình phải tự tính nhiều nhất</h1>
+  <div class="grid2">
+    <div class="card">
+      <h3>Ba hướng đã cân nhắc</h3>
+      <table>
+        <tr><th>Hướng</th><th>Tín hiệu</th><th>Quyết định</th></tr>
+        <tr><td><b>Ghép show với đường đi, giờ đóng, chiều cao</b></td><td>R04, R15</td><td><b style="color:#0B5E96">Chọn</b></td></tr>
+        <tr><td>Chọn hoạt động thay khi trò đóng</td><td>R01, R07</td><td>Gộp vào: nhập điểm đóng</td></tr>
+        <tr><td>Xử lý khi vào khu muộn</td><td>R08</td><td>Gộp vào: đổi giờ đến, giờ về</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Impact tháng</h3>
+      <p style="font-size:22px;line-height:1.5;margin-bottom:16px"><b>số gia đình</b> × <b>số lần phải xếp lịch / tháng</b> × <b>phút mất / lần</b></p>
+      <div class="todo"><b>[CẦN NHÓM]</b> Điền 3 thừa số từ khảo sát (câu 6 phút chuẩn bị, câu 9 số lần đổi kế hoạch, câu 11 số lần đi / năm) và phỏng vấn. Chưa có số đo thì ghi “chưa đo”.</div>
+    </div>
+  </div>
+  <div class="src"><span>Nguồn: spec.md §2 · evidence/data-mining.md (R01, R04, R07, R08, R15)</span><span>2 / 8</span></div>
+</section>
+
+<!-- 3 · GIẢI PHÁP -->
+<section class="slide">
+  <span class="kicker">Giải pháp · Vivu</span>
+  <h1>Một câu kế hoạch → một lịch kịp giờ, kèm tổng tiền cả nhà</h1>
+  <p class="lead">Lát cắt: <b>một phụ huynh</b> · nhập giờ, nhóm khách, ngân sách, điểm muốn đi · <b>AI chọn một lịch khả thi theo sở thích</b> · nhận giờ từng điểm và tổng tiền.</p>
+  <div class="flow">
+    <div class="step ai"><b>Gemini</b>Đọc câu chat, rút giờ, số người, chiều cao bé, ngân sách, điểm muốn đi</div>
+    <div class="arrow">→</div>
+    <div class="step py"><b>Python kiểm</b>Liệt kê mọi lịch 1–3 điểm: giờ mở, giờ diễn, 10 phút đi bộ mỗi chặng, chiều cao, ngân sách</div>
+    <div class="arrow">→</div>
+    <div class="step ai"><b>Gemini chọn</b>Một lịch trong danh sách đã kiểm, theo sở thích (ít đi bộ, cảm giác mạnh…)</div>
+    <div class="arrow">→</div>
+    <div class="step py"><b>Hiển thị</b>Giờ và tiền lấy từ lịch Python đã kiểm; bỏ mọi chữ model tự viết thêm</div>
+  </div>
+  <div class="grid3" style="margin-top:22px">
+    <div class="card"><h3>Không có lịch</h3><p style="font-size:19px;line-height:1.45">Nêu đúng ràng buộc đang chặn kèm số và tối đa 3 gợi ý đã chạy lại bộ kiểm là ra lịch.</p></div>
+    <div class="card"><h3>Thiếu thông tin</h3><p style="font-size:19px;line-height:1.45">Hỏi lại đúng trường còn thiếu (giờ, số trẻ, chiều cao, ngân sách). Trẻ đi không có người lớn: chặn bằng code.</p></div>
+    <div class="card"><h3>AI tự làm đến đâu</h3><p style="font-size:19px;line-height:1.45">Chỉ đề xuất. Không bán vé, không thanh toán. Khách tự quyết dùng lịch hay đổi điều kiện.</p></div>
+  </div>
+  <div class="src"><span>Nguồn: spec.md §4 (sơ đồ theo code) · codebase/agent.py, tools.py · Vịnh Mây là khu vui chơi mô phỏng</span><span>3 / 8</span></div>
+</section>
+
+<!-- 4 · DEMO -->
+<section class="slide">
+  <span class="kicker orange">Demo live · gọi Gemini thật</span>
+  <h1>Thử ngay trên web Vivu</h1>
+  <div class="grid2" style="grid-template-columns: 1.05fr .95fr">
+    <div>
+      <img class="shot" src="img/demo-lich.png" alt="Vivu trả lịch Vườn hoa, Tàu lượn, Show chim, tổng 550.000 đồng">
+      <p style="font-size:17px;color:#5B6B7A;margin-top:8px"><b>Ca thường:</b> “2 vợ chồng với bé cao 1m25, 9 giờ tới, 12 giờ về, 600 nghìn, nhất định xem Show chim, bé thích cảm giác mạnh” → Vườn hoa, Tàu lượn, Show chim 11:00–11:20 · <b>550.000 đ</b></p>
+    </div>
+    <div>
+      <img class="shot" src="img/demo-xung-dot.png" alt="Vivu báo không xếp được và gợi ý lùi giờ về">
+      <p style="font-size:17px;color:#5B6B7A;margin-top:8px"><b>Ca khó:</b> “đổi giờ về 10h30” → không có lịch vì Show chim diễn 11:00–11:20; gợi ý “lùi giờ về đến 11:20” hoặc bỏ Show chim.</p>
+      <div class="todo" style="margin-top:14px;font-size:17px"><b>[CẦN NHÓM]</b> Link video 30 giây (YouTube không công khai / Drive) và URL web đã deploy.</div>
+    </div>
+  </div>
+  <div class="src"><span>Nguồn: web streamlit_app.py · ảnh chụp web Vivu 27/11/2026, gọi gemini-3.1-flash-lite thật · dữ liệu mô phỏng</span><span>4 / 8</span></div>
+</section>
+
+<!-- 5 · ĐÁNH GIÁ -->
+<section class="slide">
+  <span class="kicker">Đánh giá thế nào</span>
+  <h1>26 câu thử, 4 metric, chuẩn đạt khoá từ CP2</h1>
+  <div class="grid2">
+    <div class="card">
+      <h3>Bộ đo</h3>
+      <ul class="l" style="font-size:19.5px">
+        <li>Dữ liệu: khu Vịnh Mây mô phỏng, 5 điểm (3 trò, 2 show)</li>
+        <li>26 câu: 10 thường · 13 khó · 3 từ chối · <b>9/26 từ review thật</b></li>
+        <li>Cặp sát biên: đến cổng 10:50 / 10:51 · bé 119 / 120 cm · thiếu 1 đồng · show mở / đóng</li>
+        <li>Chuẩn đạt (§7): ≥5/6 câu đạt (<b>22/26</b>) · 100% lịch hợp lệ · 100% giờ và tiền khớp · 100% câu từ chối đạt</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Lượt 1 → lượt 2 · gemini-3.1-flash-lite</h3>
+      <table>
+        <tr><th></th><th>Lượt 1</th><th>Lượt 2</th></tr>
+        <tr><td>Run ID</td><td style="font-size:15.5px"><code>run-1@20261127-202533</code></td><td style="font-size:15.5px"><code>run-2@20261127-202738</code></td></tr>
+        <tr><td>Người chấm (x/26)</td><td><span class="todo" style="padding:2px 8px;font-size:16px">[CẦN NHÓM]</span></td><td><span class="todo" style="padding:2px 8px;font-size:16px">[CẦN NHÓM]</span></td></tr>
+        <tr><td>Kiểm tự động: lịch hợp lệ, khớp số</td><td>12/12</td><td>12/12</td></tr>
+        <tr><td>Token vào cả bộ</td><td>3.674</td><td>5.091</td></tr>
+      </table>
+      <p style="font-size:18px;line-height:1.45;margin-top:14px"><b>Lỗi chính:</b> “ít đi bộ”, “chỉ muốn xem show” bị chọn lịch nhiều điểm. <b>Cải tiến:</b> gửi model bản tóm tắt có phút đi bộ, giờ xong, số show → <b>2/8 → 0/8</b> câu sai khi thử ngoài bộ.</p>
+    </div>
+  </div>
+  <div class="src"><span>Nguồn: eval/benchmark.csv · eval/metric_spec.yaml · spec.md §7 · eval/report.md · eval/explore-preferences.md · eval/run-1.csv, run-2.csv</span><span>5 / 8</span></div>
+</section>
+
+<!-- 6 · CHI PHÍ -->
+<section class="slide">
+  <span class="kicker">Chi phí khi dùng thật</span>
+  <h1>Chi phí model không phải điểm nghẽn</h1>
+  <div class="grid2">
+    <div class="card">
+      <h3>Mô phỏng 50 phiên · seed 42 · token đo thật</h3>
+      <div class="big">$0,00021 <small>/ phiên · gemini-3.1-flash-lite</small></div>
+      <table style="margin-top:18px">
+        <tr><th>Model</th><th>/ tháng thấp</th><th>cơ sở</th><th>cao</th></tr>
+        <tr><td>gemini-3.1-flash-lite</td><td>$0,10</td><td>$0,41</td><td>$1,02</td></tr>
+        <tr><td>gemini-3.8-flash (giá 2027)</td><td>$0,60</td><td>$2,41</td><td>$6,03</td></tr>
+      </table>
+      <p style="font-size:16.5px;color:#5B6B7A;margin-top:10px">500 / 2.000 / 5.000 gia đình mỗi tháng <i>(tự ước tính)</i> · giá từ bảng giá BTC xem 25/11/2026</p>
+    </div>
+    <div class="card">
+      <h3>Còn phải chốt</h3>
+      <div class="todo"><b>[CẦN NHÓM]</b> Chi phí / task thành công = chi phí / phiên ÷ tỉ lệ đạt lượt 2. Chấm xong <code>run-2</code> rồi chạy <code>python run.py simulate --rate-from eval/run-2.csv</code>.</div>
+      <div class="todo" style="margin-top:14px"><b>[CẦN NHÓM]</b> So với impact / người / tháng và thay số người dùng, persona bằng số khảo sát.</div>
+      <p style="font-size:17px;color:#5B6B7A;margin-top:14px">Bản chatbox gọi thêm 1 lần model để đọc câu: đo thử 1.821 token vào so với 994, ước tính gấp 2–3 lần bảng bên trái.</p>
+    </div>
+  </div>
+  <div class="src"><span>Nguồn: cost/cost-estimate.md · cost/simulate-1-summary.md (simulate-1@20261127-191410) · cost/personas.yaml</span><span>6 / 8</span></div>
+</section>
+
+<!-- 7 · KẾT LUẬN -->
+<section class="slide">
+  <span class="kicker">Kết luận</span>
+  <h1>Go / Iterate / Stop</h1>
+  <div class="grid3">
+    <div class="card"><h3>Pain (trang 1)</h3><p style="font-size:20px;line-height:1.45">2/15 review chủ động canh giờ.</p><div class="todo" style="margin-top:12px;font-size:17px"><b>[CẦN NHÓM]</b> Kết quả khảo sát, phỏng vấn.</div></div>
+    <div class="card"><h3>Chất lượng (trang 5)</h3><p style="font-size:20px;line-height:1.45">12/12 lịch hợp lệ, khớp số ở cả hai lượt (kiểm tự động).</p><div class="todo" style="margin-top:12px;font-size:17px"><b>[CẦN NHÓM]</b> x/26 người chấm so với 22/26.</div></div>
+    <div class="card"><h3>Chi phí (trang 6)</h3><p style="font-size:20px;line-height:1.45">Dưới $7 / tháng kể cả model đắt hơn.</p></div>
+  </div>
+  <div class="card orange" style="margin-top:24px">
+    <h3>Đề xuất để nhóm chốt</h3>
+    <p style="font-size:22px;line-height:1.5"><b>Iterate:</b> phần kỹ thuật chạy được và rẻ; điều còn thiếu là bằng chứng gia đình thật sự mất bao nhiêu phút cho việc này.</p>
+  </div>
+  <div class="todo" style="margin-top:16px"><b>[CẦN NHÓM]</b> Chốt Go / Iterate / Stop sau khi có điểm chấm và kết quả khảo sát.</div>
+  <div class="src"><span>Nguồn: trang 1, 5, 6</span><span>7 / 8</span></div>
+</section>
+
+<!-- 8 · NẾU CÓ THÊM 1 TUẦN -->
+<section class="slide">
+  <span class="kicker">Nếu có thêm 1 tuần</span>
+  <h1>Ba việc tiếp theo</h1>
+  <div class="grid3">
+    <div class="card"><h3>1 · Đo đúng điều người dùng muốn</h3><p style="font-size:20px;line-height:1.45">Thêm câu benchmark đo mức khớp sở thích (“ít đi bộ” → lịch ít điểm nhất). Lỗi lượt 1 chưa có trong bộ.</p></div>
+    <div class="card"><h3>2 · Giảm token</h3><p style="font-size:20px;line-height:1.45">Rút gọn bản tóm tắt gửi model: lượt 2 tăng 39% token vào. Chỉ gửi các lịch tốt nhất theo luật.</p></div>
+    <div class="card"><h3>3 · Nguồn từ người dùng</h3><p style="font-size:20px;line-height:1.45">Thêm câu thử có nguồn phỏng vấn; hỏi phụ huynh có cần lọc trong nhà / ngoài trời không.</p></div>
+  </div>
+  <div class="todo" style="margin-top:22px"><b>[CẦN NHÓM]</b> Phản hồi của ≥2 người ngoài nhóm dùng thử (validation/log.md), và điều nhóm sẽ đổi theo phản hồi đó.</div>
+  <p style="font-size:18px;color:#5B6B7A;margin-top:auto">Nhóm Sao Cũng Được · Trần Quốc Tuấn Khanh · Đỗ Phương Nam · Nguyễn Bình An · Nguyễn Văn Ngọc Sơn</p>
+  <div class="src"><span>Nguồn: eval/report.md mục 4 · validation/log.md</span><span>8 / 8</span></div>
+</section>
+
+</body>
+</html>
