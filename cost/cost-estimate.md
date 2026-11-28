@@ -6,36 +6,36 @@
 
 ## 1. Đầu vào
 
-- **Persona** (`cost/personas.yaml`): 3 kiểu theo checklist C1 — lập lịch một lần (50%, 2 lượt/phiên), chỉnh trước chuyến (30%, 4 lượt), xếp lại giữa buổi (20%, 3 lượt, câu thường và khó). Mỗi người 1 phiên/tháng. Nguồn: *(tự ước tính)*, chờ khảo sát câu 9, 11 và phỏng vấn P1–P3 của Phương Nam.
-- **Số người dùng thật** 3 kịch bản (gia đình dùng trợ lý mỗi tháng ở một khu): thấp 500 · cơ sở 2.000 · cao 5.000. Nguồn: *(tự ước tính)*; chưa có số khách công khai đã kiểm cho một khu.
+- **Persona** (`cost/personas.yaml`): 3 kiểu theo checklist C1 — lập lịch một lần (50%, 2 lượt/phiên), chỉnh trước chuyến (30%, 4 lượt), xếp lại giữa buổi (20%, 3 lượt, câu thường và khó). Mỗi người 1 phiên/tháng. Kiểu persona lấy từ phỏng vấn P1–P3 (P1, P3 chuẩn bị trước; P2 xếp lại giữa buổi khi lỡ show); tỉ trọng 50/30/20 và số lượt hỏi *(tự ước tính)*, khảo sát chưa có kết quả.
+- **Số người dùng thật** 3 kịch bản (gia đình dùng trợ lý mỗi tháng ở một khu): thấp 1.265 · cơ sở 6.325 · cao 12.650 = 1% · 5% · 10% *(tỉ lệ dùng tự ước tính)* của ≈126.500 nhóm-lượt gia đình / tháng ở `spec.md` §2 (chuỗi VinWonders 9,11 triệu lượt năm 2025 ÷ 3 người/nhóm × 50% gia đình có trẻ *(tự ước tính)* ÷ 12).
 - **Giá** 2 mức model, từ `further-reading/model-prices.csv` của repo đề (BTC tra https://ai.google.dev/gemini-api/docs/pricing ngày 25/11/2026): gemini-3.1-flash-lite vào $0,25 · ra $1,50 / 1M token · gemini-3.8-flash (giá từ 01/01/2027) vào $1,50 · ra $7,50 / 1M token.
-- **Tỉ lệ đạt** dùng để tính: **chờ chấm** — lượt `run-2@20261127-202738` chưa có nhãn của người chấm.
+- **Tỉ lệ đạt** dùng để tính: **25/26 (96%)** — lượt `run-2@20261127-202738`, chấm tay bởi Bình An và Tuấn Khanh ([phiếu](../eval/phieu-cham-run-2.md)), trượt C21.
 - Đo token trên model gemini-3.1-flash-lite, tính giá gemini-3.1-flash-lite và gemini-3.8-flash.
 
 ## 2. Kết quả mô phỏng
 
-Lượt mô phỏng: `cost/simulate-1.csv` · run ID `simulate-1@20261127-191410` · 50 phiên · seed 42 · 0 phiên lỗi · code commit `671f0f9` (lượt 2). Trace: `traces/simulate-1.jsonl`.
+Lượt mô phỏng: `cost/simulate-2.csv` · run ID `simulate-2@20261128-120240` · 50 phiên · 0 phiên lỗi · `--rate-from eval/run-2.csv --wait 4` · code commit `00e236d` (cùng code lượt 2). Trace: `traces/simulate-2.jsonl`. Bản tóm tắt: [simulate-2-summary.md](simulate-2-summary.md). Lượt cũ `simulate-1` (số người dùng tự ước tính, chưa có tỉ lệ đạt) giữ nguyên để đối chiếu.
 
-| Persona | Số phiên mô phỏng | Lượt hỏi / phiên | Token vào / phiên | Token ra / phiên | Gọi model / phiên |
-|---|---:|---:|---:|---:|---:|
-| lap_lich_mot_lan | 23 | 2 | 469 | 8 | 1.0 |
-| chinh_truoc_chuyen | 17 | 4 | 1269 | 18 | 2.2 |
-| xep_lai_giua_buoi | 10 | 3 | 641 | 14 | 1.6 |
+| Persona | Số phiên mô phỏng | Lượt hỏi / phiên | Token vào / phiên | Token ra / phiên | Gọi model / phiên | Gọi công cụ / phiên |
+|---|---:|---:|---:|---:|---:|---:|
+| lap_lich_mot_lan | 24 | 2 | 540 | 9 | 1.1 | 5.7 |
+| chinh_truoc_chuyen | 14 | 4 | 857 | 15 | 2.1 | 10.6 |
+| xep_lai_giua_buoi | 12 | 3 | 748 | 15 | 1.9 | 7.7 |
 
-| Model | Chi phí / phiên | Chi phí / task thành công | / tháng — thấp | / tháng — cơ sở | / tháng — cao | / người / tháng (cơ sở) |
-|---|---|---|---|---|---|---|
-| gemini-3.1-flash-lite | $0.00021 | chờ tỉ lệ đạt | $0.10 | $0.41 | $1.02 | $0.00020 |
-| gemini-3.8-flash | $0.0013 | chờ tỉ lệ đạt | $0.60 | $2.41 | $6.03 | $0.0012 |
+| Model (giá) | Chi phí / phiên | Chi phí / task thành công | Chi phí / câu hỏi đạt | / tháng — thấp (1.265 người) | / tháng — cơ sở (6.325 người) | / tháng — cao (12.650 người) | / người / tháng (cơ sở) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| gemini-3.1-flash-lite (vào 0.25 · ra 1.5 $/1M) | $0.00019 | $0.00020 | $0.000070 | $0.2367 | $1.18 | $2.37 | $0.00019 |
+| gemini-3.8-flash (vào 1.5 · ra 7.5 $/1M) | $0.0011 | $0.0012 | $0.00041 | $1.40 | $6.99 | $13.97 | $0.0011 |
 
-Chi phí / task thành công = chi phí trung bình mỗi phiên ÷ tỉ lệ đạt — **không coi như đạt 100%**. Sau khi Nam và An chấm `run-2.csv` và chạy `python3 run.py score eval/run-2.csv`, chạy lại `python3 run.py simulate --rate-from eval/run-2.csv --wait 4` rồi chép bảng mới vào đây.
+Chi phí / task thành công = chi phí / phiên ÷ tỉ lệ đạt 25/26 — **không coi như đạt 100%**. Token đo trên gemini-3.1-flash-lite; dòng gemini-3.8-flash là đo trên gemini-3.1-flash-lite, tính giá gemini-3.8-flash (bộ tách token khác thì số thật có thể lệch).
 
 **Giới hạn của mô phỏng này:** đầu vào lấy từ benchmark (dòng tên=giá trị), nên chưa tính bước rút điều kiện từ câu chat mà web demo dùng. Đo thử trên web ngày 27/11: một tin chat đủ điều kiện gọi model 2 lần, 1.821 token vào / 103 ra, so với 994 / 6 khi gửi cùng điều kiện dạng tên=giá trị. Vì vậy chi phí thật của bản chatbox **khoảng gấp 2–3 lần** bảng trên *(ước tính từ một lần đo, cần mô phỏng lại với câu chat)*.
 
 ## 3. So với impact
 
-- Impact / người / tháng (`spec.md` §2): **chờ số** — cần số lần phải xếp lịch/tháng và phút mất/lần từ khảo sát, phỏng vấn.
-- Chi phí / người / tháng (cơ sở, model gemini-3.1-flash-lite): $0,0002 (bản tên=giá trị); khoảng $0,0005 nếu tính bước chat *(ước tính)*.
-- **Kết luận một dòng — đáng làm không:** chi phí model không phải điểm nghẽn: kể cả model đắt hơn (gemini-3.8-flash) và nhân 3 cho bước chat, kịch bản cao vẫn dưới $20/tháng. Quyết định đáng làm hay không phụ thuộc vào impact (số phút gia đình thật sự mất), đang chờ bằng chứng.
+- Impact / người / tháng (`spec.md` §2): khoảng **17 phút / gia đình / tháng** (0,33 lần đi / tháng × (45 phút chuẩn bị + 5 phút xếp lại), trung vị 3 phỏng vấn — chưa phải tỉ lệ chung). Đây là phút gia đình đang bỏ ra, không phải phút bản chạy thử chắc chắn tiết kiệm được.
+- Chi phí / người / tháng (cơ sở, gemini-3.1-flash-lite): **$0,00019** (bản tên=giá trị); khoảng $0,0005 nếu tính bước chat *(ước tính gấp 2–3 lần)*. Model đắt hơn (gemini-3.8-flash): $0,0011.
+- **Kết luận một dòng — đáng làm không:** đáng làm về chi phí — kịch bản cao (12.650 gia đình) với model đắt hơn và nhân 3 cho bước chat vẫn khoảng $42/tháng, trong khi mỗi gia đình bỏ ra ~17 phút/tháng; rủi ro chính không phải chi phí mà là impact mới có từ 3 phỏng vấn và tỉ lệ dùng tự ước tính.
 
 ## 4. *(Muốn sâu hơn, không bắt buộc)*
 

@@ -108,7 +108,7 @@ CP2 có 12 câu: 5 thường, 5 khó, 2 từ chối. 5 câu dùng tình huống 
 
 ## §8. Chi phí
 
-Mô phỏng 50 phiên `simulate-1@20261127-191410` trên gemini-3.1-flash-lite: $0,00021/phiên, $0,41/tháng ở kịch bản cơ sở 2.000 người dùng *(số người và persona tự ước tính)*. Chi phí / task thành công chờ tỉ lệ đạt lượt 2. Bản chatbox thêm một lần gọi model rút điều kiện, ước tính gấp 2–3 lần. Chi tiết: [cost/cost-estimate.md](cost/cost-estimate.md).
+Mô phỏng 50 phiên `simulate-2@20261128-120240` trên gemini-3.1-flash-lite, tỉ lệ đạt 25/26 từ `run-2@20261127-202738`: $0,00019/phiên, $0,00020/task thành công, $1,18/tháng ở kịch bản cơ sở 6.325 gia đình (5% của ≈126.500 nhóm-lượt gia đình / tháng ở §2; tỉ lệ dùng và persona *(tự ước tính)*); kịch bản cao 12.650 gia đình: $2,37 (gemini-3.8-flash: $13,97). Bản chatbox thêm một lần gọi model rút điều kiện, ước tính gấp 2–3 lần. Chi tiết: [cost/cost-estimate.md](cost/cost-estimate.md).
 
 ## §9. Rủi ro
 

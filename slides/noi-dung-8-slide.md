@@ -37,8 +37,9 @@
 
 ## 6 · Chi phí khi dùng thật
 - Đo token trên `gemini-3.1-flash-lite`, tính giá gemini-3.1-flash-lite và gemini-3.8-flash (giá từ 01/01/2027), nguồn bảng giá BTC xem 25/11/2026.
-- Số: lấy từ `cost/cost-estimate.md` (mô phỏng 50 phiên, seed 42). Chi phí / task thành công dùng tỉ lệ đạt lượt 2 = **25/26 (96%)**.
-- Số người dùng và persona đang là *(tự ước tính)* **[CẦN NHÓM thay bằng số khảo sát]**.
+- Số: `simulate-2@20261128-120240` (50 phiên, 0 lỗi), tỉ lệ đạt lượt 2 = **25/26 (96%)**: **$0,00019 / phiên · $0,00020 / task thành công**. Mỗi tháng: thấp 1.265 gia đình $0,24 · cơ sở 6.325 $1,18 · cao 12.650 $2,37 (gemini-3.8-flash: $13,97).
+- So với impact: ~17 phút / gia đình / tháng (§2) so với $0,00019 / gia đình / tháng → chi phí model không phải điểm nghẽn, kể cả nhân 3 cho bước chat.
+- Số người dùng = 1% · 5% · 10% của ≈126.500 nhóm-lượt gia đình / tháng (VinWonders 2025, §2); tỉ lệ dùng và persona *(tự ước tính)*, chờ khảo sát.
 
 ## 7 · Kết luận
 - **[CẦN NHÓM]** Go / iterate / stop, dẫn số trang 1 (pain), 5 (điểm đạt), 6 (chi phí so với impact).
