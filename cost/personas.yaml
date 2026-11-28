@@ -30,7 +30,7 @@ personas:           # 3 kiểu dùng theo checklist C1; share cộng lại = 1
     uses_per_month: 1
     turns_per_session: 3
     types: [kho, thuong]
-    source: "share (tự ước tính). 3 lượt = 1 yêu cầu + 2 lần xếp lại: P1 và P2 đổi kế hoạch giữa ngày 2 lần (P3: 1 lần); 3/3 có trò định chơi mà không chơi được (evidence/summary.md). R01, R07, R08 (data-mining.md) có trò đóng, vào muộn."
+    source: "share 0.2 = khảo sát 28/11: 2/10 người (mẫu qua sàng lọc, trong hạn) phải đổi kế hoạch vì trở ngại về giờ / điểm đóng / điều kiện — loại trở ngại trợ lý xếp lại được; xếp hàng (3/5 người đổi vì trở ngại) không tính vì bản chạy không có dữ liệu hàng chờ (evidence/summary.md#khao-sat; mẫu không chỉ phụ huynh, N = 10). 3 lượt = 1 yêu cầu + 2 lần xếp lại: P1 và P2 đổi kế hoạch giữa ngày 2 lần (P3: 1 lần); 3/3 có trò định chơi mà không chơi được (evidence/summary.md). R01, R07, R08 (data-mining.md) có trò đóng, vào muộn."
 # Mỗi lượt hỏi lấy ngẫu nhiên một đầu vào trong eval/benchmark.csv (type thuong và kho).
 # Persona hỏi kiểu riêng: thêm vào persona đó
 #     types: [thuong, kho, tu_choi]
