@@ -27,4 +27,4 @@ Ai nói trang nào (mỗi người ≥1 phần):
 | 5 · Đánh giá thế nào | Nguyễn Bình An | phụ trách data card, bộ câu thử, metric, báo cáo đánh giá (data/, eval/) |
 | 6 · Chi phí khi dùng thật | Nguyễn Văn Ngọc Sơn | phụ trách mô phỏng chi phí (cost/) |
 | 7 · Kết luận | Trần Quốc Tuấn Khanh | đội trưởng, chốt quyết định từ pain, eval và chi phí |
-| 8 · Nếu có thêm 1 tuần | Nguyễn Bình An | nắm các lỗi, hạn chế còn tồn đọng từ eval/ |
+| 8 · Nếu có thêm 1 tuần | Nguyễn Bình An | nắm các lỗi, hạn chế còn tồn đọng từ eval/ và validation/ |

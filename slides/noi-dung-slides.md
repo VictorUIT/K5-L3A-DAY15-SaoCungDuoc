@@ -87,4 +87,4 @@
 - Rút gọn bản tóm tắt gửi model để giảm token (lượt 2 tăng 39%).
 - Sửa C21 trong câu giải thích vô nghiệm.
 - Dữ liệu thật: snapshot VinWonders Nha Trang (nhánh `binhan`) — planner từ chối xếp lịch khi thiếu dữ liệu an toàn, giá, giờ.
-- Chưa có người dùng thử (`validation/log.md` trống) — không đưa lên slide.
+- Người dùng thử (`validation/log.md`, 3 phụ huynh ngoài nhóm, bản `main`, 10:00 28/11): **hơi tiếc 2 · không sao 1 · rất tiếc 0**. Lỗi cao nhất: tưởng gợi ý đã tự xếp lại cả buổi và giữ chỗ / vé → thêm nhãn “chỉ là gợi ý, chưa giữ chỗ hay mua vé”; cảnh báo chiều cao rõ hơn; hiện phút đi bộ; hệ thống bỏ qua ý hàng chờ → báo “chưa có dữ liệu hàng chờ”.

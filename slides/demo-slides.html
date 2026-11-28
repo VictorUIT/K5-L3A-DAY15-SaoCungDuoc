@@ -154,15 +154,20 @@ td.r,th.r{text-align:right}
 
 <section class="s">
 <div class="k">8 · Nếu có thêm 1 tuần</div>
-<h1>Năm việc, mỗi việc trỏ về một lỗ hổng đã đo</h1>
+<h1>Mỗi việc trỏ về một lỗ hổng đã đo</h1>
+<div class="big">
+<div class="stat warn"><b>2 · 1</b><span>người dùng thử (3 phụ huynh, bản main): hơi tiếc 2 · không sao 1 · rất tiếc 0</span></div>
+<div class="stat warn"><b>Cao</b><span>tưởng gợi ý đã tự xếp lại cả buổi và giữ chỗ / vé</span></div>
+<div class="stat warn"><b>Bỏ qua</b><span>người thử nhắc hàng chờ đông, hệ thống vẫn trả lịch</span></div>
+</div>
 <ul>
-<li><b>Khảo sát lại đúng người dùng:</b> thêm câu lọc “đi cùng trẻ dưới 12”, cài rẽ nhánh câu 1, đủ ≥20 phụ huynh; đo riêng pain hàng chờ.</li>
+<li><b>Sửa theo người dùng thử:</b> nhãn “chỉ là gợi ý, chưa giữ chỗ hay mua vé”; cảnh báo chiều cao rõ hơn; hiện phút đi bộ mỗi chặng; báo “chưa có dữ liệu hàng chờ”.</li>
+<li><b>Khảo sát lại đúng người dùng:</b> lọc “đi cùng trẻ dưới 12”, rẽ nhánh câu 1, đủ ≥20 phụ huynh; đo riêng pain hàng chờ.</li>
 <li><b>Benchmark đo khớp sở thích:</b> thêm câu có tiêu chí kiểm được, vd “ít đi bộ → lịch ít điểm nhất trong các lịch hợp lệ” (lỗi 2/8 ở lượt 1 chưa có trong bộ).</li>
-<li><b>Giảm token:</b> rút gọn bản tóm tắt gửi model (lượt 2 tăng 39% token vào), hoặc chỉ gửi 20 lịch tốt nhất theo luật.</li>
-<li><b>Sửa C21:</b> lý do vô nghiệm không nhắc “chiều cao của bé” khi nhóm không có trẻ.</li>
+<li><b>Giảm token và sửa C21:</b> rút gọn bản tóm tắt gửi model (lượt 2 +39% token vào); lý do vô nghiệm không nhắc “chiều cao của bé” khi không có trẻ.</li>
 <li><b>Dữ liệu thật:</b> snapshot VinWonders Nha Trang (nhánh <code>binhan</code>) — planner từ chối xếp lịch khi thiếu dữ liệu an toàn, giá, giờ.</li>
 </ul>
-<div class="src">Nguồn: eval/report.md mục 4 · evidence/summary.md · spec.md §9</div>
+<div class="src">Nguồn: validation/log.md · eval/report.md mục 4 · evidence/summary.md · spec.md §9</div>
 <div class="ft">C1 · Sao Cũng Được · L3A</div>
 </section>
 </body></html>
