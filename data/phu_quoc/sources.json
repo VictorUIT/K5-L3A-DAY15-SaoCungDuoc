@@ -1,0 +1,62 @@
+[
+  {
+    "id": "PRICE",
+    "url": "https://vinwonders.com/vi/vinwonders-phu-quoc-price-and-regulations/",
+    "note": "official price & regulations page; no article date; prices incl. VAT; no validity dates",
+    "accessed_on": "2026-11-28"
+  },
+  {
+    "id": "HOURS_VI",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/vinwonders-phu-quoc-gio-mo-cua/",
+    "note": "official article published 23/07/2025; park and zone hours, minishow table",
+    "accessed_on": "2026-11-28"
+  },
+  {
+    "id": "HOURS_EN",
+    "url": "https://vinwonders.com/en/wonderpedia/news/vinwonders-phu-quoc-opening-hours/",
+    "note": "official article dated 01/01/2026; zone hours, show times, mermaid show seasonal note",
+    "accessed_on": "2026-11-28"
+  },
+  {
+    "id": "SHOWS",
+    "url": "https://vinwonders.com/en/wonderpedia/news/vinwonders-phu-quoc-show-schedule/",
+    "note": "official show schedule article published 18/12/2025; primary source for show sessions",
+    "accessed_on": "2026-11-28"
+  },
+  {
+    "id": "MAP_ARTICLE",
+    "url": "https://vinwonders.com/en/wonderpedia/news/vinwonders-phu-quoc-map-your-adventure-navigator/",
+    "note": "official map article published 07/12/2025; zone membership of named attractions; show times conflict with SHOWS",
+    "accessed_on": "2026-11-28"
+  },
+  {
+    "id": "MAP_PNG",
+    "url": "https://static.vinwonders.com/production/2026/04/ban-do-vinwonders-phu-quoc-en.png",
+    "note": "official map image April 2026; link found, NOT inspected for this snapshot",
+    "accessed_on": "2026-11-28"
+  },
+  {
+    "id": "PRICE_NEWS",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/gia-ve-vinwonders-phu-quoc-combo-voucher-hot/",
+    "note": "official article published 16/01/2026; ticket valid 09:00-19:05, no entry after 19:00",
+    "accessed_on": "2026-11-28"
+  },
+  {
+    "id": "HOME",
+    "url": "https://vinwonders.com/en/vinwonders-phu-quoc/",
+    "note": "official park page; banner operating time 09:00-19:30",
+    "accessed_on": "2026-11-28"
+  },
+  {
+    "id": "HEIGHT",
+    "url": "https://vinwonders.com/en/wonderpedia/news/height-requirements-vinwonders-phu-quoc/",
+    "note": "official article published 29/01/2026; rides grouped by 'Guests over X cm'; no per-ride max, age, weight, duration, fee",
+    "accessed_on": "2026-11-28"
+  },
+  {
+    "id": "HEIGHT_VI",
+    "url": "https://vinwonders.com/vi/wonderpedia/news/thong-bao-chieu-cao-ap-dung-vinwonders-phu-quoc/",
+    "note": "official article published 29/01/2026; Vietnamese counterpart of HEIGHT",
+    "accessed_on": "2026-11-28"
+  }
+]

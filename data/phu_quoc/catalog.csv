@@ -1,0 +1,73 @@
+﻿id,map_code,parent_id,name,zone_id,scope,kind,source_id,status,open,close,duration_minutes,min_height_cm,max_height_cm,min_age,max_age,min_weight_kg,max_weight_kg,adult_required,extra_vnd,included_in_ticket,lat,lon,scheduling_ready,field_sources,map_warning
+pq_001,,,Thor's Adventure,viking_village,park,ride,HEIGHT,unverified_live,,,,145,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""MAP_ARTICLE""}",
+pq_002,,,The Wrath of Zeus,adventure_world,park,ride,HEIGHT,unverified_live,,,,145,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""MAP_ARTICLE""}",MAP_ARTICLE: up to 110 km/h
+pq_003,,,Ipanema Skate Ride,unassigned,park,ride,HEIGHT,unverified_live,,,,145,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_004,,,Nemesis Spin,unassigned,park,ride,HEIGHT,unverified_live,,,,145,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_005,,,Upstream challenge,typhoon_world,park,ride,HEIGHT,unverified_live,,,,145,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_006,,,Waikiki Surfing,typhoon_world,park,ride,HEIGHT,unverified_live,,,,145,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_007,,,Insanity Drop,typhoon_world,park,ride,HEIGHT,unverified_live,,,,145,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_008,,,Mighty Drop,typhoon_world,park,ride,HEIGHT,unverified_live,,,,145,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_009,,,Kamikaze,typhoon_world,park,ride,HEIGHT,unverified_live,,,,145,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_010,,,The Obelisk of Osiris,unassigned,park,ride,HEIGHT,unverified_live,,,,140,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_011,,,The Icarus Race,unassigned,park,ride,HEIGHT,unverified_live,,,,140,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_012,,,Jaguar Jungle,unassigned,park,ride,HEIGHT,unverified_live,,,,140,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_013,,,The Eagle Warrior,adventure_world,park,ride,HEIGHT,unverified_live,,,,140,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""MAP_ARTICLE""}","MAP_ARTICLE names ""Wonderous Maya 'Eagle Warrior' Challenge"" in Adventure World"
+pq_014,,,Giant Python Struggle Slide,unassigned,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_015,,,Eagle Soar Glider,unassigned,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_016,,,Xibalba Drop,unassigned,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_017,,,Amazon Volcano,unassigned,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_018,,,Mystic triangle,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_019,,,Hawaiian drop,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_020,,,Racer slide,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_021,,,Maui Twin Tornadoes,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_022,,,Serpent's Venom,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",MAP_ARTICLE: 175 m slide
+pq_023,,,Fiery Dragon,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_024,,,Rapid whirlwind,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_025,,,Swing n swim,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_026,,,Vicious Huricane,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_027,,,Raging Current,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_028,,,Kohala Dark Slide,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_029,,,Kauai Dark Slide,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_030,,,Invisible Loop,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_031,,,Storm surge,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_032,,,Amazing Twister,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_033,,,Tsunami Rage,typhoon_world,park,ride,HEIGHT,unverified_live,,,,130,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_034,,,Aladdin's Grand Palace Tour,unassigned,park,ride,HEIGHT,unverified_live,,,,120,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_035,,,The Dragon's Spell,european_avenue,park,ride,HEIGHT,unverified_live,,,,110,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""MAP_ARTICLE""}",MAP_ARTICLE: at Palace of Dreams
+pq_036,,,Thumbelina Ride,unassigned,park,ride,HEIGHT,unverified_live,,,,110,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_037,,,Deputy ranger Patrol,unassigned,park,ride,HEIGHT,unverified_live,,,,110,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_038,,,Western Stream Train,unassigned,park,ride,HEIGHT,unverified_live,,,,110,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_039,,,Viking River Rapids Ride,viking_village,park,ride,HEIGHT,unverified_live,,,,110,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""MAP_ARTICLE""}",
+pq_040,,,Hustling Games Village,unassigned,park,ride,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_041,,,Down the Rabbit Hole,unassigned,park,ride,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_042,,,The Temple of Isis,unassigned,park,ride,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_043,,,The Sheriff Academy,unassigned,park,ride,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_044,,,The Wheel of Time,unassigned,park,ride,HEIGHT,unverified_live,,,,80,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",HEIGHT lists it in the 100cm group but marks it '(>80cm)'
+pq_045,,,The house of 7 dwarfs & Snow White,unassigned,park,sight,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_046,,,Grim fairy tale village,unassigned,park,sight,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_047,,,Moochoo show,unassigned,park,sight,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT""}",
+pq_048,,,Oahu Waves,typhoon_world,park,ride,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}","MAP_ARTICLE: wave pool 4,500 m2, depth up to 2.2 m"
+pq_049,,,Hinatuan enchanted river,typhoon_world,park,ride,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_050,,,Pirate's ship water play,typhoon_world,park,ride,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",HEIGHT: 9 slides
+pq_051,,,Kilihune waterplay,typhoon_world,park,ride,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_052,,,Magical bamboo,typhoon_world,park,ride,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_053,,,The Seashells Aquarium 1st floor,sea_shell,park,sight,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_054,,,"The Torque's Odyssey (2nd floor, The Seashells Aquarium)",sea_shell,park,sight,HEIGHT,unverified_live,,,,100,,,,,,,,,,,False,"{""min_height_cm"": ""HEIGHT"", ""zone_id"": ""HEIGHT""}",
+pq_055,,,Coco Oasis (Honolulu water play & Wet n Wild),typhoon_world,park,ride,HEIGHT,unverified_live,,,,,139,,,,,,,,,,False,"{""zone_id"": ""HEIGHT"", ""max_height_cm"": ""HEIGHT""}","Only for children under 140cm; min height conflicts: HEIGHT groups it >100cm, HEIGHT_VI >130cm"
+pq_056,,,Amazing Kingdom,fantasy_world,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_057,,,Hidden Oasis,fantasy_world,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_058,,,Ancient Valley,fantasy_world,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_059,,,Forest of Myths,fantasy_world,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_060,,,Western Frontier,fantasy_world,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_061,,,Triumphant Songs of the Vikings,viking_village,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_062,,,South American Forest,adventure_world,park,ride,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_063,,,Viking Zipline Adventure,adventure_world,park,ride,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_064,,,Jellyfish World,sea_shell,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_065,,,Giant Fish World,sea_shell,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_066,,,Colorful Fish World,sea_shell,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_067,,,Shark Realm,sea_shell,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_068,,,Penguin World,sea_shell,park,sight,MAP_ARTICLE,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""MAP_ARTICLE""}",Named in MAP_ARTICLE; not listed on height page — no published limits
+pq_v_european,,,European Streetmosphere (show area),european_avenue,park,show_venue,SHOWS,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""SHOWS""}",Location label as written in SHOWS
+pq_v_fire_phoenix,,,Fire Phoenix Square,unassigned,park,show_venue,SHOWS,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""SHOWS""}",Location label as written in SHOWS
+pq_v_sea_shell,,,The Sea Shell (show area),sea_shell,park,show_venue,SHOWS,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""SHOWS""}",Location label as written in SHOWS
+pq_v_typhoon,,,Typhoon World (show area),typhoon_world,park,show_venue,SHOWS,unverified_live,,,,,,,,,,,,,,,False,"{""zone_id"": ""SHOWS""}",Location label as written in SHOWS

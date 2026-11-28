@@ -1,0 +1,28 @@
+{
+  "snapshot_date": "2026-11-28",
+  "method": "web-assisted factual extraction from official vinwonders.com pages and manual normalization; not an automated crawl",
+  "catalog_count": 72,
+  "kind_counts": {
+    "ride": 52,
+    "sight": 16,
+    "show_venue": 4
+  },
+  "park_zone_count": 6,
+  "unassigned_zone_items": 22,
+  "catalog_points_with_min_height": 54,
+  "catalog_points_with_hours": 0,
+  "show_records": 12,
+  "show_records_with_conflicts": 7,
+  "price_rows": 7,
+  "review_records": 0,
+  "scheduling_ready_points": 0,
+  "missing_travel_matrix": true,
+  "blocked_direct_sources": [],
+  "limitations": [
+    "All 10 pages fetched HTTP 200; no access control bypassed, no unofficial API used.",
+    "Map image MAP_PNG not inspected; map codes and coordinates absent.",
+    "Zones for 'Games' rides only assigned when MAP_ARTICLE names them; others 'unassigned'.",
+    "Prices are published list prices, not a current quote for a given date.",
+    "No reviews collected for Phu Quoc in this snapshot."
+  ]
+}
