@@ -8,6 +8,7 @@
 - Kênh đã gửi: Group Facebook cộng đồng dân cư
 - Mở: 18:00 27/11/2026 · Chốt: 23:59 27/11/2026
 - Người phụ trách: Đỗ Phương Nam
+- **Khác với phần cài đặt bên dưới (ghi 28/11 khi tổng hợp):** form đã phát để **mọi đáp án câu 1 đi tiếp phần B** (không kết thúc form ở câu 1). Sàng lọc "hai đáp án đầu câu 1" được áp khi đếm, không áp trên form. Thu 20 phản hồi, trong đó 2 gửi sau giờ chốt (sáng 28/11) — chỉ dùng ở số phụ. Kết quả: [summary.md](../summary.md#khao-sat).
 - Đối tượng của bản đã phát: thành viên **group cộng đồng dân cư trên Facebook** (ngoài nhóm), kể chuyến gần nhất **dù đi một mình, bạn bè, lớp hay gia đình** — **rộng hơn người dùng C1** (phụ huynh có trẻ dưới 12). Form không có câu lọc "đi cùng trẻ em". Mô tả form (giữ nguyên văn bên dưới) vẫn ghi "dành cho học viên ngoài nhóm".
 
 ## Bản đã phát
