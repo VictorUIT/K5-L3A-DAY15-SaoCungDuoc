@@ -1,0 +1,93 @@
+[
+  {
+    "id": "bird_1",
+    "name": "Biểu diễn chim",
+    "venue_id": "nt_39",
+    "start": "11:00",
+    "end": "11:20",
+    "duration_minutes": 20,
+    "source_id": "MAP",
+    "live_status": null,
+    "note": null
+  },
+  {
+    "id": "bird_2",
+    "name": "Biểu diễn chim",
+    "venue_id": "nt_39",
+    "start": "15:00",
+    "end": "15:20",
+    "duration_minutes": 20,
+    "source_id": "MAP",
+    "live_status": null,
+    "note": null
+  },
+  {
+    "id": "fountain",
+    "name": "Nhạc nước",
+    "venue_id": "nt_60",
+    "start": "19:00",
+    "end": "19:15",
+    "duration_minutes": 15,
+    "source_id": "MAP",
+    "live_status": null,
+    "note": null
+  },
+  {
+    "id": "tata",
+    "name": "Tata Show",
+    "venue_id": null,
+    "start": "19:30",
+    "end": "20:10",
+    "duration_minutes": 40,
+    "source_id": "MAP",
+    "live_status": null,
+    "note": "Official map lists Mythical Square; exact ID unresolved; park overview ends 20:00; verify evening exception. Klook conflicting 20:30–21:06, do not use.",
+    "conflict_source_id": "KLOOK",
+    "conflict_start": "20:30",
+    "conflict_end": "21:06"
+  },
+  {
+    "id": "mermaid",
+    "name": "Nàng tiên cá",
+    "venue_id": "nt_59",
+    "start": "09:30",
+    "end": "09:45",
+    "duration_minutes": 15,
+    "source_id": "AQUARIUM",
+    "live_status": null,
+    "note": null
+  },
+  {
+    "id": "fish_feeding",
+    "name": "Cho cá ăn",
+    "venue_id": "nt_59",
+    "start": null,
+    "end": null,
+    "duration_minutes": null,
+    "source_id": "MAP",
+    "live_status": null,
+    "note": "Schedule unverified"
+  },
+  {
+    "id": "welcome",
+    "name": "Welcome show",
+    "venue_id": null,
+    "start": null,
+    "end": null,
+    "duration_minutes": null,
+    "source_id": "MAP",
+    "live_status": null,
+    "note": "Venue mapping and schedule unverified"
+  },
+  {
+    "id": "stunt",
+    "name": "Stunt Show",
+    "venue_id": "nt_97",
+    "start": null,
+    "end": null,
+    "duration_minutes": null,
+    "source_id": "MAP",
+    "live_status": null,
+    "note": "Harbour; separate scope"
+  }
+]

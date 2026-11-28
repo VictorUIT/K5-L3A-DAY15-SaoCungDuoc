@@ -178,7 +178,9 @@ def parse_choice(text, count):
     return value
 
 
-def answer(text):
+def answer(text, park_id="vinh_may"):
+    if park_id != "vinh_may":
+        return answer_for_park(text, park_id=park_id)
     park = load_park()
     if "=" not in text:  # câu chat tự nhiên: model rút trường, Python kiểm, rồi đi cùng luồng
         fields = extract_request(text, {}, park)
@@ -209,3 +211,23 @@ def answer(text):
     lines.extend(f"{s['start']}–{s['end']}  {s['name']}" for s in route["stops"])
     lines.append("Tổng cho cả nhóm: " + money(route["total"]))
     return {"output": "\n".join(lines)}
+
+
+def answer_for_park(text, park_id="vinh_may", request_override=None):
+    """Nhiều khu: Vịnh Mây đi luồng cũ; VinWonders Nha Trang trả lời từ snapshot công khai, fail-closed, không gọi model.
+
+    Nha Trang không dùng mặc định nào của Vịnh Mây (10 phút đi bộ, giá vé, điều kiện trò chơi): xem nha_trang_chat.py.
+    """
+    if (park_id or "vinh_may") == "vinh_may":
+        return answer(text)
+    from nha_trang_chat import answer_nha_trang
+    from park_provider import load_park_provider
+    from planning import plan_nha_trang
+
+    dataset = load_park_provider(park_id)
+    req = dict(request_override or {})
+    req.setdefault("preference", text or "")
+    plan = plan_nha_trang(dataset, req)  # chỉ để kiểm: snapshot hiện chưa đủ dữ liệu, plan luôn chưa xác minh
+    reply = answer_nha_trang(text, dataset)
+    reply["plan"] = plan
+    return reply

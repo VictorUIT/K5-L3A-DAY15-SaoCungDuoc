@@ -1,9 +1,18 @@
 """Phần dùng chung của web Vịnh Mây: CSS, dữ liệu khu chơi (đọc từ data/park.json qua tools.load_park)."""
 import streamlit as st
 
+from park_provider import (  # noqa: F401
+    DEFAULT_PARK_ID,
+    NHA_TRANG_PARK_ID,
+    list_parks,
+    load_nha_trang_dataset,
+    load_park_provider,
+)
+from review_intel import build_knowledge_base, load_reviews  # noqa: F401
 from tools import is_show, load_park, money  # noqa: F401  (money, is_show dùng ở các trang)
 
 START_EXAMPLE = "vm_start_example"   # trang chủ đặt khoá này để trang Lên lịch điền sẵn ca mẫu
+PARK_KEY = "selected_park_id"
 
 
 # Nền bãi biển tự vẽ (SVG): trời, mặt trời, biển xanh trong, bãi cát, hai cây dừa. Không dùng ảnh bên ngoài.
@@ -119,16 +128,25 @@ section[data-testid="stSidebar"] h3 {color: #0B84D9;}
   padding: .8rem 1rem; margin: .4rem 0 .6rem; box-shadow: 0 2px 8px rgba(28, 43, 57, .08);}
 .vm-cond div {margin: .15rem 0;}
 .vm-cond-line {font-size: .88rem; color: #5B6B7A; margin-top: .1rem;}
+/* bộ chọn khu và trả lời Nha Trang */
+[class*="st-key-vm_park_"] {background: #FFFFFF; border: 1px solid #CFE7F5; border-radius: 14px; padding: .55rem .9rem .7rem;
+  margin-bottom: .8rem; box-shadow: 0 2px 8px rgba(11, 132, 217, .08);}
+[class*="st-key-vm_park_"] label p {font-weight: 700; color: #0B5E96;}
+.nt-sec-title {font-weight: 700; margin: .55rem 0 .15rem;}
+.nt-sec-title.warn {color: #C24D00;}
+.nt-lines {margin: 0 0 .3rem 1.1rem; padding: 0;}
+.nt-lines li {margin: .12rem 0; line-height: 1.45;}
+.nt-lines li.warn {color: #A84300;}
 /* khung chào "Chào bạn, mình là Vivu": nền cam, chữ trắng */
-.st-key-vm_bot_hello {background: linear-gradient(135deg, #FF7A1A 0%, #E85D00 100%); border: 1px solid #E85D00;
+.st-key-vm_bot_hello, .st-key-vm_bot_hello_nt {background: linear-gradient(135deg, #FF7A1A 0%, #E85D00 100%); border: 1px solid #E85D00;
   box-shadow: 0 4px 14px rgba(249, 109, 0, .3);}
-.st-key-vm_bot_hello .vm-hello {color: #FFFFFF;}
-.st-key-vm_bot_hello .vm-muted {color: rgba(255, 255, 255, .95);}
-.st-key-vm_bot_hello [data-testid="stBaseButton-secondary"] {background: rgba(255, 255, 255, .16) !important;
+.st-key-vm_bot_hello_nt .vm-hello, .st-key-vm_bot_hello .vm-hello {color: #FFFFFF;}
+.st-key-vm_bot_hello_nt .vm-muted, .st-key-vm_bot_hello .vm-muted {color: rgba(255, 255, 255, .95);}
+.st-key-vm_bot_hello_nt [data-testid="stBaseButton-secondary"], .st-key-vm_bot_hello [data-testid="stBaseButton-secondary"] {background: rgba(255, 255, 255, .16) !important;
   border: 1px solid rgba(255, 255, 255, .75) !important; color: #FFFFFF !important;}
-.st-key-vm_bot_hello [data-testid="stBaseButton-secondary"]:hover {background: rgba(255, 255, 255, .28) !important;
+.st-key-vm_bot_hello_nt [data-testid="stBaseButton-secondary"]:hover, .st-key-vm_bot_hello [data-testid="stBaseButton-secondary"]:hover {background: rgba(255, 255, 255, .28) !important;
   border-color: #FFFFFF !important;}
-.st-key-vm_bot_hello button p, .st-key-vm_bot_hello button span {color: #FFFFFF !important;}
+.st-key-vm_bot_hello_nt button p, .st-key-vm_bot_hello_nt button span, .st-key-vm_bot_hello button p, .st-key-vm_bot_hello button span {color: #FFFFFF !important;}
 .st-key-vm_bot_hello :focus-visible {outline-color: #FFFFFF !important;}
 /* form điều kiện nằm trong trang (trang chủ) */
 .st-key-vm_trip_inline {background: #FFFFFF; border: 1px solid #E3E9EF; border-radius: 14px; padding: 1rem 1.1rem .6rem;
@@ -152,14 +170,70 @@ def park_data():
     return load_park()
 
 
+@st.cache_data
+def nha_trang_data():
+    return load_nha_trang_dataset()
+
+
+@st.cache_data
+def nha_trang_reviews():
+    return load_reviews()
+
+
+@st.cache_data
+def nha_trang_kb():
+    return build_knowledge_base(nha_trang_reviews())
+
+
 def names():
     return {a["id"]: a["name"] for a in park_data()["activities"]}
 
 
-def header(title, subtitle):
-    """Đầu trang có nền bãi biển: tên trợ lý to, dòng phụ nhỏ, nhãn dữ liệu mô phỏng."""
+PARK_SHORT = {DEFAULT_PARK_ID: "Vịnh Mây · mô phỏng", NHA_TRANG_PARK_ID: "VinWonders Nha Trang"}
+# Trạng thái đang chờ xử lý của từng khu: đổi khu thì bỏ, để một tin gõ cho khu này không chạy ở khu kia.
+PENDING_KEYS = ("pending", "pending_chat", "preview", "need", "nt_pending")
+
+
+def _switch_park(widget_key):
+    s = st.session_state
+    new = s.get(widget_key)
+    if not new or new == s.get(PARK_KEY):  # bấm lại nút đang chọn: giữ nguyên
+        return
+    s["park_switched_from"] = s.get(PARK_KEY)
+    s[PARK_KEY] = new
+    for key in PENDING_KEYS:
+        s[key] = None
+
+
+def park_selector(key_suffix="top"):
+    """Bộ chọn khu dùng chung giữa Trang chủ và Lên lịch (cùng khoá selected_park_id). Mặc định là Vịnh Mây.
+
+    Mỗi khu có lịch sử hội thoại, điều kiện và dữ liệu riêng (Vịnh Mây: history, t_*; Nha Trang: nt_history);
+    đổi khu chỉ đổi phần được vẽ và bỏ các lượt đang chờ, không mang điều kiện của khu này sang khu kia.
+    """
+    s = st.session_state
+    s.setdefault(PARK_KEY, DEFAULT_PARK_ID)
+    if s[PARK_KEY] not in PARK_SHORT:
+        s[PARK_KEY] = DEFAULT_PARK_ID
+    widget_key = f"park_pick_{key_suffix}"
+    s[widget_key] = s[PARK_KEY]  # trang kia có thể vừa đổi khu: nút ở trang này đi theo
+    with st.container(key=f"vm_park_{key_suffix}"):
+        st.segmented_control("Khu đang chọn", options=list(PARK_SHORT), format_func=PARK_SHORT.get,
+                             key=widget_key, on_change=_switch_park, args=(widget_key,),
+                             help="Vịnh Mây là khu giả lập để thử. VinWonders Nha Trang dùng snapshot dữ liệu công khai "
+                                  "ngày 27/11/2026: tra cứu được, lịch chỉ xác nhận khi đủ dữ liệu.")
+    old = s.pop("park_switched_from", None)
+    if old:
+        st.toast(f"Đã chuyển sang {PARK_SHORT[s[PARK_KEY]]}. Hội thoại và điều kiện của {PARK_SHORT.get(old, old)} "
+                 "được giữ riêng, không dùng cho khu này.", icon=":material/swap_horiz:")
+    return s[PARK_KEY]
+
+
+def header(title, subtitle, badge="Dữ liệu mô phỏng",
+           badge_title="Giờ, giá và quãng đi bộ do nhóm dựng để thử, không phải dữ liệu thật"):
+    """Đầu trang có nền bãi biển: tên trợ lý to, dòng phụ nhỏ, nhãn nguồn dữ liệu."""
     st.markdown(beach_css(".vm-head"), unsafe_allow_html=True)
     st.markdown('<div class="vm-head"><div class="vm-title"><h1>%s</h1>'
-                '<span class="vm-badge" title="Giờ, giá và quãng đi bộ do nhóm dựng để thử, không phải dữ liệu thật">'
-                'Dữ liệu mô phỏng</span></div><p class="vm-sub">%s</p></div>' % (title, subtitle),
+                '<span class="vm-badge" title="%s">%s</span></div><p class="vm-sub">%s</p></div>'
+                % (title, badge_title, badge, subtitle),
                 unsafe_allow_html=True)

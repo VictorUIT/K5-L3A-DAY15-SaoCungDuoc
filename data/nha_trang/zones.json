@@ -1,0 +1,93 @@
+[
+  {
+    "id": "fairy_land",
+    "name": "Fairy Land",
+    "scope": "park",
+    "open": null,
+    "close": null,
+    "source_id": "MAP",
+    "map_range": [
+      1,
+      15
+    ],
+    "live_status": null
+  },
+  {
+    "id": "festive_hill",
+    "name": "Festive Hill",
+    "scope": "park",
+    "open": null,
+    "close": null,
+    "source_id": "MAP",
+    "map_range": [
+      16,
+      37
+    ],
+    "live_status": null
+  },
+  {
+    "id": "kings_garden",
+    "name": "King’s Garden",
+    "scope": "park",
+    "open": "10:00",
+    "close": "17:30",
+    "source_id": "MAP",
+    "map_range": [
+      38,
+      46
+    ],
+    "live_status": null
+  },
+  {
+    "id": "world_garden",
+    "name": "World Garden",
+    "scope": "park",
+    "open": "10:00",
+    "close": "18:00",
+    "source_id": "MAP",
+    "map_range": [
+      47,
+      57
+    ],
+    "live_status": null
+  },
+  {
+    "id": "sea_world",
+    "name": "Sea World",
+    "scope": "park",
+    "open": null,
+    "close": null,
+    "source_id": "MAP",
+    "map_range": [
+      58,
+      66
+    ],
+    "live_status": null
+  },
+  {
+    "id": "tropical_paradise",
+    "name": "Tropical Paradise",
+    "scope": "park",
+    "open": "10:00",
+    "close": "17:30",
+    "source_id": "MAP",
+    "map_range": [
+      67,
+      90
+    ],
+    "live_status": null
+  },
+  {
+    "id": "harbour",
+    "name": "Vinpearl Harbour",
+    "scope": "adjacent_harbour",
+    "open": null,
+    "close": null,
+    "source_id": "MAP",
+    "map_range": [
+      91,
+      99
+    ],
+    "live_status": null
+  }
+]

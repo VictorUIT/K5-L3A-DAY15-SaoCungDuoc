@@ -1,0 +1,18 @@
+{
+  "id": "vinwonders_nha_trang",
+  "name": "VinWonders Nha Trang",
+  "source": "public_source_snapshot",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "currency": "VND",
+  "open": "09:00",
+  "close": "20:00",
+  "source_id": "HOME",
+  "snapshot_date": "2026-11-27",
+  "live_availability": false,
+  "walk_minutes": null,
+  "notes": [
+    "Tata Show published end 20:10 conflicts with overall hours; confirm exception.",
+    "No real-time status; no complete per-ride restrictions/durations or travel matrix.",
+    "Do not use as legacy park.json."
+  ]
+}

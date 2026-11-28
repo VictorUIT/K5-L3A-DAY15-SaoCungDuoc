@@ -5,8 +5,8 @@ import html
 import streamlit as st
 
 from tools import minutes
-from web import planner
-from web.common import beach_css, is_show, money, park_data
+from web import nha_trang_ui, planner
+from web.common import NHA_TRANG_PARK_ID, beach_css, is_show, money, park_data, park_selector
 
 PAGE_CSS = """
 <style>
@@ -52,6 +52,12 @@ PAGE_CSS = """
 """
 
 
+st.markdown(PAGE_CSS, unsafe_allow_html=True)
+selected_park = park_selector("home")
+if selected_park == NHA_TRANG_PARK_ID:
+    nha_trang_ui.render_nha_trang_home()
+    st.stop()
+
 park = park_data()
 acts = park["activities"]
 shows = sorted((a for a in acts if is_show(a)), key=lambda a: minutes(a["open"]))
@@ -59,7 +65,6 @@ rides = [a for a in acts if not is_show(a)]
 opening = min(acts, key=lambda a: minutes(a["open"]))["open"]
 closing = max(acts, key=lambda a: minutes(a["close"]))["close"]
 
-st.markdown(PAGE_CSS, unsafe_allow_html=True)
 st.markdown(beach_css(".vm-hero"), unsafe_allow_html=True)
 st.markdown(
     '<div class="vm-hero"><div class="vm-brand">Vivu<span class="vm-badge" '
