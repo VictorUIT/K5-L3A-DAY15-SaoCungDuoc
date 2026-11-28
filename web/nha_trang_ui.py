@@ -19,6 +19,7 @@ from park_provider import KIND_LABELS_VI, NHA_TRANG_PARK_ID, filter_catalog
 from pricing import SENIOR_BOUNDARY_NOTE
 from review_intel import retrieve_attraction_experiences
 from tools import money
+from web import duong_den
 from web.common import beach_css, header, nha_trang_data, nha_trang_kb, nha_trang_reviews
 
 DEMO_KEY = "nt_demo"
@@ -197,6 +198,7 @@ NT_EXAMPLES = {
     "tata": "Tata Show mấy giờ diễn?",
     "ve100": "Vé cho bé cao đúng 100 cm bao nhiêu?",
     "dibo": "Đi bộ từ Zipline sang Tata Show có kịp không?",
+    "kip": "Từ resort đi bây giờ có kịp Tata Show không?",
 }
 
 
@@ -225,7 +227,8 @@ def nt_process() -> None:
         return
     s.nt_history.append({"role": "user", "text": text})
     try:
-        reply = answer(text, park_id=NHA_TRANG_PARK_ID, demo=demo_on())
+        # route: chỉ kết quả Routes API (phương tiện, điểm đến, km, phút), không có toạ độ hay địa chỉ khách
+        reply = answer(text, park_id=NHA_TRANG_PARK_ID, demo=demo_on(), route=s.get("nt_route"))
         s.nt_history.append({"role": "bot", "header": reply["header"], "sections": reply["sections"],
                              "found": reply["found"]})
     except Exception as e:  # dữ liệu hỏng hay lỗi khác: báo gọn
@@ -315,6 +318,7 @@ def render_nha_trang_home() -> None:
         nt_conversation(inline=True)
         nt_chat_box()
     st.page_link("web/len_lich.py", label="Mở trang Lên lịch đầy đủ (tính tiền vé ở thanh bên)", icon=":material/open_in_new:")
+    duong_den.render("home")
 
     rides = sum(1 for i in ds["catalog"] if i["kind"] == "ride" and not i["is_harbour"])
     timed = [s for s in ds["show_sessions"] if s["has_published_time"] and not s["is_harbour"]]
@@ -442,6 +446,8 @@ def render_nha_trang_planner() -> None:
             st.caption(f"**{s['start']}** {s['name']}{est}" + (" ⚠" if s["has_discrepancy"] else ""))
 
     _info_box(ds)
+    with st.expander("🧭 Đường đến khu vui chơi", expanded=False):
+        duong_den.render("planner")
     nt_setup()
     nt_process()
     nt_conversation(inline=False)

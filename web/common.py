@@ -222,10 +222,10 @@ def park_selector(key_suffix="top"):
                              key=widget_key, on_change=_switch_park, args=(widget_key,),
                              help="Vịnh Mây là khu giả lập để thử. VinWonders Nha Trang dùng snapshot dữ liệu công khai "
                                   "ngày 27/11/2026: tra cứu được, lịch chỉ xác nhận khi đủ dữ liệu.")
-    old = s.pop("park_switched_from", None)
-    if old:
-        st.toast(f"Đã chuyển sang {PARK_SHORT[s[PARK_KEY]]}. Hội thoại và điều kiện của {PARK_SHORT.get(old, old)} "
-                 "được giữ riêng, không dùng cho khu này.", icon=":material/swap_horiz:")
+        old = s.pop("park_switched_from", None)
+        if old:  # chú thích ngay dưới nút (thông báo nổi che mất nút chọn khu trên điện thoại)
+            st.caption(f"Đã chuyển sang {PARK_SHORT[s[PARK_KEY]]}. Hội thoại và điều kiện của "
+                       f"{PARK_SHORT.get(old, old)} được giữ riêng, không dùng cho khu này.")
     return s[PARK_KEY]
 
 
