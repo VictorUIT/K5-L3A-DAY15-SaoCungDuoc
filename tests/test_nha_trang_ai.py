@@ -96,6 +96,30 @@ class TestAnswerWithModel(unittest.TestCase):
         self.assertIn("Lịch gợi ý (bản demo)", out)
         self.assertIn("11:00–11:20", out)
 
+    def test_plan_like_vinh_may_with_ai_suggestions(self):
+        r = ask("Nhà mình 2 vợ chồng với bé cao 1m25, 9 giờ tới, 5 giờ chiều về, có 3 triệu, bé thích cảm giác mạnh, muốn xem Tata Show",
+                {"intent": "plan", "places": ["Tata Show"], "suggested": ["Alpine Coaster", "Zipline", "Sky Wheel", "Trò bịa"],
+                 "heights_cm": [125], "adults": 2, "children": 1, "budget_vnd": 3000000, "start": "09:00", "end": "17:00",
+                 "preference": "thích cảm giác mạnh"})
+        out = r["output"]
+        self.assertIn("Alpine Coaster (đi bộ", out)
+        self.assertIn("Sky Wheel (đi bộ", out)
+        self.assertIn("Không xếp được Zipline: cần trẻ từ 130 cm, bé thấp nhất cao 125 cm", out)
+        self.assertIn("Không xếp được Tata Show: suất 19:30 nằm ngoài khung 09:00–17:00", out)
+        self.assertIn("Tổng vé vào cổng: 2.900.000 đ", out)
+        self.assertIn("Trong ngân sách 3.000.000 đ", out)
+        self.assertNotIn("Trò bịa", out)
+        self.assertEqual(r["understood"]["adults"], 2)
+        self.assertEqual(r["understood"]["suggested"], ["Alpine Coaster", "Zipline", "Sky Wheel"])
+
+    def test_ai_other_falls_back_to_keyword_plan(self):
+        out = ask("kế hoạch cho gia đình 2 lớn, 1 trẻ em", {"intent": "other"})["output"]
+        self.assertIn("Lịch gợi ý (bản demo)", out)
+        self.assertIn("2 người lớn × 1.050.000 đ", out)
+        self.assertIn("Tổng vé đã tính (chưa gồm 1 trẻ): 2.100.000 đ", out)
+        self.assertIn("Nhắn thêm giờ đến, giờ về, chiều cao của bé", out)
+        self.assertNotIn("Vivu chưa nhận ra", out)
+
     def test_route_and_coordinates_never_reach_model(self):
         seen = {}
         r = ask("từ resort đi giờ có kịp tata không", {"intent": "arrival", "places": ["Tata Show"]}, seen, route=ROUTE)

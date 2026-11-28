@@ -120,7 +120,7 @@ class TestNhaTrangDemoEstimates(unittest.TestCase):
         out = self.ask("9h đến, về 17h, Alpine Coaster, Underwater World, Biểu diễn chim, bé cao 1m15, mẹ 160 cm")
         self.assertIn("09:00  Vào cổng chính", out)
         self.assertIn("11:00–11:20  Biểu diễn chim", out)
-        self.assertIn("Vé vào cổng cả nhóm: 1.850.000 đ", out)  # 800.000 + 1.050.000 theo bảng giá
+        self.assertIn("Tổng vé vào cổng: 1.850.000 đ", out)  # 800.000 + 1.050.000 theo bảng giá
         times = [l[2:7] for l in out.splitlines() if l[2:4].isdigit() and l[4] == ":"]
         self.assertEqual(times, sorted(times))
         for name in VINH_MAY_NAMES:
@@ -129,6 +129,36 @@ class TestNhaTrangDemoEstimates(unittest.TestCase):
     def test_time_parsing(self):
         self.assertEqual(find_times("9h đến, về 17h30"), (540, 1050))
         self.assertEqual(find_times("đến 10:15 ra về lúc 16 giờ"), (615, 960))
+        self.assertEqual(find_times("9 giờ tới, 5 giờ chiều về"), (540, 1020))
+        self.assertEqual(find_times("10h50 tới cổng, 12h về"), (650, 720))
+
+    def test_vinh_may_style_request_builds_plan_without_model(self):
+        out = self.ask("Nhà mình 2 vợ chồng với bé cao 1m25, 9 giờ tới, 5 giờ chiều về, có 3 triệu, muốn xem Tata Show")
+        self.assertIn("Lịch gợi ý (bản demo)", out)
+        self.assertIn("Không xếp được Tata Show: suất 19:30 nằm ngoài khung 09:00–17:00", out)
+        self.assertIn("11:00–11:20  Biểu diễn chim", out)
+        self.assertIn("2 người lớn × 1.050.000 đ (giả định cao từ 140 cm", out)
+        self.assertIn("Tổng vé vào cổng: 2.900.000 đ", out)
+        self.assertIn("Trong ngân sách 3.000.000 đ (còn khoảng 100.000 đ)", out)
+
+    def test_named_show_has_priority_over_auto_shows(self):
+        out = self.ask("2 người lớn, 1 bé 110 cm, 9h đến, xem Tata Show")
+        self.assertIn("19:30–20:10  Tata Show", out)
+        self.assertIn("Không xếp được Nhạc nước: nhường giờ cho Tata Show", out)
+        self.assertIn("giờ đóng cửa chung 20:00 (bạn chưa nêu giờ về)", out)
+        self.assertIn("Welcome show (đi bộ 5′, có mặt trước 5′) · giờ diễn ước tính demo", out)
+
+    def test_over_budget_and_missing_child_height(self):
+        out = self.ask("3 người lớn, 2 bé, 1 bé cao 120 cm, 9h đến 15h về, ngân sách 2 triệu, Alpine Coaster")
+        self.assertIn("Còn 1 trẻ chưa có chiều cao", out)
+        self.assertIn("chưa so được vì còn vé chưa tính", out)
+        out = self.ask("2 người lớn, 9h đến 15h về, ngân sách 1 triệu, Alpine Coaster")
+        self.assertIn("⚠ Vượt ngân sách 1.000.000 đ khoảng 1.100.000 đ", out)
+
+    def test_find_group(self):
+        from nha_trang_chat import find_group
+        self.assertEqual(find_group("Nhà mình 2 vợ chồng với bé, có 3 triệu"), (2, 1, 3_000_000))
+        self.assertEqual(find_group("3 người lớn 2 trẻ ngân sách 500k"), (3, 2, 500_000))
 
 
 if __name__ == "__main__":

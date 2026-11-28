@@ -234,15 +234,17 @@ def answer_for_park(text, park_id="vinh_may", request_override=None, demo=False,
     if demo:
         from nha_trang_demo import apply_demo_estimates
         dataset = apply_demo_estimates(dataset)
-    understood, ai_picked, model_error = None, None, None
+    understood, ai_picked, ai_suggested, model_error = None, None, None, None
     if use_model:
         from nha_trang_ai import entities_from, understand
         try:
             understood = understand(text, dataset)  # chỉ câu chat + danh mục; không có route hay toạ độ
             ai_picked = entities_from(understood, dataset)
+            ai_suggested = entities_from(understood, dataset, key="suggested")
         except Exception as e:  # lỗi key, hết lượt, JSON hỏng: vẫn trả lời bằng dò từ khoá
             understood, model_error = None, e
-    reply = answer_nha_trang(text, dataset, route=route, understood=understood, ai_picked=ai_picked)
+    reply = answer_nha_trang(text, dataset, route=route, understood=understood, ai_picked=ai_picked,
+                             ai_suggested=ai_suggested)
     reply["understood"] = understood
     reply["model_error"] = model_error
     reply["model_meta"] = (understood or {}).get("model_meta")
