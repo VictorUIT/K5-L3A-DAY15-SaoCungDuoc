@@ -18,6 +18,13 @@
 
 Ai nói trang nào (mỗi người ≥1 phần):
 
-| Trang | Người nói |
-|---|---|
-| | |
+| Trang | Người nói | Lý do |
+|---|---|---|
+| 1 · Người dùng & pain | Đỗ Phương Nam | phụ trách bằng chứng pain (phỏng vấn, khảo sát, review — evidence/) |
+| 2 · Vì sao chọn bài này | Trần Quốc Tuấn Khanh | đội trưởng, phụ trách canvas, spec và tổng thể slide |
+| 3 · Giải pháp | Trần Quốc Tuấn Khanh | nắm thiết kế giải pháp, lát cắt và giới hạn AI trong spec.md |
+| 4 · Demo live | Nguyễn Văn Ngọc Sơn | phụ trách bản chạy thử (codebase/) và vận hành trực tiếp |
+| 5 · Đánh giá thế nào | Nguyễn Bình An | phụ trách data card, bộ câu thử, metric, báo cáo đánh giá (data/, eval/) |
+| 6 · Chi phí khi dùng thật | Nguyễn Văn Ngọc Sơn | phụ trách mô phỏng chi phí (cost/) |
+| 7 · Kết luận | Trần Quốc Tuấn Khanh | đội trưởng, chốt quyết định từ pain, eval và chi phí |
+| 8 · Nếu có thêm 1 tuần | Nguyễn Bình An | nắm các lỗi, hạn chế còn tồn đọng từ eval/ |

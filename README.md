@@ -20,8 +20,8 @@ giờ=09:00-12:00; lớn=2; trẻ=1; cao=110; đồng=500000; phải có=chim
 Bắt buộc: giờ đến–giờ kết thúc, số người lớn (≥1), số trẻ và ngân sách bằng đồng. Nếu có trẻ, nhập chiều cao thấp nhất bằng cm. Có thể nhập thêm `ưu tiên=bé thích động vật`, `phải có=chim,vuon`, `đóng=tau` hoặc `đệm=15` (phút đến trước show). Mã điểm: `vuon` Vườn hoa, `nha` Nhà tranh, `tau` Tàu lượn, `chim` Show chim, `nhac` Show nhạc. Thiếu `.env` thì chạy model giả (0 token, không dùng để báo cáo).
 
 - `python3 run.py check` kiểm bộ câu thử và metric.
-- `python3 run.py eval --wait 4` chạy cả bộ bằng model thật → `eval/run-N.csv` + `traces/run-N.jsonl`. Lượt 1 `run-1@20261127-202533` và lượt 2 `run-2@20261127-202738`: gemini-3.1-flash-lite, 26/26 câu chạy, 0 lỗi, **đang chờ Nam và An chấm** ([phiếu lượt 1](eval/phieu-cham-run-1.md) · [phiếu lượt 2](eval/phieu-cham-run-2.md)).
-- `python3 run.py simulate --wait 4` mô phỏng chi phí → `cost/simulate-N.csv`.
+- `python3 run.py eval --wait 4` chạy cả bộ bằng model thật → `eval/run-N.csv` + `traces/run-N.jsonl`. Lượt 1 `run-1@20261127-202533` và lượt 2 `run-2@20261127-202738`: gemini-3.1-flash-lite, 26/26 câu chạy, 0 lỗi. Chấm tay (Bình An, Tuấn Khanh): **25/26 → 25/26** (trượt C21) · [hồ sơ đánh giá](eval/README.md) · [phiếu lượt 1](eval/phieu-cham-run-1.md) · [phiếu lượt 2](eval/phieu-cham-run-2.md)).
+- `python3 run.py simulate --wait 4` mô phỏng chi phí → `cost/simulate-N.csv`. Bản nộp: `simulate-2@20261128-120240`, $0,00020 / task thành công ([cost-estimate](cost/cost-estimate.md)).
 
 ## Web demo (Streamlit, dạng chatbox)
 

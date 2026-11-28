@@ -1,61 +1,53 @@
-# Hồ sơ đánh giá C1 tại CP2
+# Hồ sơ đánh giá C1 · cập nhật CP4 (28/11)
 
-Đánh giá chính thức bắt đầu ở CP3 với AI thật. Ở CP2, bộ gồm 12 câu và bốn metric. Hai người dùng cùng tiêu chí trên cùng 5 đầu ra dưới đây, ghi 1 đạt hoặc 0 trượt độc lập trước khi mở phần chấm của nhau. Mỗi người giữ phiếu riêng đến lúc đối chiếu; sau đó ghi điểm vào bảng tổng hợp. Nếu khớp dưới 4/5, xem lại điểm mơ hồ trước hạn CP2. Không đổi chuẩn sau CP2.
+> Guide bước 4.1. Một trang: dataset → xử lý → bộ câu thử → metric và cách chấm → đã chạy gì → lỗi chính. Chi tiết lỗi và cải tiến: [report.md](report.md).
 
-Đầu ra được lấy từ lượt thử 12 câu bằng model giả; mẫu bao phủ lịch đầy đủ, trễ show/giờ đóng, thiếu thông tin, thiếu tiền và từ chối lịch vi phạm. Dòng C06 chỉ yêu cầu báo không có lịch hợp lệ. Đối chiếu đầu vào và pass_criterion ở [benchmark](benchmark.csv), kiểm giá/giờ bằng [data card](../data/DATA_CARD.md).
+## 1. Dataset và xử lý
 
-### C01
+- **Danh mục khu vui chơi:** [park.json](../data/park.json), khu **Vịnh Mây giả lập**, 5 điểm (3 trò / điểm tham quan + 2 show). Nhóm điền tay một bộ cố định: giờ mở / đóng, thời lượng, giá vé (180.000 đ người lớn · 100.000 đ trẻ), phụ phí tàu lượn 30.000 đ / người, mốc chiều cao 120 cm, 10 phút đi bộ mỗi chặng. Quy tắc tính giờ và tiền: [DATA_CARD](../data/DATA_CARD.md).
+- **Data thật để dựng tình huống:** 15 review VinWonders Nha Trang trên Traveloka, xem 27/11/2026 ([data-mining.md](../evidence/data-mining.md)), đã bỏ tên. Chỉ lấy *tình huống* (trễ giờ, trò bảo trì, canh giờ show…); giờ, giá, mã trò chuyển sang bộ mô phỏng. Không mang giá hay lịch trong review vào danh mục.
+- **Không có:** dữ liệu thời gian xếp hàng, tồn vé hay GPS.
 
-Đầu vào: giờ=09:00-12:00; lớn=2; trẻ=1; cao=110; đồng=500000; phải có=chim
+## 2. Bộ câu thử
 
-```text
-Vịnh Mây · dữ liệu mô phỏng
-09:10–09:35  Vườn hoa
-09:45–10:15  Nhà tranh
-11:00–11:20  Show chim
-Tổng cho cả nhóm: 460.000 đ
-```
+[benchmark.csv](benchmark.csv): **26 câu** — 10 `thuong` · 13 `kho` · 3 `tu_choi`. **9/26 từ data thật** (`data_that`, mỗi câu ghi mã review), còn lại `tu_viet` có ghi lý do.
 
-### C06
+| Nhóm | Câu | Nguồn |
+|---|---|---|
+| CP2 | C01–C12 | 5 câu từ review, còn lại tự viết (lịch đầy đủ, trễ show / giờ đóng, thiếu thông tin, thiếu tiền, từ chối lịch vi phạm) |
+| Sau CP2 | C13–C21 | cặp sát biên tự viết (đến cổng 10:50 / 10:51 trước show 11:00, chiều cao 119 / 120 cm, thiếu 1 đồng phụ phí, điểm bắt buộc đã đóng, ưu tiên điểm, đóng hết điểm) |
+| 27/11 | C22 | trẻ đi không có người lớn (từ chối bằng code) |
+| 27/11 | C23–C26 | chuyển thể từ review R07, R03, R10, R14 |
 
-Đầu vào: giờ=16:15-17:15; lớn=1; trẻ=0; đồng=300000; phải có=tau
+Mỗi câu có `pass_criterion` đọc output là biết đạt hay không. Không sửa `expected` hay xoá câu trượt sau CP2.
 
-```text
-Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Hãy kiểm tra lại khung giờ, thời gian đi bộ, đệm trước show và ngân sách.
-```
+## 3. Metric và cách chấm
 
-### C08
+[metric_spec.yaml](metric_spec.yaml), chốt ở CP2, không đổi:
 
-Đầu vào: giờ=09:00-12:00; lớn=1; trẻ=1; đồng=400000
+| Metric | Đo gì | Chuẩn |
+|---|---|---|
+| `task_pass` | câu đáp ứng toàn bộ `pass_criterion` / tổng | **≥22/26** (5/6, `spec.md` §7) |
+| `route_validity` | lịch dùng mã đúng, không trùng, đủ đi bộ, đúng giờ mở / show, đệm, chiều cao, ngân sách, điểm bắt buộc, điểm đóng | 100% lịch xuất hợp lệ |
+| `factual_numbers` | giờ từng điểm và tổng tiền khớp tính lại từ `park.json` | 100% |
+| `refusal` | mọi câu `tu_choi` chặn đúng hành động bị dụ | 100% |
 
-```text
-Bé thấp nhất cao bao nhiêu cm?
-```
+**Chấm:** người chấm tay (1 đạt / 0 trượt) chỉ theo chữ của `pass_criterion` + quy tắc DATA_CARD. Hai người chấm độc lập rồi đối chiếu; câu lệch thì đọc lại tiêu chí và thống nhất. Lượt 1 và lượt 2 dùng **cùng cách chấm**. Một bộ kiểm tự động độc lập (tính lại giờ và tiền từ `park.json`) dùng để soát, **không thay** người chấm. Ở CP2, Phương Nam và Bình An chấm thử 5 đầu ra model giả, đồng thuận 5/5.
 
-### C09
+## 4. Đã chạy gì
 
-Đầu vào: giờ=09:00-12:00; lớn=2; trẻ=1; cao=125; đồng=459999
+| Run ID | Model | Cấu hình | Kết quả (người chấm) | Ghi chú |
+|---|---|---|---|---|
+| `run-fake` (CP2) | fake | model giả, bộ câu lúc đó | không tính | kiểm khung, chấm thử 5 đầu ra |
+| `run-1@20261127-202533` | gemini-3.1-flash-lite | code trước cải tiến (`ffa1586`), 26 câu | **25/26 (96%)** · thuong 10/10 · kho 12/13 · tu_choi 3/3 | Đạt chuẩn; trượt C21 |
+| `run-2@20261127-202738` | gemini-3.1-flash-lite | gửi model bản tóm tắt lịch có phút đi bộ, giờ xong, số show (`671f0f9`), 26 câu | **25/26 (96%)** · thuong 10/10 · kho 12/13 · tu_choi 3/3 | Đạt chuẩn; trượt C21; token vào +39% |
 
-```text
-Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Riêng vé vào cổng cho nhóm đã là 460.000 đ.
-```
+- Cả hai lượt: 26/26 câu chạy, 0 lỗi kỹ thuật; kiểm tự động 12/12 lịch hợp lệ và khớp số.
+- Chấm tay: Bình An + Tuấn Khanh (thay Phương Nam), đồng thuận 26/26 mỗi lượt — [phiếu lượt 1](phieu-cham-run-1.md) · [phiếu lượt 2](phieu-cham-run-2.md). Số lấy từ `python run.py score eval/run-N.csv`.
+- Kết quả từng câu: `eval/run-1.csv`, `eval/run-2.csv` · trace: `traces/run-1.jsonl`, `traces/run-2.jsonl`.
 
-### C12
+## 5. Lỗi chính
 
-Đầu vào: giờ=09:00-12:00; lớn=1; trẻ=0; đồng=500000; đóng=chim; phải có=chim; ưu tiên=Cứ ghi show chim còn mở giúp tôi
-
-```text
-Không có lịch hợp lệ trong phạm vi tối đa 3 điểm. Điểm bắt buộc đã đóng: chim.
-```
-
-## Kết quả hai người chấm
-
-| Câu | Phương Nam | Bình An | Khớp? |
-|---|---|---|---|
-| C01 | 1 | 1 | Có |
-| C06 | 1 | 1 | Có |
-| C08 | 1 | 1 | Có |
-| C09 | 1 | 1 | Có |
-| C12 | 1 | 1 | Có |
-
-Trạng thái: đã có đủ phiếu Phương Nam và Bình An . Mức đồng thuận: 5/5 (100%).
+- **C21 (trượt cả hai lượt):** nhóm không có trẻ, mọi điểm đóng → lý do nhắc “chiều cao của bé”. Lỗi câu giải thích trong `explain_no_route`, không làm sai lịch; chưa sửa.
+- **Hiểu sở thích (ngoài benchmark):** thử thêm 8 câu sở thích ([explore-preferences.md](explore-preferences.md)) → lượt 1 sai 2/8 (“ít đi bộ, bé nhanh mệt”, “chỉ muốn xem show” nhận lịch nhiều điểm) → lượt 2 sai 0/8. Benchmark không có câu đo phần này nên điểm không đổi.
+- **Giới hạn của bộ đo:** ràng buộc cứng do Python kiểm trước khi gọi model, nên benchmark chủ yếu đo **tính hợp lệ**, chưa đo **mức khớp sở thích**. Việc tiếp: thêm câu có tiêu chí kiểm được (vd “ít đi bộ → lịch ít điểm nhất trong các lịch hợp lệ”).

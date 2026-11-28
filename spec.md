@@ -12,10 +12,11 @@ Người dùng: phụ huynh tự lên kế hoạch khi đưa trẻ dưới 12 tu
 - **3/3** có trò / show định chơi mà không chơi được, mỗi người một lý do (chiều cao · bảo trì · hàng chờ). **3/3** đổi kế hoạch giữa ngày.
 - Riêng lỡ show vì sai giờ: **1/3**. Xếp hàng đông: **2/3**.
 - Review: 2/15 (13,3% mẫu thăm dò) kể hoặc khuyên canh giờ show (R04, R15).
+- Khảo sát kiểm lại (28/11, group cộng đồng dân cư, 20 phản hồi, **10 qua sàng lọc**, chưa đủ ngưỡng ≥20): lỗi giờ / điều kiện chỉ **2/10** → dưới ngưỡng 1/4 chốt trước; đổi kế hoạch vì trở ngại 5/10, lý do lớn nhất là **xếp hàng 3/5**. Mẫu không chỉ phụ huynh ([results.csv](evidence/survey/results.csv)).
 
 *"Lúc đo chiều cao cháu thiếu đúng 2cm không được vào trò tàu lượn làm cháu dỗi cả buổi chiều, thành ra kế hoạch xem nhạc nước buổi tối cũng phải hủy để đi về."* (P1)
 
-**Kết luận:** giả thuyết đúng một phần, đổi trọng tâm từ "canh giờ show" sang "trò định chơi mà không chơi được vì điều kiện". n = 3 là tín hiệu, chưa phải tỉ lệ; khảo sát ≥20 người chưa có số. [Tổng hợp và trích dẫn](evidence/summary.md)
+**Kết luận:** giả thuyết đúng một phần, đổi trọng tâm từ "canh giờ show" sang "trò định chơi mà không chơi được vì điều kiện". n = 3 là tín hiệu, chưa phải tỉ lệ. Khảo sát (10 người qua sàng lọc) **ngược chiều** ở lỗi giờ (2/10) và **cùng chiều** ở hàng chờ (3/5) → pain hàng chờ lớn hơn lỗi giờ. [Tổng hợp và trích dẫn](evidence/summary.md)
 
 ## §2. Impact và lựa chọn sơ bộ
 
@@ -28,10 +29,10 @@ Người dùng: phụ huynh tự lên kế hoạch khi đưa trẻ dưới 12 tu
 | Phút quyết định đổi kế hoạch giữa ngày | 2 · 5 · 10 | P1–P3 câu 4 |
 | Lượt khách chuỗi VinWonders năm 2025 | 9,11 triệu lượt (tăng 17%) | Vinpearl công bố KQKD 2025: [Báo Pháp luật VN – Doanh nhân, 30/01/2026](https://doanhnhan.baophapluat.vn/vinpearl-vpl-doanh-thu-nam-2025-vuot-15-500-ty-dong-mang-khach-san-tang-truong-34.html). **Không có số riêng VinWonders Nha Trang** — số là của cả chuỗi |
 | Số người mỗi nhóm đi chơi | 4 · 2 · 3 (trung bình 3) | P1–P3, n = 3 |
-| Tỉ lệ lượt khách thuộc gia đình có trẻ dưới 12 | 50% *(tự ước tính)*; trần 100% | chưa có nguồn — kiểm lại bằng khảo sát ≥20 người |
+| Tỉ lệ lượt khách thuộc gia đình có trẻ dưới 12 | 50% *(tự ước tính)*; trần 100% | chưa có nguồn — khảo sát đã phát không có câu lọc đi cùng trẻ nên không kiểm được |
 | → Số lượt đi của gia đình có trẻ (= số gia đình × số lần đi) | 9,11 triệu ÷ 3 ≈ 3,04 triệu nhóm-lượt / năm (trần); × 50% ≈ 1,52 triệu / năm ≈ 126.500 / tháng | tính từ 3 dòng trên |
 
-Với một gia đình (trung vị): khoảng 0,33 lần / tháng × (45 + 5) phút ≈ 17 phút / tháng *(tính từ 3 phỏng vấn, chưa phải tỉ lệ chung)*.
+Với một gia đình (trung vị): khoảng 0,33 lần / tháng × (45 + 5) phút ≈ 17 phút / tháng *(tính từ 3 phỏng vấn, chưa phải tỉ lệ chung)*. Khảo sát cho phút chuẩn bị thấp hơn (8/10 ≤15 phút), nên 45 phút có thể làm impact cao.
 
 Quy mô chuỗi VinWonders: khoảng 126.500 nhóm-lượt / tháng × 50 phút ≈ 6,3 triệu phút ≈ **105.000 giờ / tháng** *(dùng tỉ lệ 50% tự ước tính; trần nếu mọi lượt khách là gia đình có trẻ: ≈ 211.000 giờ / tháng)*. Đây là phút chuẩn bị + xếp lại mà các gia đình đang bỏ ra, không phải phút bản chạy thử chắc chắn tiết kiệm được; số người mỗi nhóm chỉ từ 3 phỏng vấn. Impact không chỉ là phút: P1 và P2 kể con dỗi, cả nhà bỏ show buổi tối hoặc về sớm — mất một phần buổi đi đã trả tiền vé.
 
@@ -112,7 +113,7 @@ Mô phỏng 50 phiên `simulate-2@20261128-120240` trên gemini-3.1-flash-lite, 
 
 ## §9. Rủi ro
 
-Danh mục công viên là mô phỏng; trả thời gian và giá do công cụ tính. Chỉ nhận thông tin nhóm cần thiết cho việc xếp lịch. Không yêu cầu mã đặt chỗ, tên trẻ hay dữ liệu thanh toán. **Hàng chờ ngoài phạm vi:** 2/3 phụ huynh bỏ trò vì xếp hàng đông (P1, P3), nhưng bản chạy thử không có dữ liệu thời gian chờ, nên một lịch hợp lệ vẫn có thể hỏng vì hàng dài. Lịch hiển thị là tham khảo; khách gửi lại khung giờ còn lại và điểm cần bỏ (`đóng=`) để xếp lại. Trẻ đi không có người lớn: sai thì trẻ là người chịu, nên `read_request` chặn bằng code khi lớn = 0, trước mọi bước xếp lịch hay gọi model (C22).
+Danh mục công viên là mô phỏng; trả thời gian và giá do công cụ tính. Chỉ nhận thông tin nhóm cần thiết cho việc xếp lịch. Không yêu cầu mã đặt chỗ, tên trẻ hay dữ liệu thanh toán. **Hàng chờ ngoài phạm vi:** 2/3 phụ huynh bỏ trò vì xếp hàng đông (P1, P3) và xếp hàng là lý do đổi kế hoạch lớn nhất ở khảo sát (3/5), nhưng bản chạy thử không có dữ liệu thời gian chờ, nên một lịch hợp lệ vẫn có thể hỏng vì hàng dài. Lịch hiển thị là tham khảo; khách gửi lại khung giờ còn lại và điểm cần bỏ (`đóng=`) để xếp lại. Trẻ đi không có người lớn: sai thì trẻ là người chịu, nên `read_request` chặn bằng code khi lớn = 0, trước mọi bước xếp lịch hay gọi model (C22).
 
 ## §10. Phân công và changelog
 
@@ -123,3 +124,4 @@ Danh mục công viên là mô phỏng; trả thời gian và giá do công cụ
 - 27/11 tối, Sơn, nhánh `son/cp3-web`: (1) Vô nghiệm thì thêm gợi ý đổi điều kiện do `suggest_fixes` tính, mỗi gợi ý đã chạy lại bộ kiểm là ra lịch. (2) Gộp bộ 26 câu của Bình An (C23–C26 từ review thật, 9/26 nguồn thật); bỏ C23, C24 cùng mã của Sơn vì trùng nguồn. (3) Lượt 1 `run-1@20261127-202533` bằng gemini-3.1-flash-lite, code trước cải tiến. (4) Web Streamlit `streamlit_app.py` dùng chung `answer()`. (5) Cải tiến lượt 2: model nhận bản tóm tắt lịch có phút đi bộ, giờ xong, số show (nhóm lỗi "ít đi bộ", "chỉ muốn xem show" bị chọn lịch nhiều điểm, 2/8 → 0/8 khi thử ngoài bộ); lượt 2 `run-2@20261127-202738`, cùng 26 câu. Hai lượt chờ Nam và An chấm. (6) Web chuyển sang chatbox: `extract_request` (model rút điều kiện, Python kiểm từng trường), `answer()` nhận cả câu tự nhiên; benchmark (dòng tên=giá trị) đi đường cũ. Không đổi §7, metric_spec.yaml hay C01–C22.
 - 27/11 tối (sau phỏng vấn P1–P3), Khanh: cập nhật §0, §1, §2, §9 theo [evidence/summary.md](evidence/summary.md). §1 thay số review bằng số phỏng vấn (2/3 đạt ngưỡng, 3/3 có trò không chơi được); §2 điền thừa số impact có nguồn và bảng so 3 hướng; §9 thêm rủi ro hàng chờ ngoài phạm vi. Không đổi §4–§7, metric_spec.yaml hay benchmark.
 - 28/11, Khanh: §2 điền quy mô từ số công khai — chuỗi VinWonders 9,11 triệu lượt năm 2025 (Vinpearl, báo 30/01/2026; không có số riêng Nha Trang), chia 3 người/nhóm (P1–P3), tỉ lệ gia đình có trẻ 50% *(tự ước tính)* → ≈105.000 giờ / tháng. Không đổi §4–§7.
+- 28/11 trưa, Khanh: (1) Chấm tay xong hai lượt (Bình An, Tuấn Khanh): 25/26 → 25/26, C21 trượt cả hai lượt. (2) §8: mô phỏng `simulate-2@20261128-120240` với tỉ lệ đạt lượt 2 và số người dùng từ §2. (3) §1, §2, §9: thêm kết quả khảo sát (10/20 qua sàng lọc, 2/10 lỗi giờ / điều kiện, xếp hàng 3/5). (4) `eval/README.md` viết lại thành hồ sơ đánh giá CP4. (5) `demo-slides.pdf` 8 trang, kết luận ITERATE. Không đổi §4–§7, metric_spec.yaml hay benchmark.

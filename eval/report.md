@@ -6,7 +6,7 @@
 
 **Cập nhật 28/11:** cả hai lượt đã chấm tay bởi Bình An và Tuấn Khanh (chấm thay Phương Nam), cùng cách chấm, đồng thuận **26/26 ở mỗi lượt**. C21 chấm 0 ở cả hai lượt (cùng đầu ra). Lượt 1 ban đầu ghi 26/26 do đội trưởng chốt C21 = 1 (số đã nộp ở CP3, kèm ghi chú "tính chặt là 25/26"); khi chấm lượt 2 nhóm thống nhất chấm chặt C21 cho cả hai lượt. Chi tiết: [phiếu lượt 1](phieu-cham-run-1.md) · [phiếu lượt 2](phieu-cham-run-2.md).
 
-**Trạng thái 27/11 tối:** cả hai lượt đã chạy bằng model thật, **chưa có nhãn của người chấm**. Các ô "chờ chấm" điền sau khi Phương Nam và Bình An chấm tay theo [phiếu lượt 1](phieu-cham-run-1.md) và ghi kết quả thống nhất vào cột `pass`, rồi chạy `python3 run.py score`. Phần "kiểm tự động" bên dưới là bộ kiểm độc lập của Sơn (tính lại giờ và tiền từ `park.json`), **không thay cho chấm của người**.
+Phần "kiểm tự động" bên dưới là bộ kiểm độc lập của Sơn (tính lại giờ và tiền từ `park.json`), **không thay cho chấm của người**.
 
 ## 1. Kết quả
 
