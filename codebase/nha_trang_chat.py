@@ -549,7 +549,21 @@ def answer_nha_trang(text: str, ds: dict[str, Any], route: dict[str, Any] | None
     sections: list[dict[str, Any]] = []
     shows_picked = [o for k, o in picked if k == "show"]
 
-    if intent == "recommend" and picked:
+    if intent == "recommend" and not picked:
+        # AI không chọn được tên hợp lệ: Python gợi ý từ dữ liệu, chỉ những trò có quy định chiều cao đã công bố
+        shortest = min(heights) if heights else None
+        ruled = [i for i in ds["catalog"] if i["kind"] == "ride" and not i["is_harbour"]
+                 and i["restrictions"]["min_height_cm"] is not None
+                 and (shortest is None or shortest >= i["restrictions"]["min_height_cm"])]
+        lines = ["AI chưa chọn được trò cụ thể cho “" + ((understood or {}).get("preference") or "câu hỏi") + "”."]
+        if ruled:
+            who = f"người thấp nhất cao {shortest} cm" if shortest else "theo quy định đã công bố"
+            lines.append(f"Trò có quy định chiều cao mà {who} đã đủ: " + ", ".join(
+                f"{i['name']} (từ {i['restrictions']['min_height_cm']} cm)" for i in ruled) + ".")
+        lines.append("Bạn nhắn tên khu (vd “Sea World”) hoặc tên trò để Vivu xem chi tiết.")
+        sections.append({"title": "Gợi ý theo sở thích", "lines": lines})
+        picked_for_detail = []
+    elif intent == "recommend" and picked:
         pref = understood.get("preference") or "câu hỏi của bạn"
         shortest = min(heights) if heights else None
         fit, too_short = [], []

@@ -104,6 +104,16 @@ class TestAnswerWithModel(unittest.TestCase):
         for secret in ("6234", "1090", "Ô tô / taxi", "17:40", "12.2388", "109.1967"):
             self.assertNotIn(secret, sent)
 
+    def test_recommend_without_places_falls_back_to_data(self):
+        r = ask("Bé nhà mình cao 1m15, thích nước, nên chơi gì?",
+                {"intent": "recommend", "places": [], "heights_cm": [115], "preference": "thích nước"})
+        out = r["output"]
+        self.assertIn("AI chưa chọn được trò cụ thể", out)
+        self.assertIn("Tata World River Adventure (từ 105 cm)", out)
+        self.assertNotIn("Zipline (từ 130 cm)", out)
+        self.assertNotIn("Vivu chưa nhận ra", out)
+        self.assertEqual(r["model_meta"], {"model": "gemini-test", "tokens_in": 10, "tokens_out": 5})
+
     def test_hallucinated_place_is_not_used(self):
         r = ask("có trò gì vui", {"intent": "recommend", "places": ["Lâu đài bịa đặt"]})
         self.assertNotIn("Lâu đài bịa đặt", r["output"])
