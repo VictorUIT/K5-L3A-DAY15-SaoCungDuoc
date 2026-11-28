@@ -19,7 +19,8 @@ for _path in (os.path.join(ROOT, "codebase"), ROOT):
     if _path not in sys.path:
         sys.path.insert(0, _path)
 
-SETTINGS = ("MODEL_PROVIDER", "MODEL_NAME", "API_KEY", "DEMO_MAX_PER_SESSION", "DEMO_MAX_PER_HOUR", "DEMO_ALLOW_FAKE")
+SETTINGS = ("MODEL_PROVIDER", "MODEL_NAME", "API_KEY", "DEMO_MAX_PER_SESSION", "DEMO_MAX_PER_HOUR", "DEMO_ALLOW_FAKE",
+            "GOOGLE_MAPS_ROUTES_API_KEY", "ROUTES_MAX_PER_SESSION", "ROUTES_MAX_PER_HOUR")
 for _name in SETTINGS:  # secret phía máy chủ → biến môi trường, trước khi trang nào nạp ai.py
     try:
         _value = st.secrets.get(_name)

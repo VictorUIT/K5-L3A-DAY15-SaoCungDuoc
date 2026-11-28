@@ -47,6 +47,26 @@ Trên máy, web đọc model từ `.env` hoặc `.streamlit/secrets.toml` (mẫu
 
 Model chỉ được gọi khi gửi tin nhắn (mỗi tin tối đa 2 lần: rút điều kiện, chọn lịch). Mỗi phiên có kết quả và trace riêng; trace của khung được bọc trong một khoá chung để hai người bấm cùng lúc không lẫn lượt. Hết quota thì web báo "Model đang hết lượt gọi", không hiện chi tiết key.
 
+### Đường đến khu vui chơi (VinWonders Nha Trang)
+
+Mục này chỉ có khi chọn khu VinWonders Nha Trang; Vịnh Mây là khu mô phỏng nên không có chỉ đường thực địa. Code: `codebase/directions.py`, `web/duong_den.py`.
+
+- **Không cần key:** nút “Chỉ đường từ vị trí của tôi” mở Google Maps Directions (`api=1`, không có `origin` để điện thoại tự lấy vị trí) tới **Cảng Vinpearl Nha Trang** (tên theo trang chính thức VinWonders, tuyến “… → Cảng Cầu Đá → Cảng Vinpearl Nha Trang”; Google Maps hiện là *Vinpearl Land Terminal*). Có ô nhập tên resort/địa chỉ để lên kế hoạch trước. Cáp treo chưa xác minh được ga cụ thể (và có nguồn chính thức ghi đang tạm dừng) nên chỉ có nút “Tìm địa điểm trên Google Maps”. Chưa đối chiếu được Google Place ID.
+- **Có key (tuỳ chọn):** “Ước tính thời gian đến” gọi Routes API (`computeRoutes`) từ server khi khách bấm, từ vị trí hiện tại (xin quyền trình duyệt một lần) hoặc từ địa chỉ nhập. Kết quả là chặng tới bến; thời gian chờ tàu, đi tàu và vào cổng chưa có dữ liệu đáng tin nên không cộng. Toạ độ/địa chỉ khách không ghi vào file, log, trace, lịch sử chat và không gửi cho model.
+
+Bật Routes API cho demo:
+1. Google Cloud Console → chọn (hoặc tạo) project → **Billing**: gắn tài khoản thanh toán (Routes API bắt buộc có billing).
+2. **APIs & Services → Library** → bật **Routes API**.
+3. **APIs & Services → Credentials → Create credentials → API key**. Ở key vừa tạo: *API restrictions* → *Restrict key* → chỉ chọn **Routes API**. Key được gọi từ server Streamlit Cloud (IP thay đổi) nên không dùng giới hạn theo website/IP.
+4. **APIs & Services → Routes API → Quotas**: hạ *Compute Routes requests per minute* (vd 30) và đặt giới hạn mỗi ngày (vd 300) cho demo; nên đặt thêm **Budget alert** trong Billing.
+5. Dán key vào Streamlit Secrets (bên dưới). Web còn tự giới hạn `ROUTES_MAX_PER_SESSION` và `ROUTES_MAX_PER_HOUR`.
+
+| Secret | Ý nghĩa | Mặc định |
+|---|---|---|
+| `GOOGLE_MAPS_ROUTES_API_KEY` | key Routes API, chỉ đặt ở Secrets phía server; thiếu thì chỉ ẩn phần ước tính | trống |
+| `ROUTES_MAX_PER_SESSION` | số lần ước tính tối đa mỗi phiên | 10 |
+| `ROUTES_MAX_PER_HOUR` | số lần ước tính tối đa mỗi giờ cho cả web | 60 |
+
 **Deploy lên Streamlit Community Cloud** (share.streamlit.io): New app → repo `VictorUIT/K5-L3A-DAY15-SaoCungDuoc`, branch `son/cp3-web` (hoặc `main` sau khi gộp), main file `streamlit_app.py`, Advanced settings → Python 3.12 và dán nội dung secret theo mẫu ở trên vào ô Secrets.
 
 ---

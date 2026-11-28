@@ -38,6 +38,7 @@ SOURCE_VI = {
 TICKET_WORDS = re.compile(r"(?<!\w)(vé|giá|bao nhiêu tiền|mất bao nhiêu|ticket|price)(?!\w)")  # trên chữ còn dấu: "vé" ≠ "về"
 PLAN_WORDS = re.compile(r"(di bo|di chuyen|kip|lich|xep|ke hoach|lo trinh|sang|toi kip|walk)")
 WALK_WORDS = re.compile(r"(di bo|di chuyen|kip|walk|tu .+ (den|sang|toi|qua) )")
+ARRIVAL_WORDS = re.compile(r"(resort|khach san|tu day|cho minh|cho toi|dat lien|bay gio|xuat phat|tu nha|tu ben|di ra dao)")
 GATE_ID = "nt_02"  # Central Gate (bản đồ): điểm xuất phát khi khách không nói đi từ đâu
 
 
@@ -454,8 +455,58 @@ def build_demo_plan(ds: dict[str, Any], picked: list[tuple[str, Any]], start: in
     return lines
 
 
+# ------------------------------------------------------------------ từ chỗ khách tới show (chặng ngoài công viên)
+def _now_vn() -> int:
+    import datetime
+    from zoneinfo import ZoneInfo
+    t = datetime.datetime.now(ZoneInfo("Asia/Ho_Chi_Minh"))
+    return t.hour * 60 + t.minute
+
+
+def arrival_check(ds: dict[str, Any], show: dict[str, Any] | None, route: dict[str, Any] | None,
+                  now: int | None) -> list[dict[str, Any]]:
+    """Có kịp show không, tính từ chỗ khách: chỉ cộng chặng Google Maps đã trả về; chặng nào chưa có dữ liệu đáng tin
+    thì nói là thiếu. Không dùng quãng đi bộ ước tính trong công viên, không dùng số của Vịnh Mây."""
+    have, missing = [], []
+    arrive = None
+    if route:
+        minutes = max(1, round(route["duration_s"] / 60))
+        have.append(f"{route['mode_label']} tới {route['dest_name']}: khoảng {minutes} phút, "
+                    f"{route['distance_m'] / 1000:.1f} km (Google Maps, tính lúc {route.get('at', '?')})".replace(".", ",", 1))
+        if now is not None:
+            arrive = now + minutes
+            have.append(f"Nếu đi ngay bây giờ ({_clock(now)}), tới {route['dest_name']} khoảng {_clock(arrive)}.")
+    else:
+        missing.append("Thời gian từ chỗ bạn tới bến tàu: bấm “Ước tính thời gian đến” trong mục Đường đến khu vui chơi")
+    timed = [s for s in (show or {}).get("sessions", []) if s["has_published_time"]]
+    if show and timed:
+        have.append(f"{show['name']}: suất " + ", ".join(s["start"] for s in timed)
+                    + f" ({source_label(ds, timed[0]['source_id'])})")
+        if arrive is not None:
+            upcoming = [s for s in timed if _min(s["start"]) > arrive]
+            if upcoming:
+                s = upcoming[0]
+                have.append(f"Tới bến lúc {_clock(arrive)} thì còn khoảng {_min(s['start']) - arrive} phút trước suất "
+                            f"{s['start']} cho các chặng chưa tính bên dưới.")
+            else:
+                have.append(f"Tới bến lúc {_clock(arrive)} là đã sau suất cuối hôm nay ({timed[-1]['start']}).")
+    elif show:
+        missing.append(f"{show['name']}: chưa có giờ diễn công bố")
+    missing.append("Thời gian chờ tàu hoặc cáp treo: chưa có lịch chuyến theo ngày")
+    missing.append("Đi tàu ra đảo: nguồn chính thức ghi tàu cao tốc khoảng 15 phút, cano khoảng 10 phút, chưa rõ theo ngày")
+    missing.append("Từ bến trên đảo vào cổng và tới chỗ diễn: chưa có dữ liệu đáng tin")
+    reached = f"tới {route['dest_name']}" if route else "nào"
+    verdict = (f"Vivu mới tính được chặng {reached}; chưa đủ dữ liệu để khẳng định kịp show."
+               if route else "Vivu chưa tính được chặng nào từ chỗ bạn, nên chưa trả lời được có kịp show không.")
+    return [{"title": "Từ chỗ bạn tới show", "lines": [verdict]},
+            {"title": "Đã tính được", "lines": have or ["Chưa có"]},
+            {"title": "Còn thiếu để xác nhận", "lines": missing}]
+
+
 # ------------------------------------------------------------------ điểm vào
-def answer_nha_trang(text: str, ds: dict[str, Any]) -> dict[str, Any]:
+def answer_nha_trang(text: str, ds: dict[str, Any], route: dict[str, Any] | None = None,
+                     now: int | None = None) -> dict[str, Any]:
+    """route: kết quả Routes API của phiên (không có toạ độ hay địa chỉ khách); now: phút trong ngày, giờ Việt Nam."""
     park = ds["park"]
     demo = bool(ds.get("demo"))
     folded = fold(text)
@@ -467,8 +518,14 @@ def answer_nha_trang(text: str, ds: dict[str, Any]) -> dict[str, Any]:
     wants_plan = bool(PLAN_WORDS.search(folded)) or (demo and len(places) >= 2)
     wants_walk = bool(WALK_WORDS.search(folded))
     sections: list[dict[str, Any]] = []
+    shows_picked = [o for k, o in picked if k == "show"]
+    asks_arrival = bool(re.search(r"\bkip\b", folded)) and bool(ARRIVAL_WORDS.search(folded)) and len(places) <= 1
 
-    if wants_plan and demo:
+    if asks_arrival:
+        sections += arrival_check(ds, shows_picked[0] if shows_picked else None, route,
+                                  now if now is not None else _now_vn())
+        picked_for_detail = []
+    elif wants_plan and demo:
         if wants_walk and len(places) == 2 and not re.search(r"(lich|xep|ke hoach|lo trinh)", folded):
             sections.append({"title": f"Đi từ {places[0]} sang {places[1]}", "lines": walk_verdict(ds, picked)})
         else:
