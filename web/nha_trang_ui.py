@@ -41,6 +41,50 @@ NT_CSS = """
   padding: .75rem 1rem; margin: .4rem 0 .6rem; font-size: .92rem; line-height: 1.55; color: #1F4A66;}
 .vm-card dd .nt-tag {font-weight: 600;}
 .vm-card dd {white-space: normal;}
+.nt-h {font-weight: 800; font-size: 1.08rem; color: #0F3550; margin: .1rem 0 .4rem;}
+.nt-sub {font-weight: 700; color: #0F3550; margin: .8rem 0 .3rem;}
+.nt-tlwrap {border-left: 2px dashed #9FD1F2; margin: .3rem 0 .3rem .45rem; padding-left: .2rem;}
+.nt-tl {display: grid; grid-template-columns: 6.6rem 1.6rem 1fr; align-items: start; gap: .35rem; padding: .32rem 0 .32rem .4rem;
+  border-bottom: 1px solid #EEF3F7;}
+.nt-tl:last-child {border-bottom: 0;}
+.nt-tl .t {font-weight: 700; font-variant-numeric: tabular-nums; color: #0B5E96; white-space: nowrap;}
+.nt-tl .ic {font-size: 1.1rem; line-height: 1.3;}
+.nt-tl b {font-weight: 650;}
+.nt-tl small {display: block; color: #6B7B8A; font-size: .8rem; margin-top: .05rem;}
+.nt-grid {display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: .6rem; margin: .3rem 0 .5rem;}
+.nt-card {background: #F8FBFE; border: 1px solid #DCEBF6; border-radius: 12px; padding: .65rem .8rem;}
+.nt-card.wide {margin: .4rem 0 .5rem;}
+.nt-card.miss {background: #FFF9F2; border-color: #FFE0BF;}
+.nt-card-h {display: flex; gap: .45rem; align-items: center; font-weight: 750; color: #0F3550; margin-bottom: .35rem;}
+.nt-card-h span {font-size: 1.15rem;}
+.nt-kv {display: grid; grid-template-columns: 1.4rem 1fr; gap: .3rem; font-size: .9rem; line-height: 1.45; margin: .12rem 0;}
+.nt-kv .ic {text-align: center;}
+.nt-est {font-size: .72rem; font-weight: 600; color: #B25400; background: #FFF3E0; border: 1px dashed #F3B675;
+  border-radius: 5px; padding: 0 .3rem; margin-left: .3rem; white-space: nowrap;}
+.nt-cardsrc {font-size: .74rem; color: #6B7B8A; border-top: 1px dashed #DCEBF6; margin-top: .45rem; padding-top: .35rem;}
+.nt-kv.warn {color: #A84300;}
+.nt-lead {display: grid; grid-template-columns: 1.8rem 1fr; gap: .4rem; background: #F2F8FD; border: 1px solid #CFE7F5;
+  border-radius: 12px; padding: .65rem .8rem; margin: .2rem 0 .5rem;}
+.nt-lead > span {font-size: 1.3rem; line-height: 1.2;}
+.nt-note {font-size: .86rem; color: #36607F; margin: .1rem 0 .3rem;}
+.nt-foot {font-size: .8rem; color: #6B7B8A; margin: .25rem 0;}
+.nt-hint {background: #FFF7E8; border: 1px solid #FFDDA8; color: #7A4B00; border-radius: 10px; padding: .45rem .7rem;
+  font-size: .88rem; margin: .5rem 0 .2rem;}
+.nt-skip {font-size: .85rem; color: #6B4A2B; margin: .35rem 0;}
+.nt-skip summary {cursor: pointer; font-weight: 600;}
+.nt-skip div {margin: .15rem 0 .15rem .4rem;}
+.nt-badges {display: flex; flex-wrap: wrap; gap: .35rem; margin: .2rem 0;}
+.nt-badge {font-size: .82rem; font-weight: 600; border-radius: 999px; padding: .15rem .65rem;}
+.nt-badge.ok {background: #E6F6EC; color: #146C3A;}
+.nt-badge.bad {background: #FFEDE3; color: #B23C00;}
+.nt-chips {display: flex; flex-wrap: wrap; gap: .3rem; align-items: center; margin: .55rem 0 .15rem;}
+.nt-chips .lbl {font-size: .78rem; color: #5B6B7A; font-weight: 600; margin-right: .1rem;}
+.nt-chip {font-size: .76rem; background: #EEF5FB; color: #315472; border-radius: 999px; padding: .1rem .55rem;}
+@media (max-width: 640px) {
+  .nt-tl {grid-template-columns: 6.4rem 1.3rem 1fr; gap: .25rem; padding-left: .25rem;}
+  .nt-tl .t {font-size: .88rem;}
+  .nt-grid {grid-template-columns: 1fr;}
+}
 </style>
 """
 
@@ -198,7 +242,8 @@ def price_card(ds, b) -> str:
 
 # ---------------------------------------------------------------- chatbot
 NT_EXAMPLES = {
-    "lich": "9h đến, về 17h, Alpine Coaster, Underwater World, Biểu diễn chim, Sky Wheel, bé cao 1m15",
+    "lich": "Nhà mình 2 vợ chồng với bé cao 1m25, 9 giờ tới, 5 giờ chiều về, có 3 triệu, bé thích cảm giác mạnh",
+    "lich2": "9h đến, về 17h, Alpine Coaster, Underwater World, Biểu diễn chim, Sky Wheel, bé cao 1m15",
     "tata": "Tata Show mấy giờ diễn?",
     "ve100": "Vé cho bé cao đúng 100 cm bao nhiêu?",
     "dibo": "Đi bộ từ Zipline sang Tata Show có kịp không?",
@@ -228,9 +273,15 @@ def _nt_reset() -> None:
 def _understood_text(u: dict[str, Any] | None) -> str:
     if not u:
         return ""
-    parts = [INTENTS.get(u["intent"], u["intent"])]
+    parts = [] if u["intent"] == "other" else [INTENTS.get(u["intent"], u["intent"])]  # "other": đã dùng dò từ khoá
     if u["places"]:
         parts.append(", ".join(u["places"]))
+    if u.get("suggested"):
+        parts.append("gợi ý: " + ", ".join(u["suggested"]))
+    if u.get("adults") or u.get("children"):
+        parts.append(f"{u.get('adults') or 0} người lớn, {u.get('children') or 0} trẻ")
+    if u.get("budget_vnd"):
+        parts.append(f"ngân sách {u['budget_vnd']:,}".replace(",", ".") + " đ")
     if u["heights_cm"]:
         parts.append("cao " + ", ".join(f"{h} cm" for h in u["heights_cm"]))
     if u["ages"]:
@@ -290,10 +341,182 @@ def nt_process() -> None:
         s.nt_history.append({"role": "bot", "error": f"Có lỗi khi đọc dữ liệu Nha Trang ({type(e).__name__})."})
 
 
-def _line_html(line: str) -> str:
-    text = html.escape(line).replace(EST, tag_est())
-    text = re.sub(r"^(\d\d:\d\d(?:–\d\d:\d\d)?)\s+", r"<b>\1</b>&nbsp; ", text)  # mốc giờ trong lịch: in đậm
-    return f'<li class="{"warn" if line.startswith("⚠") else ""}">{text}</li>'
+# ---------------------------------------------------------------- hiển thị câu trả lời: gọn, có icon
+LINE_ICONS = [  # (tiền tố dòng, icon, bỏ tiền tố khi hiện?)
+    ("Khu:", "🗺️", True), ("Giờ hoạt động:", "🕘", True), ("Giờ khu:", "🕘", True), ("Điều kiện:", "📏", True),
+    ("Phí:", "💳", True), ("Thời lượng:", "⏱️", True), ("Trạng thái hôm nay:", "🟢", True), ("Địa điểm:", "📍", True),
+    ("Suất", "⏰", False), ("Người cao", "📏", False), ("Đi bộ", "🚶", False), ("Muốn kịp", "⏰", False),
+    ("Nếu đi ngay", "🚗", False), ("Tới bến", "⏳", False),
+]
+SECTION_ICONS = [("Lịch gợi ý", "🗓️"), ("Gợi ý theo sở thích", "✨"), ("Vé vào cổng", "🎟️"), ("Đi từ", "🚶"),
+                 ("Từ chỗ bạn", "🧭"), ("Đã tính được", "✅"), ("Phần đã có dữ liệu", "✅"), ("Còn thiếu", "❓"),
+                 ("Chưa xác nhận", "⛔"), ("Khu ", "🗺️"), ("Vivu chưa nhận ra", "💬"), ("Vivu cần biết", "💬")]
+ROW_RE = re.compile(r"^(\d\d:\d\d)(?:–(\d\d:\d\d))?\s+(.+?)(?:\s+\((.+?)\))?(\s*⚠ hai nguồn ghi giờ khác nhau)?"
+                    r"(\s*·\s*giờ diễn ước tính demo)?$")
+
+
+def _rich(text: str) -> str:
+    """Escape + tách 'nguồn: …' thành nhãn nhỏ, 'ước tính demo' thành nhãn cam."""
+    body, _, src = text.partition(" · nguồn: ")
+    out = html.escape(body).replace(" · " + EST, " " + tag_est()).replace("(" + EST + ")", tag_est()).replace(EST, tag_est())
+    if src:
+        out += f'<span class="nt-tag src">{html.escape(src.rstrip(")."))}</span>'
+    return out
+
+
+def _short_est() -> str:
+    return '<span class="nt-est">ước tính</span>'
+
+
+def _kv(line: str, sources: list[str] | None = None) -> str:
+    """Một dòng có icon. sources != None: tách nguồn ra (gom ở cuối thẻ), ước tính hiện thành chữ ngắn."""
+    if sources is not None:
+        line, _, src = line.partition(" · nguồn: ")
+        if src:
+            name = src.rstrip(").").split(" · ")[0]
+            if name not in sources:
+                sources.append(name)
+        line = line.replace(" · " + EST, "\x00").replace(" (" + EST + ")", "\x00").replace(EST, "\x00")
+    warn = line.startswith("⚠")
+    icon, text = "•", line
+    if warn:
+        icon, text = "⚠️", line.lstrip("⚠ ").strip()
+    else:
+        for prefix, ic, strip in LINE_ICONS:
+            if line.startswith(prefix):
+                icon, text = ic, (line[len(prefix):].strip() if strip else line)
+                break
+    if line.startswith("Người cao") and ("chưa đủ" in line or "đủ chiều cao" in line):
+        icon = "❌" if "chưa đủ" in line else "✅"
+    body = _rich(text) if sources is None else html.escape(text).replace("\x00", _short_est())
+    return f'<div class="nt-kv{" warn" if warn else ""}"><span class="ic">{icon}</span><span>{body}</span></div>'
+
+
+def _reply_card(icon: str, title: str, lines: list[str], wide: bool = False) -> str:
+    sources: list[str] = []
+    rows = "".join(_kv(l, sources) for l in lines)
+    foot = f'<div class="nt-cardsrc">📎 {html.escape(" · ".join(sources))} · 27/11/2026</div>' if sources else ""
+    return (f'<div class="nt-card{" wide" if wide else ""}"><div class="nt-card-h"><span>{icon}</span>{html.escape(title)}</div>'
+            + rows + foot + "</div>")
+
+
+def _section_icon(title: str) -> str:
+    if title.endswith("· biểu diễn"):
+        return "🎭"
+    return next((ic for p, ic in SECTION_ICONS if title.startswith(p)), "🎢")
+
+
+def _ticket_block(lines: list[str]) -> str:
+    rows, total, badges = [], None, []
+    price_src = next((l.split("nguồn: ", 1)[1].rstrip(").") for l in lines if "nguồn: Bảng giá" in l), None)
+    for l in lines:
+        if l.startswith(("Tổng vé", "Tổng vé đã tính")):
+            label, _, rest = l.partition(": ")
+            amount = rest.split(" (")[0]
+            total = (label, amount, rest[len(amount):].strip(" ()"))
+        elif l.startswith("Trong ngân sách"):
+            badges.append(f'<span class="nt-badge ok">✅ {html.escape(l.rstrip("."))}</span>')
+        elif l.startswith(("⚠ Vượt ngân sách", "Ngân sách")):
+            badges.append(f'<span class="nt-badge bad">⚠️ {html.escape(l.lstrip("⚠ ").rstrip("."))}</span>')
+        elif l.startswith(("Vé tiêu chuẩn", "Giá tham khảo")):
+            rows.append(f'<div class="nt-foot">{_rich(l)}</div>')
+        elif l.startswith(("Chưa gồm phụ phí", "Còn ")):
+            rows.append(f'<div class="nt-kv"><span class="ic">ℹ️</span><span>{_rich(l)}</span></div>')
+        else:
+            text = re.sub(r"^Người cao (\d+) cm → nhóm vé ", r"Bé/người cao \1 cm · ", l).split(" · giá tham khảo")[0]
+            rows.append(f'<div class="nt-kv"><span class="ic">🎟️</span><span>{_rich(text)}</span></div>')
+    out = "".join(rows)
+    if total:
+        out += (f'<div class="vm-total"><span>{html.escape(total[0])}</span><b>{html.escape(total[1])}</b></div>'
+                f'<div class="nt-foot">{_rich(total[2]) if total[2] else ""}</div>')
+    if badges:
+        out += '<div class="nt-badges">' + "".join(badges) + "</div>"
+    if price_src and not total:
+        out += f'<div class="nt-cardsrc">📎 {html.escape(price_src)} · giá tham khảo</div>'
+    return out
+
+
+def _plan_block(lines: list[str]) -> str:
+    timeline, skipped, tickets, notes, hints, end_line = [], [], [], [], [], ""
+    for l in lines:
+        m = ROW_RE.match(l)
+        if m:
+            start, end, name, detail, conflict, est = m.groups()
+            icon = "🚪" if name.startswith("Vào cổng") else ("🎭" if detail and "có mặt trước" in detail else "🎢")
+            tags = ""
+            if est:
+                tags += tag_est().replace(EST, "giờ ước tính")
+            if conflict:
+                tags += '<span class="nt-tag warn">⚠ 2 nguồn lệch giờ</span>'
+            when = start + (f"–{end}" if end else "")
+            timeline.append(f'<div class="nt-tl"><span class="t">{when}</span><span class="ic">{icon}</span>'
+                            f'<span><b>{html.escape(name)}</b>{tags}'
+                            + (f'<small>{html.escape(detail)}</small>' if detail else "") + "</span></div>")
+        elif l.startswith("Không xếp được "):
+            skipped.append(l[len("Không xếp được "):])
+        elif l.startswith(("Người cao", "Tổng vé", "Trong ngân sách", "⚠ Vượt", "Ngân sách", "Còn ", "Chưa gồm phụ phí", "Nhắn số người"))\
+                or re.match(r"\d+ người lớn ×", l):
+            tickets.append(l)
+        elif l.startswith("Nhắn thêm"):
+            hints.append(l)
+        elif l.startswith("Kết thúc khoảng"):
+            end_line = l
+        else:
+            notes.append(l)
+    out = ""
+    for n in notes:
+        if not n.startswith("Thời gian đi bộ"):
+            out += f'<div class="nt-note">{_rich(n)}</div>'
+    out += '<div class="nt-tlwrap">' + "".join(timeline) + "</div>"
+    if end_line:
+        out += f'<div class="nt-foot">🏁 {html.escape(end_line)}</div>'
+    if skipped:
+        out += ('<details class="nt-skip"><summary>⛔ Không xếp được ' + str(len(skipped)) + " điểm</summary>"
+                + "".join(f"<div>• {_rich(s)}</div>" for s in skipped) + "</details>")
+    if tickets:
+        out += '<div class="nt-sub">🎟️ Vé vào cổng · giá tham khảo</div>' + _ticket_block(tickets)
+    for h in hints:
+        out += f'<div class="nt-hint">💬 {html.escape(h)}</div>'
+    est_note = next((n for n in notes if n.startswith("Thời gian đi bộ")), None)
+    if est_note:
+        out += f'<div class="nt-foot">{_rich(est_note)}</div>'
+    return out
+
+
+def _render_sections(sections: list[dict[str, Any]]) -> None:
+    cards: list[str] = []
+
+    def flush():
+        if cards:
+            st.markdown('<div class="nt-grid">' + "".join(cards) + "</div>", unsafe_allow_html=True)
+            cards.clear()
+
+    for sec in sections:
+        title, lines, icon = sec["title"], sec["lines"], _section_icon(sec["title"])
+        if title.startswith("Lịch gợi ý"):
+            flush()
+            st.markdown(f'<div class="nt-h">{icon} {html.escape(title)}</div>' + _plan_block(lines), unsafe_allow_html=True)
+        elif title.startswith("Vé vào cổng"):
+            flush()
+            st.markdown(f'<div class="nt-card wide"><div class="nt-card-h"><span>{icon}</span>{html.escape(title)}</div>'
+                        + _ticket_block(lines) + "</div>", unsafe_allow_html=True)
+        elif title.startswith(("Gợi ý theo sở thích", "Vivu chưa nhận ra", "Vivu cần biết", "Chưa xác nhận",
+                               "Từ chỗ bạn", "Đi từ")):
+            flush()
+            first, rest = lines[0], lines[1:]
+            body = "".join(_kv(l) for l in rest)
+            st.markdown(f'<div class="nt-lead"><span>{icon}</span><div><b>{html.escape(title)}</b>'
+                        f'<div>{_rich(first)}</div>{body}</div></div>', unsafe_allow_html=True)
+        elif title.startswith(("Đã tính được", "Phần đã có dữ liệu", "Còn thiếu")):
+            flush()
+            ic = "✅" if not title.startswith("Còn thiếu") else "❓"
+            st.markdown(f'<div class="nt-card wide {"miss" if ic == "❓" else ""}"><div class="nt-card-h"><span>{ic}</span>'
+                        f'{html.escape(title)}</div>'
+                        + "".join(f'<div class="nt-kv"><span class="ic">{"✓" if ic == "✅" else "·"}</span>'
+                                  f'<span>{_rich(l)}</span></div>' for l in lines) + "</div>", unsafe_allow_html=True)
+        else:  # thẻ trò chơi / show / khu
+            cards.append(_reply_card(icon, title.replace(" · biểu diễn", ""), lines))
+    flush()
 
 
 def _render_nt_bot(i: int, msg: dict[str, Any]) -> None:
@@ -301,16 +524,17 @@ def _render_nt_bot(i: int, msg: dict[str, Any]) -> None:
         if msg.get("error"):
             st.error(msg["error"])
             return
-        st.caption(msg["header"])
-        for sec in msg["sections"]:
-            warn = sec["title"].startswith(("Chưa xác nhận", "Còn thiếu"))
-            items = "".join(_line_html(line) for line in sec["lines"])
-            st.markdown(f'<p class="nt-sec-title{" warn" if warn else ""}">{html.escape(sec["title"])}</p>'
-                        f'<ul class="nt-lines">{items}</ul>', unsafe_allow_html=True)
+        _render_sections(msg["sections"])
+        chips = []
         if msg.get("understood"):
-            st.caption("Vivu hiểu: " + msg["understood"])
+            chips += [f'<span class="nt-chip">{html.escape(p)}</span>' for p in msg["understood"].split(" · ")]
+        foot = ""
+        if chips:
+            foot += '<div class="nt-chips"><span class="lbl">🤖 Vivu hiểu</span>' + "".join(chips) + "</div>"
         if msg.get("note"):
-            st.caption("ℹ️ " + msg["note"])
+            foot += f'<div class="nt-foot">ℹ️ {html.escape(msg["note"])}</div>'
+        foot += f'<div class="nt-foot">📚 {html.escape(msg["header"])}</div>'
+        st.markdown(foot, unsafe_allow_html=True)
         with st.expander("Chi tiết kỹ thuật"):
             found = ", ".join(name for _, name in msg["found"]) or "không có"
             mm, sm = msg.get("model_meta"), msg.get("summary")
