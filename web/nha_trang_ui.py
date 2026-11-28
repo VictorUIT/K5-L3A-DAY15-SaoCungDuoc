@@ -285,7 +285,7 @@ def nt_process() -> None:
         s.nt_history.append({"role": "bot", "header": reply["header"], "sections": reply["sections"],
                              "found": reply["found"], "understood": _understood_text(reply.get("understood")),
                              "dropped": (reply.get("understood") or {}).get("dropped", []),
-                             "note": note, "summary": summary})
+                             "note": note, "summary": summary, "model_meta": reply.get("model_meta")})
     except Exception as e:  # dữ liệu hỏng hay lỗi khác: báo gọn
         s.nt_history.append({"role": "bot", "error": f"Có lỗi khi đọc dữ liệu Nha Trang ({type(e).__name__})."})
 
@@ -313,9 +313,12 @@ def _render_nt_bot(i: int, msg: dict[str, Any]) -> None:
             st.caption("ℹ️ " + msg["note"])
         with st.expander("Chi tiết kỹ thuật"):
             found = ", ".join(name for _, name in msg["found"]) or "không có"
-            sm = msg.get("summary")
-            if sm and sm.get("model_calls"):
-                st.caption("AI đọc hiểu câu hỏi · Model: %s · gọi model %d lần · token vào %d / ra %d"
+            mm, sm = msg.get("model_meta"), msg.get("summary")
+            if mm:
+                st.caption("AI đọc hiểu câu hỏi · Model: %s · gọi model 1 lần · token vào %s / ra %s"
+                           % (mm.get("model") or "?", mm.get("tokens_in"), mm.get("tokens_out")))
+            elif sm and sm.get("model_calls"):
+                st.caption("AI đọc hiểu câu hỏi · Model: %s · gọi model %d lần (lỗi) · token vào %d / ra %d"
                            % (", ".join(sm["models"]), sm["model_calls"], sm["tokens_in"], sm["tokens_out"]))
             else:
                 st.caption("Không gọi model lần này (dò từ khoá).")

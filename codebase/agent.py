@@ -245,5 +245,6 @@ def answer_for_park(text, park_id="vinh_may", request_override=None, demo=False,
     reply = answer_nha_trang(text, dataset, route=route, understood=understood, ai_picked=ai_picked)
     reply["understood"] = understood
     reply["model_error"] = model_error
+    reply["model_meta"] = (understood or {}).get("model_meta")
     reply["plan"] = plan
     return reply

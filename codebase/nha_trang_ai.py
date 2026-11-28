@@ -51,8 +51,9 @@ def system_prompt(ds: dict[str, Any]) -> str:
     return (
         "Bạn đọc tin nhắn tiếng Việt của khách muốn đi VinWonders Nha Trang và rút ra ý định cùng thông tin khách nói. "
         f"intent là một trong: {intents}. "
-        "places: tên show, khu hoặc trò chơi khách nhắc tới, hoặc (với recommend) tối đa 4 trò/điểm hợp sở thích khách; "
-        "CHỈ chép đúng tên trong danh mục dưới đây, không tự đặt tên, giữ thứ tự khách nói. Với walk_between: điểm đi "
+        "places: tên show, khu hoặc trò chơi khách nhắc tới, giữ thứ tự khách nói. Nếu intent là recommend thì BẮT BUỘC "
+        "điền 2 đến 4 tên trong rides_and_sights hoặc shows hợp sở thích khách (vd thích nước: trò có nước, thuỷ cung). "
+        "CHỈ chép đúng nguyên văn tên trong danh mục dưới đây, không dịch, không tự đặt tên. Với walk_between: điểm đi "
         "trước, điểm đến sau. heights_cm: chiều cao từng người khách nói (1m25 = 125). ages: tuổi khách nói. "
         "start, end: giờ đến, giờ về dạng HH:MM 24 giờ nếu khách nói (9h = 09:00, 5 giờ chiều = 17:00). "
         "preference: sở thích ngắn (vd bé thích nước, sợ độ cao). Không trả giờ diễn, giá vé hay số phút đi bộ: "
@@ -109,7 +110,11 @@ def validate(raw: dict[str, Any], ds: dict[str, Any]) -> dict[str, Any]:
 def understand(text: str, ds: dict[str, Any]) -> dict[str, Any]:
     """Một lần gọi model (qua ai.call_model, có trace) → kết quả đã kiểm. Lỗi thì để caller quay về dò từ khoá."""
     reply = call_model(system_prompt(ds), "Tin nhắn của khách: " + (text or "")[:600], schema=SCHEMA)
-    return validate(_json(reply["text"]), ds)
+    result = validate(_json(reply["text"]), ds)
+    # Ghi kèm lần gọi model để giao diện hiện đúng, không phụ thuộc trạng thái chung của tracing.
+    result["model_meta"] = {"model": reply.get("model"), "tokens_in": reply.get("tokens_in"),
+                            "tokens_out": reply.get("tokens_out")}
+    return result
 
 
 def entities_from(understood: dict[str, Any], ds: dict[str, Any]) -> list[tuple[str, Any]]:
