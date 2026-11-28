@@ -12,7 +12,9 @@ from typing import Any
 
 import streamlit as st
 
-from park_provider import KIND_LABELS_VI, filter_catalog, filter_show_sessions
+from agent import answer
+from nha_trang_chat import source_label
+from park_provider import KIND_LABELS_VI, NHA_TRANG_PARK_ID, filter_catalog, filter_show_sessions
 from planning import plan_nha_trang
 from pricing import SENIOR_BOUNDARY_NOTE, calculate_group_reference_quote
 from review_intel import retrieve_attraction_experiences
@@ -32,6 +34,10 @@ NT_EXTRA_CSS = """
   border-radius: 12px; padding: .8rem 1rem; margin: .6rem 0 1rem; font-size: .92rem; line-height: 1.5;}
 </style>
 """
+
+
+FIELD_VI = {"open": "Giờ mở", "close": "Giờ đóng", "min_height_cm": "Chiều cao", "included_in_ticket": "Phí",
+            "extra_vnd": "Phụ phí", "min_age": "Tuổi"}
 
 
 def _fmt_hours(open_t: str | None, close_t: str | None) -> str:
@@ -73,13 +79,13 @@ def _fmt_status(status: str | None) -> str:
     return mapping.get(status or "", status or "Chưa xác minh")
 
 
-def _render_catalog_card(item: dict[str, Any]) -> str:
+def _render_catalog_card(item: dict[str, Any], ds: dict[str, Any]) -> str:
     kind_label = KIND_LABELS_VI.get(item["kind"], item["kind"])
     harbour_badge = '<span class="nt-badge-harbour">Vinpearl Harbour (lân cận)</span>' if item["is_harbour"] else ""
     map_tag = f"#{item['map_code']} · " if item.get("map_code") else ""
-    src_badges = [f'<span class="nt-badge-src">Nguồn: {html.escape(item["source_id"] or "?")}</span>']
+    src_badges = [f'<span class="nt-badge-src">Danh mục: {html.escape(source_label(ds, item["source_id"]))}</span>']
     for k, v in item.get("field_sources", {}).items():
-        src_badges.append(f'<span class="nt-badge-src">{html.escape(k)}: {html.escape(v)}</span>')
+        src_badges.append(f'<span class="nt-badge-src">{html.escape(FIELD_VI.get(k, k))}: {html.escape(source_label(ds, v))}</span>')
 
     rows = [
         ("Phân khu", item["zone_name"] or item["zone_id"] or "Chưa rõ"),
@@ -134,6 +140,15 @@ def render_nha_trang_home() -> None:
         'Tata Show công bố kết thúc <b>20:10</b> vượt giờ đóng cửa chung <b>20:00</b> và lệch nguồn Klook (20:30–21:06) — cần kiểm tra lại ngày đi.</div>',
         unsafe_allow_html=True,
     )
+
+    st.markdown('<p class="vm-section">Hỏi Vivu về VinWonders Nha Trang</p><p class="vm-section-sub">Gõ tên show, trò chơi, '
+                'khu hoặc hỏi vé theo chiều cao. Vivu chỉ xác nhận phần có dữ liệu và ghi nguồn bên cạnh.</p>',
+                unsafe_allow_html=True)
+    with st.container(key="vm_home_planner"):
+        nt_setup()
+        nt_process()
+        nt_conversation(inline=True)
+        nt_chat_box()
 
     st.markdown(
         '<div class="vm-facts">'
@@ -211,7 +226,7 @@ def render_nha_trang_home() -> None:
         )
         st.caption(f"Hiển thị **{len(matched)}** điểm khớp điều kiện (tổng danh mục snapshot: {len(ds['catalog'])}; Harbour đang {'bật' if include_harbour else 'tắt mặc định'}).")
         if matched:
-            st.markdown(f'<div class="vm-cards">{"".join(_render_catalog_card(i) for i in matched)}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="vm-cards">{"".join(_render_catalog_card(i, ds) for i in matched)}</div>', unsafe_allow_html=True)
         else:
             st.info("Không có điểm nào khớp bộ lọc hiện tại.")
 
@@ -226,7 +241,7 @@ def render_nha_trang_home() -> None:
             if not inc_harbour_shows and grp["is_harbour"]:
                 continue
             sessions_str = ", ".join(
-                f"{s['start']}–{s['end']} ({s['session_id']})" if s["has_published_time"] else f"Chưa xác minh ({s['session_id']})"
+                f"{s['start']}–{s['end']}" if s["has_published_time"] else "Chưa có giờ"
                 for s in grp["sessions"]
             )
             warn_badge = '<span class="nt-badge-warn">Xung đột lịch / giờ đóng</span>' if grp["has_discrepancy"] else ""
@@ -237,10 +252,19 @@ def render_nha_trang_home() -> None:
                 ("Giờ công bố", sessions_str),
                 ("Địa điểm", venue_text),
                 ("Trạng thái trực tiếp", "Chưa xác minh"),
-                ("Nguồn", ", ".join(grp["source_ids"])),
+                ("Nguồn", " · ".join(source_label(ds, x) for x in grp["source_ids"])),
             ]
             dl = "".join(f"<dt>{html.escape(k)}</dt><dd>{html.escape(v)}</dd>" for k, v in rows)
-            notes_html = "".join(f'<div class="nt-note">ℹ {html.escape(n)}</div>' for n in grp["notes"])
+            diffs = []
+            for s in grp["sessions"]:
+                if s.get("conflict_source_id"):
+                    diffs.append(f"Hai nguồn ghi khác nhau: {s['source_id']} {s['start']}–{s['end']} · "
+                                 f"{s['conflict_source_id']} {s.get('conflict_start') or '?'}–{s.get('conflict_end') or '?'} "
+                                 f"({source_label(ds, s['conflict_source_id'])})")
+                if s.get("exceeds_park_close"):
+                    diffs.append(f"Kết thúc {s['end']} sau giờ đóng cửa chung {park['close']} ({source_label(ds, park['source_id'])})")
+            notes_html = "".join(f'<div class="nt-note" style="color:#A84300">⚠ {html.escape(d)}</div>' for d in diffs)
+            notes_html += "".join(f'<div class="nt-note">ℹ {html.escape(n)}</div>' for n in grp["notes"])
             show_cards.append(
                 f'<div class="vm-card"><span class="vm-kind show">Biểu diễn</span>{warn_badge}{hb_badge}'
                 f'<h4>{html.escape(grp["name"])}</h4><dl>{dl}</dl>{notes_html}</div>'
@@ -267,13 +291,13 @@ def render_nha_trang_home() -> None:
                 ("Giá tham khảo", "0 đ (miễn phí tham khảo)" if b["price_vnd"] == 0 else money(b["price_vnd"])),
                 ("Sản phẩm", b["product"]),
                 ("Báo giá trực tiếp", "Không (snapshot)"),
-                ("Nguồn", b["source_id"]),
+                ("Nguồn", source_label(ds, b["source_id"])),
             ]
             dl = "".join(f"<dt>{html.escape(k)}</dt><dd>{html.escape(v)}</dd>" for k, v in rows)
             note_html = f'<div class="nt-note">⚠ {html.escape(b["note"])}</div>' if b.get("note") else ""
             price_cards.append(
                 f'<div class="vm-card"><span class="vm-kind">Giá tham khảo</span>'
-                f'<h4>{html.escape(b["id"])}</h4><dl>{dl}</dl>{note_html}</div>'
+                f'<h4>{html.escape(cond)}</h4><dl>{dl}</dl>{note_html}</div>'
             )
         st.markdown(f'<div class="vm-cards">{"".join(price_cards)}</div>', unsafe_allow_html=True)
         st.warning(SENIOR_BOUNDARY_NOTE)
@@ -282,7 +306,7 @@ def render_nha_trang_home() -> None:
                     '<p class="vm-section-sub">Chỉ 4 trò chơi có mức chiều cao tối thiểu rõ ràng từ nguồn công khai và 1 trò (Zipline) ghi rõ không nằm trong vé tiêu chuẩn. Các điểm còn lại giữ trạng thái chưa xác minh.</p>',
                     unsafe_allow_html=True)
         ruled_items = filter_catalog(ds, include_harbour=True, only_with_restrictions=True)
-        st.markdown(f'<div class="vm-cards">{"".join(_render_catalog_card(i) for i in ruled_items)}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="vm-cards">{"".join(_render_catalog_card(i, ds) for i in ruled_items)}</div>', unsafe_allow_html=True)
 
     # ---- Tab 5: Review Intelligence ----
     with tab_reviews:
@@ -371,6 +395,13 @@ def render_nha_trang_planner() -> None:
         pref = st.text_input("Sở thích / từ khóa", placeholder="vd: Alpine Coaster, Tata Show, thủy cung", key="nt_p_pref")
         draft_req = st.checkbox("Thử chế độ lập lịch nháp (cần đội trưởng duyệt)", value=False, key="nt_p_draft")
 
+    nt_setup()
+    nt_process()
+    nt_conversation(inline=False)
+    nt_chat_box()
+    st.markdown('<p class="vm-section">Kiểm tra theo thông tin ở thanh bên</p><p class="vm-section-sub">Nhập giờ, '
+                'chiều cao từng khách và điểm muốn đi ở thanh bên (trên điện thoại bấm »).</p>', unsafe_allow_html=True)
+
     request = {
         "start": t_start.strftime("%H:%M"),
         "end": t_end.strftime("%H:%M"),
@@ -420,7 +451,7 @@ def render_nha_trang_planner() -> None:
     shows = filter_show_sessions(ds, include_harbour=include_harbour, only_with_times=True)
     for s in shows:
         warn = " · ⚠ *Có xung đột giờ đóng/nguồn Klook — cần kiểm tra lại*" if s["has_discrepancy"] else ""
-        st.write(f"- **{s['name']}** (`{s['session_id']}`): **{s['start']}–{s['end']}** · nguồn `{s['source_id']}`{warn}")
+        st.write(f"- **{s['name']}**: **{s['start']}–{s['end']}** · {source_label(ds, s['source_id'])}{warn}")
 
     # 4. Catalog suggestions (unverified reference only)
     if result.get("catalog_references"):
@@ -428,7 +459,7 @@ def render_nha_trang_planner() -> None:
         for ref in result["catalog_references"][:8]:
             hrs = _fmt_hours(ref["open"], ref["close"])
             hgt = f"từ {ref['min_height_cm']} cm" if ref["min_height_cm"] is not None else "chiều cao chưa xác minh"
-            st.write(f"- **{ref['name']}** ({ref['zone_name']}) · giờ: `{hrs}` · `{hgt}` · nguồn `{ref['source_id']}`")
+            st.write(f"- **{ref['name']}** ({ref['zone_name']}) · giờ: `{hrs}` · `{hgt}` · {source_label(ds, ref['source_id'])}")
 
     # 5. Related review notes (explicitly non-operational)
     if pref.strip():
@@ -437,3 +468,88 @@ def render_nha_trang_planner() -> None:
             st.markdown("### Kinh nghiệm khách phản ánh liên quan (chỉ tham khảo trải nghiệm)")
             for h in hits:
                 st.caption(f"• [{h['id']} · {h['source_id']}] {h['summary']} *(AI tags, không dùng cho quy định an toàn/giờ mở cửa)*")
+
+
+# ================================================================ chatbot Nha Trang (không gọi model)
+NT_EXAMPLES = {
+    "tata": "Tata Show mấy giờ diễn?",
+    "ve100": "Vé cho bé cao đúng 100 cm bao nhiêu?",
+    "dibo": "Đi bộ từ Zipline sang Tata Show có kịp không?",
+}
+
+
+def nt_setup() -> None:
+    """Lịch sử riêng của Nha Trang (nt_history): không đọc lịch sử hay điều kiện t_* của Vịnh Mây."""
+    st.session_state.setdefault("nt_history", [])
+    st.session_state.setdefault("nt_pending", None)
+
+
+def _on_nt_chat() -> None:
+    st.session_state.nt_pending = st.session_state.get("nt_chat")
+
+
+def _send_nt_example(key: str) -> None:
+    st.session_state.nt_pending = NT_EXAMPLES[key]
+
+
+def _nt_reset() -> None:
+    st.session_state.nt_history, st.session_state.nt_pending = [], None
+
+
+def nt_process() -> None:
+    """Chạy tin đang chờ qua answer(text, park_id=Nha Trang): trả lời từ snapshot, fail-closed."""
+    s = st.session_state
+    text, s.nt_pending = s.get("nt_pending"), None
+    if not text:
+        return
+    s.nt_history.append({"role": "user", "text": text})
+    try:
+        reply = answer(text, park_id=NHA_TRANG_PARK_ID)
+        s.nt_history.append({"role": "bot", "header": reply["header"], "sections": reply["sections"],
+                             "found": reply["found"]})
+    except Exception as e:  # dữ liệu hỏng hay lỗi khác: báo gọn, không lộ chi tiết
+        s.nt_history.append({"role": "bot", "error": f"Có lỗi khi đọc dữ liệu Nha Trang ({type(e).__name__})."})
+
+
+def _render_nt_bot(i: int, msg: dict[str, Any]) -> None:
+    with st.container(key=f"vm_bot_nt_{i}"):
+        if msg.get("error"):
+            st.error(msg["error"])
+            return
+        st.caption(msg["header"])
+        for sec in msg["sections"]:
+            warn = sec["title"].startswith(("Chưa xác nhận", "Còn thiếu"))
+            items = "".join(
+                f'<li class="{"warn" if line.startswith("⚠") else ""}">{html.escape(line)}</li>' for line in sec["lines"])
+            st.markdown(f'<p class="nt-sec-title{" warn" if warn else ""}">{html.escape(sec["title"])}</p>'
+                        f'<ul class="nt-lines">{items}</ul>', unsafe_allow_html=True)
+        with st.expander("Chi tiết kỹ thuật"):
+            found = ", ".join(name for _, name in msg["found"]) or "không có"
+            st.caption("Trả lời bằng Python từ snapshot data/nha_trang/ (27/11/2026) · không gọi model · "
+                       f"nhận ra: {found}. Không dùng dữ liệu, giá hay 10 phút đi bộ của Vịnh Mây.")
+
+
+def nt_conversation(inline: bool) -> None:
+    s = st.session_state
+    if not s.nt_history:
+        with st.container(key="vm_bot_hello_nt"):
+            st.markdown('<p class="vm-hello">Chào bạn, mình là Vivu. Bạn muốn biết gì về VinWonders Nha Trang?</p>'
+                        '<p class="vm-muted">Hỏi về show, trò chơi, khu hoặc vé theo chiều cao. Mình trả lời từ dữ liệu '
+                        'công khai ngày 27/11/2026, kèm nguồn; phần nào chưa đủ dữ liệu mình sẽ nói rõ. Hoặc bấm thử:</p>',
+                        unsafe_allow_html=True)
+            for key, text in NT_EXAMPLES.items():
+                st.button(f"“{text}”", key=f"ex_nt_{key}", use_container_width=True, on_click=_send_nt_example,
+                          args=(key,), icon=":material/send:")
+    for i, msg in enumerate(s.nt_history):
+        if msg["role"] == "user":
+            st.markdown(f'<div class="vm-user"><div><b>{html.escape(msg["text"])}</b></div></div>', unsafe_allow_html=True)
+        else:
+            _render_nt_bot(i, msg)
+    if s.nt_history:
+        st.button("Bắt đầu cuộc mới", key="nt_reset_chat" + ("_in" if inline else ""), on_click=_nt_reset,
+                  icon=":material/restart_alt:")
+
+
+def nt_chat_box() -> None:
+    st.chat_input("Hỏi về VinWonders Nha Trang, vd: Tata Show mấy giờ? vé bé cao 100 cm?", key="nt_chat",
+                  on_submit=_on_nt_chat)

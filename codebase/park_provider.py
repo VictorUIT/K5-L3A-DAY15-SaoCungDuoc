@@ -255,6 +255,8 @@ def _normalize_shows(
             "has_published_time": start is not None and end is not None,
             "source_id": raw.get("source_id"),
             "conflict_source_id": raw.get("conflict_source_id"),
+            "conflict_start": raw.get("conflict_start"),  # giờ nguồn kia ghi (đã có trong note)
+            "conflict_end": raw.get("conflict_end"),
             "live_status": raw.get("live_status"),
             "note": raw.get("note"),
             "exceeds_park_close": exceeds_park_close,

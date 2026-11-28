@@ -214,26 +214,20 @@ def answer(text, park_id="vinh_may"):
 
 
 def answer_for_park(text, park_id="vinh_may", request_override=None):
-    """Multi-park entrypoint preserving default Vịnh Mây behavior while failing closed on Nha Trang snapshot."""
+    """Nhiều khu: Vịnh Mây đi luồng cũ; VinWonders Nha Trang trả lời từ snapshot công khai, fail-closed, không gọi model.
+
+    Nha Trang không dùng mặc định nào của Vịnh Mây (10 phút đi bộ, giá vé, điều kiện trò chơi): xem nha_trang_chat.py.
+    """
     if (park_id or "vinh_may") == "vinh_may":
         return answer(text)
+    from nha_trang_chat import answer_nha_trang
     from park_provider import load_park_provider
     from planning import plan_nha_trang
 
     dataset = load_park_provider(park_id)
     req = dict(request_override or {})
     req.setdefault("preference", text or "")
-    plan = plan_nha_trang(dataset, req)
-    lines = [
-        f"{dataset['park']['name']} · snapshot công khai ({dataset['park']['snapshot_date']}) · chưa xác minh trực tiếp",
-        plan["message"],
-    ]
-    if plan["readiness"]["blockers"]:
-        lines.append("Dữ liệu còn thiếu / cần xác minh:")
-        lines.extend(f"- {b}" for b in plan["readiness"]["blockers"])
-    if plan.get("show_references"):
-        lines.append("Các suất biểu diễn có giờ công bố (cần kiểm tra lại theo ngày đi):")
-        for s in plan["show_references"]:
-            warn = " [cảnh báo xung đột giờ]" if s.get("has_discrepancy") else ""
-            lines.append(f"- {s['name']}: {s['start']}–{s['end']} (nguồn {s['source_id']}){warn}")
-    return {"output": "\n".join(lines), "plan": plan}
+    plan = plan_nha_trang(dataset, req)  # chỉ để kiểm: snapshot hiện chưa đủ dữ liệu, plan luôn chưa xác minh
+    reply = answer_nha_trang(text, dataset)
+    reply["plan"] = plan
+    return reply

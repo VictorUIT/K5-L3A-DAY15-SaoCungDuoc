@@ -42,7 +42,9 @@
     "source_id": "MAP",
     "live_status": null,
     "note": "Official map lists Mythical Square; exact ID unresolved; park overview ends 20:00; verify evening exception. Klook conflicting 20:30–21:06, do not use.",
-    "conflict_source_id": "KLOOK"
+    "conflict_source_id": "KLOOK",
+    "conflict_start": "20:30",
+    "conflict_end": "21:06"
   },
   {
     "id": "mermaid",

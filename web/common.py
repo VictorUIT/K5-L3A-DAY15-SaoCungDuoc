@@ -128,16 +128,25 @@ section[data-testid="stSidebar"] h3 {color: #0B84D9;}
   padding: .8rem 1rem; margin: .4rem 0 .6rem; box-shadow: 0 2px 8px rgba(28, 43, 57, .08);}
 .vm-cond div {margin: .15rem 0;}
 .vm-cond-line {font-size: .88rem; color: #5B6B7A; margin-top: .1rem;}
+/* bộ chọn khu và trả lời Nha Trang */
+[class*="st-key-vm_park_"] {background: #FFFFFF; border: 1px solid #CFE7F5; border-radius: 14px; padding: .55rem .9rem .7rem;
+  margin-bottom: .8rem; box-shadow: 0 2px 8px rgba(11, 132, 217, .08);}
+[class*="st-key-vm_park_"] label p {font-weight: 700; color: #0B5E96;}
+.nt-sec-title {font-weight: 700; margin: .55rem 0 .15rem;}
+.nt-sec-title.warn {color: #C24D00;}
+.nt-lines {margin: 0 0 .3rem 1.1rem; padding: 0;}
+.nt-lines li {margin: .12rem 0; line-height: 1.45;}
+.nt-lines li.warn {color: #A84300;}
 /* khung chào "Chào bạn, mình là Vivu": nền cam, chữ trắng */
-.st-key-vm_bot_hello {background: linear-gradient(135deg, #FF7A1A 0%, #E85D00 100%); border: 1px solid #E85D00;
+.st-key-vm_bot_hello, .st-key-vm_bot_hello_nt {background: linear-gradient(135deg, #FF7A1A 0%, #E85D00 100%); border: 1px solid #E85D00;
   box-shadow: 0 4px 14px rgba(249, 109, 0, .3);}
-.st-key-vm_bot_hello .vm-hello {color: #FFFFFF;}
-.st-key-vm_bot_hello .vm-muted {color: rgba(255, 255, 255, .95);}
-.st-key-vm_bot_hello [data-testid="stBaseButton-secondary"] {background: rgba(255, 255, 255, .16) !important;
+.st-key-vm_bot_hello_nt .vm-hello, .st-key-vm_bot_hello .vm-hello {color: #FFFFFF;}
+.st-key-vm_bot_hello_nt .vm-muted, .st-key-vm_bot_hello .vm-muted {color: rgba(255, 255, 255, .95);}
+.st-key-vm_bot_hello_nt [data-testid="stBaseButton-secondary"], .st-key-vm_bot_hello [data-testid="stBaseButton-secondary"] {background: rgba(255, 255, 255, .16) !important;
   border: 1px solid rgba(255, 255, 255, .75) !important; color: #FFFFFF !important;}
-.st-key-vm_bot_hello [data-testid="stBaseButton-secondary"]:hover {background: rgba(255, 255, 255, .28) !important;
+.st-key-vm_bot_hello_nt [data-testid="stBaseButton-secondary"]:hover, .st-key-vm_bot_hello [data-testid="stBaseButton-secondary"]:hover {background: rgba(255, 255, 255, .28) !important;
   border-color: #FFFFFF !important;}
-.st-key-vm_bot_hello button p, .st-key-vm_bot_hello button span {color: #FFFFFF !important;}
+.st-key-vm_bot_hello_nt button p, .st-key-vm_bot_hello_nt button span, .st-key-vm_bot_hello button p, .st-key-vm_bot_hello button span {color: #FFFFFF !important;}
 .st-key-vm_bot_hello :focus-visible {outline-color: #FFFFFF !important;}
 /* form điều kiện nằm trong trang (trang chủ) */
 .st-key-vm_trip_inline {background: #FFFFFF; border: 1px solid #E3E9EF; border-radius: 14px; padding: 1rem 1.1rem .6rem;
@@ -180,30 +189,44 @@ def names():
     return {a["id"]: a["name"] for a in park_data()["activities"]}
 
 
+PARK_SHORT = {DEFAULT_PARK_ID: "Vịnh Mây · mô phỏng", NHA_TRANG_PARK_ID: "VinWonders Nha Trang"}
+# Trạng thái đang chờ xử lý của từng khu: đổi khu thì bỏ, để một tin gõ cho khu này không chạy ở khu kia.
+PENDING_KEYS = ("pending", "pending_chat", "preview", "need", "nt_pending")
+
+
+def _switch_park(widget_key):
+    s = st.session_state
+    new = s.get(widget_key)
+    if not new or new == s.get(PARK_KEY):  # bấm lại nút đang chọn: giữ nguyên
+        return
+    s["park_switched_from"] = s.get(PARK_KEY)
+    s[PARK_KEY] = new
+    for key in PENDING_KEYS:
+        s[key] = None
+
+
 def park_selector(key_suffix="top"):
-    """Bộ chọn công viên dùng chung giữa Trang chủ và Lên lịch. Mặc định là Vịnh Mây."""
-    parks = list_parks()
-    ids = [p["id"] for p in parks]
-    labels = {p["id"]: p["label"] for p in parks}
-    st.session_state.setdefault(PARK_KEY, DEFAULT_PARK_ID)
-    current = st.session_state[PARK_KEY]
-    if current not in ids:
-        current = DEFAULT_PARK_ID
-        st.session_state[PARK_KEY] = current
+    """Bộ chọn khu dùng chung giữa Trang chủ và Lên lịch (cùng khoá selected_park_id). Mặc định là Vịnh Mây.
 
-    def _on_change():
-        st.session_state[PARK_KEY] = st.session_state[f"park_pick_{key_suffix}"]
-
-    st.selectbox(
-        "Chọn công viên",
-        options=ids,
-        index=ids.index(current),
-        format_func=labels.get,
-        key=f"park_pick_{key_suffix}",
-        on_change=_on_change,
-        help="Mặc định giữ Vịnh Mây (dữ liệu mô phỏng CP2/CP3). Chuyển sang VinWonders Nha Trang để xem snapshot dữ liệu công khai.",
-    )
-    return st.session_state[PARK_KEY]
+    Mỗi khu có lịch sử hội thoại, điều kiện và dữ liệu riêng (Vịnh Mây: history, t_*; Nha Trang: nt_history);
+    đổi khu chỉ đổi phần được vẽ và bỏ các lượt đang chờ, không mang điều kiện của khu này sang khu kia.
+    """
+    s = st.session_state
+    s.setdefault(PARK_KEY, DEFAULT_PARK_ID)
+    if s[PARK_KEY] not in PARK_SHORT:
+        s[PARK_KEY] = DEFAULT_PARK_ID
+    widget_key = f"park_pick_{key_suffix}"
+    s[widget_key] = s[PARK_KEY]  # trang kia có thể vừa đổi khu: nút ở trang này đi theo
+    with st.container(key=f"vm_park_{key_suffix}"):
+        st.segmented_control("Khu đang chọn", options=list(PARK_SHORT), format_func=PARK_SHORT.get,
+                             key=widget_key, on_change=_switch_park, args=(widget_key,),
+                             help="Vịnh Mây là khu giả lập để thử. VinWonders Nha Trang dùng snapshot dữ liệu công khai "
+                                  "ngày 27/11/2026: tra cứu được, lịch chỉ xác nhận khi đủ dữ liệu.")
+    old = s.pop("park_switched_from", None)
+    if old:
+        st.toast(f"Đã chuyển sang {PARK_SHORT[s[PARK_KEY]]}. Hội thoại và điều kiện của {PARK_SHORT.get(old, old)} "
+                 "được giữ riêng, không dùng cho khu này.", icon=":material/swap_horiz:")
+    return s[PARK_KEY]
 
 
 def header(title, subtitle, badge="Dữ liệu mô phỏng",
