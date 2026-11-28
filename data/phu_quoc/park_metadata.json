@@ -1,0 +1,22 @@
+{
+  "id": "vinwonders_phu_quoc",
+  "name": "VinWonders Phú Quốc",
+  "source": "public_source_snapshot",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "currency": "VND",
+  "open": "09:00",
+  "close": "19:30",
+  "source_id": "HOURS_VI",
+  "snapshot_date": "2026-11-28",
+  "live_availability": false,
+  "walk_minutes": null,
+  "notes": [
+    "PRICE_NEWS: ticket valid 09:00-19:05, no admission after 19:00 (other pages: open until 19:30).",
+    "Show times and venues conflict between SHOWS, HOURS_EN, MAP_ARTICLE, HOME; see shows.json notes.",
+    "Mermaid show: HOURS_EN limits it to 01/01/2026-28/02/2026; status after that not published.",
+    "No per-ride hours, durations, weight limits or travel matrix. Height = 'Guests over X cm' group.",
+    "Park rules (PRICE): children under 14 and children under 140cm must be accompanied by an adult.",
+    "HEIGHT: guests >=100kg, pregnant, elderly or with heart/blood-pressure/vestibular/neurological conditions may be restricted from most attractions.",
+    "Do not use as legacy park.json."
+  ]
+}

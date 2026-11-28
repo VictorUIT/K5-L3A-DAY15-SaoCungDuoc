@@ -1,0 +1,72 @@
+[
+  {
+    "id": "european_avenue",
+    "name": "European Avenue (Đại lộ châu Âu)",
+    "scope": "park",
+    "open": "09:00",
+    "close": "19:30",
+    "source_id": "HOURS_EN",
+    "map_range": [],
+    "live_status": null
+  },
+  {
+    "id": "fantasy_world",
+    "name": "Fantasy World (Thế giới cổ tích)",
+    "scope": "park",
+    "open": "10:00",
+    "close": "18:00",
+    "source_id": "HOURS_EN",
+    "map_range": [],
+    "live_status": null
+  },
+  {
+    "id": "viking_village",
+    "name": "Mysterious Viking Village (Khu làng bí mật)",
+    "scope": "park",
+    "open": "10:00",
+    "close": "17:30",
+    "source_id": "HOURS_EN",
+    "map_range": [],
+    "live_status": null
+  },
+  {
+    "id": "adventure_world",
+    "name": "Adventure World (Thế giới phiêu lưu)",
+    "scope": "park",
+    "open": "10:00",
+    "close": "18:00",
+    "source_id": "HOURS_EN",
+    "map_range": [],
+    "live_status": null
+  },
+  {
+    "id": "typhoon_world",
+    "name": "Typhoon World (Thế giới lốc xoáy)",
+    "scope": "park",
+    "open": "10:00",
+    "close": "17:30",
+    "source_id": "HOURS_EN",
+    "map_range": [],
+    "live_status": null
+  },
+  {
+    "id": "sea_shell",
+    "name": "The Sea Shell (Cung điện Hải Vương)",
+    "scope": "park",
+    "open": "10:00",
+    "close": "18:00",
+    "source_id": "HOURS_EN",
+    "map_range": [],
+    "live_status": null
+  },
+  {
+    "id": "unassigned",
+    "name": "Chưa rõ khu (nguồn chỉ ghi nhóm 'Games')",
+    "scope": "park",
+    "open": null,
+    "close": null,
+    "source_id": "HEIGHT",
+    "map_range": [],
+    "live_status": null
+  }
+]

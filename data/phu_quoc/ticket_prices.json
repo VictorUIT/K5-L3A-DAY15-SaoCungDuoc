@@ -1,0 +1,93 @@
+[
+  {
+    "id": "standard_under_100",
+    "min_height_cm": 0,
+    "max_height_cm_exclusive": 100,
+    "min_age": null,
+    "price_vnd": 0,
+    "product": "Vé vào cổng tiêu chuẩn VinWonders",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null,
+    "note": "HOURS_EN: free if 'under 1m tall and under 1 year old'"
+  },
+  {
+    "id": "standard_100_139",
+    "min_height_cm": 100,
+    "max_height_cm_exclusive": 140,
+    "min_age": null,
+    "price_vnd": 800000,
+    "product": "Vé vào cổng tiêu chuẩn VinWonders",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null,
+    "note": null
+  },
+  {
+    "id": "standard_140_plus",
+    "min_height_cm": 140,
+    "max_height_cm_exclusive": null,
+    "min_age": null,
+    "price_vnd": 1050000,
+    "product": "Vé vào cổng tiêu chuẩn VinWonders",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null,
+    "note": null
+  },
+  {
+    "id": "standard_senior",
+    "min_height_cm": null,
+    "max_height_cm_exclusive": null,
+    "min_age": 60,
+    "price_vnd": 800000,
+    "product": "Vé vào cổng tiêu chuẩn VinWonders",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null,
+    "note": "PRICE 'từ 60 tuổi trở lên' vs HOURS_VI/PRICE_NEWS 'trên 60 tuổi'; photo ID required"
+  },
+  {
+    "id": "combo_safari_1d_140_plus",
+    "min_height_cm": 140,
+    "max_height_cm_exclusive": null,
+    "min_age": null,
+    "price_vnd": 1500000,
+    "product": "Combo 01 ngày VinWonders & Vinpearl Safari",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null,
+    "note": null
+  },
+  {
+    "id": "combo_safari_1d_100_139",
+    "min_height_cm": 100,
+    "max_height_cm_exclusive": 140,
+    "min_age": null,
+    "price_vnd": 1100000,
+    "product": "Combo 01 ngày VinWonders & Vinpearl Safari",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null,
+    "note": null
+  },
+  {
+    "id": "combo_safari_1d_senior",
+    "min_height_cm": null,
+    "max_height_cm_exclusive": null,
+    "min_age": 60,
+    "price_vnd": 1100000,
+    "product": "Combo 01 ngày VinWonders & Vinpearl Safari",
+    "source_id": "PRICE",
+    "current_quote": false,
+    "effective_from": null,
+    "effective_until": null,
+    "note": "senior boundary wording differs across sources (see standard_senior)"
+  }
+]
