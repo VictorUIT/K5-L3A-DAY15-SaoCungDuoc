@@ -5,12 +5,18 @@
 ## 1 · Người dùng và pain
 - Phụ huynh tự lên kế hoạch đưa trẻ dưới 12 tuổi đi một khu vui chơi trong một buổi, có giờ vào và giờ phải về.
 - Việc khó: tự ghép giờ show, giờ đóng trò, 10 phút đi bộ mỗi chặng, chiều cao của bé và ngân sách.
-- Số: 2/15 review công khai (Traveloka, VinWonders Nha Trang, xem 27/11/2026) chủ động kể hoặc khuyên canh giờ; trích R15 “Making sure you take photos of the show timetables”. Nguồn: `evidence/data-mining.md`.
-- **[CẦN NHÓM]** kết quả khảo sát (x/N phụ huynh gặp lỡ show, trò đóng hoặc thiếu chiều cao, theo câu 7) và ≥1 trích dẫn phỏng vấn P1–P3.
+- Phỏng vấn 3 phụ huynh ngoài nhóm (27/11): **2/3** gặp lỗi giờ / điều kiện (P1 con thiếu 2 cm, P2 lỡ show xiếc vì giờ hỏi miệng sai + trò bảo trì) → đạt ngưỡng chốt trước; **3/3** có trò định chơi mà không chơi được; 2/3 vì xếp hàng.
+- Trích P2: “Tôi hỏi chú bảo vệ thì bảo tầm 2h có suất xiếc, ai ngờ tới nơi show chạy từ 1h30 và xong mất rồi.”
+- Khảo sát kiểm lại (group cư dân, 20 phản hồi, **10 qua sàng lọc**, chưa đủ ≥20): lỗi giờ / điều kiện chỉ **2/10** → dưới ngưỡng 1/4; lý do đổi kế hoạch lớn nhất là **xếp hàng 3/5**. Trích S14: “Tàu lượn siêu tốc nhưng quá đông nên bỏ”.
+- Review: 2/15 (Traveloka, VinWonders Nha Trang) khuyên canh giờ, vd R15 “Making sure you take photos of the show timetables”.
+- *Điều nhóm học được:* pain có thật nhưng **hàng chờ lớn hơn lỗi giờ**. Nguồn: `evidence/summary.md`.
 
 ## 2 · Vì sao chọn bài này
-- Công thức impact: số gia đình × số lần phải xếp lịch/tháng × phút mất/lần (`spec.md` §2).
-- **[CẦN NHÓM]** điền ba thừa số từ khảo sát câu 6, 9, 11 và phỏng vấn; ghi hướng bị loại (chọn trò khi đóng, xử lý vào muộn) và lý do.
+- Công thức impact: số gia đình × số lần đi / tháng × (phút chuẩn bị + phút xếp lại) / lần (`spec.md` §2).
+- Ba thừa số: ≈126.500 nhóm-lượt gia đình / tháng (VinWonders 9,11 triệu lượt 2025 ÷ 3 người/nhóm × 50% có trẻ *(tự ước tính)*) · 0,33 lần / tháng (P1–P3) · 45 + 5 phút (P1–P3) → **≈17 phút / gia đình / tháng, ≈105.000 giờ / tháng**.
+- Giới hạn: khảo sát cho phút chuẩn bị thấp hơn (8/10 ≤15 phút) → số trên có thể cao.
+- Chọn A — xếp lịch thoả điều kiện (chiều cao, trò đóng, giờ show + đệm, giờ về, ngân sách): ràng buộc cứng, code kiểm được.
+- Loại B — báo thời gian chờ, né hàng đông: bằng chứng mạnh nhất (3/5 khảo sát, 2/3 phỏng vấn) nhưng cần dữ liệu hàng chờ real-time không có; app chính thức (P3) đã làm. Loại C — chỉ nhắc giờ show: hẹp (1/3), gộp vào A.
 
 ## 3 · Giải pháp
 - Lát cắt: một phụ huynh nhập khung giờ, nhóm khách, ngân sách và hoạt động bắt buộc → trợ lý chọn một lịch khả thi và trả giờ cùng tổng tiền cho cả nhà.
@@ -42,7 +48,10 @@
 - Số người dùng = 1% · 5% · 10% của ≈126.500 nhóm-lượt gia đình / tháng (VinWonders 2025, §2); tỉ lệ dùng và persona *(tự ước tính)*, chờ khảo sát.
 
 ## 7 · Kết luận
-- **[CẦN NHÓM]** Go / iterate / stop, dẫn số trang 1 (pain), 5 (điểm đạt), 6 (chi phí so với impact).
+- **Quyết định: ITERATE** — giữ lõi kiểm ràng buộc, đổi trọng tâm sang hàng chờ.
+- Giữ: bản chạy thử đạt **25/26** ở cả hai lượt (trang 5); chi phí **$0,00019 / gia đình / tháng**, so với ~17 phút / gia đình / tháng (trang 6) → chi phí không phải điểm nghẽn.
+- Đổi: pain lỗi giờ / điều kiện có ở phỏng vấn (2/3) nhưng khảo sát chỉ **2/10** (dưới ngưỡng 1/4); pain lớn nhất là **xếp hàng** (3/5 khảo sát, 2/3 phỏng vấn) — bản chạy thử chưa có dữ liệu này (trang 1).
+- Chưa Go vì: impact mới từ 3 phỏng vấn, khảo sát chưa đủ ≥20 phụ huynh, benchmark chưa đo khớp sở thích.
 
 ## 8 · Nếu có thêm 1 tuần
 - Thêm câu benchmark đo mức khớp sở thích nhịp độ (lỗi lượt 1 chưa có trong bộ).
