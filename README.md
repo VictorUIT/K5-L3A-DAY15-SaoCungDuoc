@@ -47,6 +47,10 @@ Trên máy, web đọc model từ `.env` hoặc `.streamlit/secrets.toml` (mẫu
 
 Model chỉ được gọi khi gửi tin nhắn (mỗi tin tối đa 2 lần: rút điều kiện, chọn lịch). Mỗi phiên có kết quả và trace riêng; trace của khung được bọc trong một khoá chung để hai người bấm cùng lúc không lẫn lượt. Hết quota thì web báo "Model đang hết lượt gọi", không hiện chi tiết key.
 
+### Chatbot VinWonders Nha Trang
+
+AI đọc hiểu câu hỏi, Python tính số: `codebase/nha_trang_ai.py` gọi model một lần mỗi tin để rút ý định (hỏi show, hỏi vé, xếp lịch, đi bộ giữa hai điểm, có kịp show, gợi ý theo sở thích), tên điểm (chỉ tên có trong danh mục `data/nha_trang/`), chiều cao, tuổi, giờ. Python kiểm từng trường rồi `codebase/nha_trang_chat.py` tính giờ, giá, quãng đi bộ và ghi nguồn. Dùng chung hạn mức `DEMO_MAX_PER_SESSION` / `DEMO_MAX_PER_HOUR` với Vịnh Mây. Không có model thật, hết lượt hoặc model lỗi thì chatbot vẫn trả lời bằng dò từ khoá và ghi rõ điều đó.
+
 ### Đường đến khu vui chơi (VinWonders Nha Trang)
 
 Mục này chỉ có khi chọn khu VinWonders Nha Trang; Vịnh Mây là khu mô phỏng nên không có chỉ đường thực địa. Code: `codebase/directions.py`, `web/duong_den.py`.
