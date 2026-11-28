@@ -1,12 +1,13 @@
-"""Trả lời câu chat cho VinWonders Nha Trang từ snapshot công khai (data/nha_trang/). Không gọi model.
+"""Trả lời câu chat cho VinWonders Nha Trang. Không gọi model.
 
-Nguyên tắc (data/nha_trang/DATA_CARD.md · Integration contract):
-- Chỉ xác nhận phần có dữ liệu; mỗi giá trị kèm mã nguồn và ngày truy cập nguồn.
-- Thiếu giờ, thời lượng, điều kiện tham gia hay thời gian đi bộ thì nói rõ thiếu gì, không đoán.
-- Không dùng bất kỳ mặc định nào của Vịnh Mây (10 phút đi bộ, giá vé, điều kiện trò chơi).
-- Giá vé luôn là giá tham khảo (current_quote=false), không phải báo giá hiện hành.
+Hai chế độ, cùng một hàm answer_nha_trang(text, ds):
+- Snapshot gốc (data/nha_trang/): fail-closed. Thiếu giờ, thời lượng, điều kiện hay thời gian đi bộ thì nói rõ thiếu gì.
+- Demo (ds đã qua nha_trang_demo.apply_demo_estimates, ds["demo"] = True): ô trống được điền số tự ước tính,
+  nên xếp được lịch; mọi số ước tính gắn nhãn "ước tính demo".
+Cả hai: mỗi giá trị có nguồn ghi nguồn kèm ngày; giá vé là giá tham khảo; không ước tính điều kiện an toàn;
+không dùng mặc định nào của Vịnh Mây (10 phút đi bộ, giá vé, điều kiện trò chơi).
 
-answer_nha_trang(text, ds) -> {"output": str, "sections": [{"title", "lines"}], "found": [...]}
+answer_nha_trang(text, ds) -> {"output": str, "header": str, "sections": [{"title", "lines"}], "found": [...]}
 """
 from __future__ import annotations
 
@@ -16,8 +17,8 @@ from typing import Any
 
 from pricing import SENIOR_BOUNDARY_NOTE, classify_traveler_ticket
 
-# Tên gọi khác của show trong câu chat (khoá: tên show đã bỏ dấu, viết thường).
-SHOW_ALIASES = {
+EST = "ước tính demo"
+SHOW_ALIASES = {  # khoá: tên show đã bỏ dấu, viết thường
     "tata show": ["tata show", "tata"],
     "bieu dien chim": ["bieu dien chim", "show chim", "bird show", "xem chim"],
     "nhac nuoc": ["nhac nuoc", "fountain", "nhac nuoc show"],
@@ -26,9 +27,18 @@ SHOW_ALIASES = {
     "welcome show": ["welcome show"],
     "stunt show": ["stunt show"],
 }
-TICKET_WORDS = re.compile(r"\b(ve|gia|bao nhieu tien|mat bao nhieu|ticket|price)\b")
+SOURCE_VI = {
+    "MAP": "Bản đồ VinWonders", "HOME": "Trang VinWonders Nha Trang", "PRICE": "Bảng giá VinWonders",
+    "PRICE_NOTICE": "Thông báo giá VinWonders", "RULES": "Quy định trò chơi VinWonders",
+    "RULES_VI": "Quy định trò chơi VinWonders", "RIVER": "Thông tin vận hành VinWonders",
+    "SHOW": "Lịch biểu diễn VinWonders", "AQUARIUM": "Trang thuỷ cung VinWonders", "FOOD": "Trang ẩm thực VinWonders",
+    "FOOD2": "Trang ẩm thực VinWonders", "FOOD3": "Trang ẩm thực VinWonders", "KLOOK": "Klook",
+    "TA": "Tripadvisor", "TVL1": "Traveloka", "TVL2": "Traveloka",
+}
+TICKET_WORDS = re.compile(r"(?<!\w)(vé|giá|bao nhiêu tiền|mất bao nhiêu|ticket|price)(?!\w)")  # trên chữ còn dấu: "vé" ≠ "về"
 PLAN_WORDS = re.compile(r"(di bo|di chuyen|kip|lich|xep|ke hoach|lo trinh|sang|toi kip|walk)")
 WALK_WORDS = re.compile(r"(di bo|di chuyen|kip|walk|tu .+ (den|sang|toi|qua) )")
+GATE_ID = "nt_02"  # Central Gate (bản đồ): điểm xuất phát khi khách không nói đi từ đâu
 
 
 def fold(text: str | None) -> str:
@@ -46,21 +56,43 @@ def _date_vi(iso: str | None) -> str:
     return f"{d}/{m}/{y}"
 
 
+def source_name(source_id: str | None) -> str:
+    return SOURCE_VI.get(source_id or "", source_id or "chưa rõ")
+
+
 def source_label(ds: dict[str, Any], source_id: str | None) -> str:
-    """'nguồn MAP · 27/11/2026' — mã nguồn kèm ngày truy cập trong sources.json."""
+    """'nguồn: Bản đồ VinWonders · 27/11/2026' — tên nguồn kèm ngày truy cập trong sources.json."""
     if not source_id:
         return "chưa rõ nguồn"
     src = ds["sources_by_id"].get(source_id) or {}
-    return f"nguồn {source_id} · {_date_vi(src.get('accessed_on'))}"
+    return f"nguồn: {source_name(source_id)} · {_date_vi(src.get('accessed_on'))}"
+
+
+def _src(ds, obj, field, fallback):
+    """Nhãn cạnh một giá trị: 'ước tính demo' nếu do chế độ demo điền, ngược lại là nguồn kèm ngày."""
+    if field in (obj.get("est") or []):
+        return EST
+    return source_label(ds, fallback)
 
 
 def _money(vnd: int | None) -> str:
     return "—" if vnd is None else f"{vnd:,}".replace(",", ".") + " đ"
 
 
+def _min(clock: str | None) -> int | None:
+    if not clock:
+        return None
+    h, m = clock.split(":")
+    return int(h) * 60 + int(m)
+
+
+def _clock(total: int) -> str:
+    return f"{total // 60:02d}:{total % 60:02d}"
+
+
 # ------------------------------------------------------------------ nhận diện trong câu chat
 def _index(ds: dict[str, Any]) -> list[tuple[str, str, Any]]:
-    """Danh sách (cụm từ đã bỏ dấu, loại, đối tượng); cụm dài xét trước để 'Tata Show' không bị nuốt bởi 'Tata'."""
+    """(cụm từ đã bỏ dấu, loại, đối tượng); cụm dài xét trước để 'Tata Show' không bị nuốt bởi 'Tata'."""
     entries: list[tuple[str, str, Any]] = []
     for grp in ds["shows"]:
         key = fold(grp["name"])
@@ -76,7 +108,7 @@ def _index(ds: dict[str, Any]) -> list[tuple[str, str, Any]]:
 
 
 def find_entities(text: str, ds: dict[str, Any]) -> list[tuple[str, Any]]:
-    """Các show, điểm, khu được nhắc tới, theo thứ tự xuất hiện trong câu; không trùng, không chồng lấn."""
+    """Các show, điểm, khu được nhắc tới, theo thứ tự xuất hiện; không trùng, không chồng lấn."""
     folded = " " + fold(text) + " "
     taken: list[tuple[int, int]] = []
     found: list[tuple[int, str, Any]] = []
@@ -91,7 +123,6 @@ def find_entities(text: str, ds: dict[str, Any]) -> list[tuple[str, Any]]:
             if ident not in seen:
                 seen.add(ident)
                 found.append((span[0], kind, obj))
-    # Show đã nhận ra thì bỏ điểm diễn trùng tên (vd Stunt Show vừa là show vừa là địa điểm).
     show_names = {fold(o["name"]) for _, k, o in found if k == "show"}
     found = [f for f in found if not (f[1] == "item" and fold(f[2]["name"]) in show_names)]
     return [(k, o) for _, k, o in sorted(found, key=lambda f: f[0])]
@@ -116,25 +147,51 @@ def find_ages(text: str) -> list[int]:
     return [int(m.group(1)) for m in re.finditer(r"(\d{1,3})\s*tuổi", (text or "").lower())]
 
 
+def find_times(text: str) -> tuple[int | None, int | None]:
+    """(giờ đến, giờ về) theo phút: '9h', '9h30', '9 giờ', '17:00'; giờ đứng sau 'về' là giờ về."""
+    low = (text or "").lower()
+    start = end = None
+    for m in re.finditer(r"\b(\d{1,2})\s*(?:h|giờ|g|:)\s*(\d{2})?(?!\s*(?:phút|cm|tuổi))", low):
+        hour, minute = int(m.group(1)), int(m.group(2) or 0)
+        if hour > 23 or minute > 59:
+            continue
+        before = low[max(0, m.start() - 12):m.start()]
+        if re.search(r"(về|ra về|rời|kết thúc|tới khi|đến khi)\s*(lúc\s*)?$", before):
+            end = hour * 60 + minute
+        elif start is None:
+            start = hour * 60 + minute
+    return start, end
+
+
 # ------------------------------------------------------------------ mô tả từng loại thông tin
+def _venue_text(grp: dict[str, Any]) -> tuple[str, bool]:
+    if grp.get("venue_name"):
+        return grp["venue_name"] + (f" · khu {grp['zone_name']}" if grp.get("zone_name") else ""), False
+    if grp.get("venue_text"):
+        return grp["venue_text"], True
+    return "chưa xác định chính xác địa điểm diễn", False
+
+
 def describe_show(ds: dict[str, Any], grp: dict[str, Any]) -> list[str]:
     park = ds["park"]
-    lines = []
-    venue = grp["venue_name"] or "chưa xác định chính xác địa điểm diễn"
-    lines.append(f"Địa điểm: {venue}" + (f" · khu {grp['zone_name']}" if grp.get("zone_name") else ""))
+    venue, est_venue = _venue_text(grp)
+    lines = [f"Địa điểm: {venue}" + (f" ({EST})" if est_venue else "")]
     for s in grp["sessions"]:
         if s["has_published_time"]:
-            lines.append(f"Suất {s['start']}–{s['end']} ({s['duration_minutes']} phút) · {source_label(ds, s['source_id'])}")
+            lines.append(f"Suất {s['start']}–{s['end']} ({s['duration_minutes']} phút) · {_src(ds, s, 'start', s['source_id'])}")
         else:
             lines.append(f"Suất chưa có giờ công bố · {source_label(ds, s['source_id'])}")
         if s.get("conflict_source_id"):
-            other = (f"{s['conflict_start']}–{s['conflict_end']}" if s.get("conflict_start") else "giờ khác")
-            lines.append(f"⚠ Hai nguồn ghi khác nhau: {s['source_id']} ghi {s['start']}–{s['end']}, "
-                         f"{s['conflict_source_id']} ghi {other} ({source_label(ds, s['conflict_source_id'])}).")
+            other = f"{s['conflict_start']}–{s['conflict_end']}" if s.get("conflict_start") else "giờ khác"
+            lines.append(f"⚠ Hai nguồn ghi khác nhau: {source_name(s['source_id'])} ghi {s['start']}–{s['end']}, "
+                         f"{source_name(s['conflict_source_id'])} ghi {other}. Vivu dùng giờ theo {source_name(s['source_id'])}.")
         if s.get("exceeds_park_close"):
-            lines.append(f"⚠ Giờ kết thúc {s['end']} sau giờ đóng cửa chung {park['close']} "
-                         f"({source_label(ds, park['source_id'])}); cần hỏi lại khu vui chơi theo ngày đi.")
-    lines.append("Trạng thái hôm nay: chưa xác minh trực tiếp (snapshot không có lịch diễn theo ngày).")
+            lines.append(f"⚠ Suất này kết thúc {s['end']}, sau giờ đóng cửa chung {park['close']} "
+                         f"({source_label(ds, park['source_id'])}); nên hỏi lại khu vui chơi theo ngày đi.")
+    if ds.get("demo"):
+        lines.append(f"Trạng thái hôm nay: {ds['demo_live_text']}")
+    else:
+        lines.append("Trạng thái hôm nay: chưa có lịch diễn theo ngày, nên kiểm tra lại khi tới.")
     return lines
 
 
@@ -154,83 +211,106 @@ def _restriction_text(item: dict[str, Any]) -> str:
 
 def describe_item(ds: dict[str, Any], item: dict[str, Any]) -> list[str]:
     fs = item.get("field_sources") or {}
-    lines = [f"Khu: {item['zone_name'] or 'chưa rõ'}" + (f" · mã bản đồ #{item['map_code']}" if item.get("map_code") else "")
+    lines = [f"Khu: {item['zone_name'] or 'chưa rõ'}" + (f" · số {item['map_code']} trên bản đồ" if item.get("map_code") else "")
              + f" · {source_label(ds, item['source_id'])}"]
     if item["open"] and item["close"]:
-        lines.append(f"Giờ hoạt động: {item['open']}–{item['close']} · {source_label(ds, fs.get('open') or item['source_id'])}")
+        lines.append(f"Giờ hoạt động: {item['open']}–{item['close']} · {_src(ds, item, 'open', fs.get('open') or item['source_id'])}")
     else:
         lines.append("Giờ hoạt động: chưa có dữ liệu")
     rule = _restriction_text(item)
     if rule:
-        lines.append(f"Điều kiện đã công bố: {rule} · {source_label(ds, fs.get('min_height_cm') or item['source_id'])} "
-                     "(chưa phải bộ điều kiện đầy đủ)")
+        lines.append(f"Điều kiện: {rule} · {source_label(ds, fs.get('min_height_cm') or item['source_id'])}")
+    elif ds.get("demo"):
+        lines.append(f"Điều kiện: {ds['demo_rule_text']}")
     else:
         lines.append("Điều kiện tham gia (chiều cao, tuổi, sức khoẻ): chưa có dữ liệu")
     inc, extra = item["pricing"]["included_in_ticket"], item["pricing"]["extra_vnd"]
     if inc is False:
-        fee = f"phụ phí {_money(extra)} (giá tham khảo)" if extra is not None else "không nằm trong vé tiêu chuẩn, chưa có đơn giá"
+        fee = f"phụ phí {_money(extra)} (giá tham khảo)" if extra is not None else "không nằm trong vé tiêu chuẩn, mua thêm tại điểm chơi"
         lines.append(f"Phí: {fee} · {source_label(ds, fs.get('included_in_ticket') or item['source_id'])}")
     elif inc is True:
-        lines.append("Phí: đã gồm trong vé tiêu chuẩn")
+        lines.append("Phí: đã gồm trong vé tiêu chuẩn" + (f" · {EST}" if "included_in_ticket" in item.get("est", []) else ""))
     else:
         lines.append("Phí: chưa có dữ liệu có nằm trong vé tiêu chuẩn hay không")
-    lines.append("Thời lượng: " + (f"{item['duration_minutes']} phút" if item["duration_minutes"] else "chưa có dữ liệu"))
+    if item["duration_minutes"]:
+        dur = f"Thời lượng: khoảng {item['duration_minutes']} phút"
+        if item.get("queue_minutes"):
+            dur += f", xếp hàng khoảng {item['queue_minutes']} phút"
+        lines.append(dur + (f" · {EST}" if "duration_minutes" in item.get("est", []) else ""))
+    else:
+        lines.append("Thời lượng: chưa có dữ liệu")
+    if ds.get("demo") and item["status"] == "demo_open":
+        lines.append(f"Trạng thái hôm nay: {ds['demo_live_text']}")
     if item.get("map_warning"):
         lines.append("⚠ " + item["map_warning"])
     return lines
 
 
 def describe_zone(ds: dict[str, Any], zone: dict[str, Any]) -> list[str]:
-    count = sum(1 for i in ds["catalog"] if i["zone_id"] == zone["id"] and i["kind"] in ("ride", "sight"))
+    items = [i for i in ds["catalog"] if i["zone_id"] == zone["id"] and i["kind"] in ("ride", "sight")]
     hours = f"{zone['open']}–{zone['close']}" if zone["open"] and zone["close"] else "chưa có dữ liệu"
-    lines = [f"Giờ khu: {hours} · {source_label(ds, zone['source_id'])}",
-             f"{count} trò chơi / điểm tham quan trong danh mục"]
+    lines = [f"Giờ khu: {hours} · {_src(ds, zone, 'open', zone['source_id'])}",
+             f"{len(items)} trò chơi / điểm tham quan: " + ", ".join(i["name"] for i in items[:8])
+             + ("…" if len(items) > 8 else "")]
     if zone["is_harbour"]:
         lines.append("Khu lân cận Vinpearl Harbour, ngoài phạm vi công viên chính.")
     return lines
 
 
-def describe_tickets(ds: dict[str, Any], heights: list[int], ages: list[int]) -> list[str]:
+def ticket_lines(ds: dict[str, Any], heights: list[int], ages: list[int]) -> tuple[list[str], int | None]:
+    """(các dòng giải thích, tổng tiền tham khảo nếu tính được hết)."""
     bands = {b["id"]: b for b in ds["ticket_prices"]}
     price_src = source_label(ds, "PRICE")
-    lines = []
+    lines, total, complete = [], 0, True
     for h in heights:
         res = classify_traveler_ticket({"label": f"Người cao {h} cm", "height_cm": h}, ds["ticket_prices"])
         band = bands.get(res.get("band_id") or "")
         if not band:
             lines.append(f"Người cao {h} cm: chưa khớp nhóm vé nào trong bảng giá tham khảo.")
+            complete = False
             continue
         low, high = band.get("min_height_cm"), band.get("max_height_cm_exclusive")
-        group = (f"dưới {high} cm" if not low else f"từ {low} cm đến dưới {high} cm" if high else f"từ {low} cm trở lên")
+        group = f"dưới {high} cm" if not low else f"từ {low} cm đến dưới {high} cm" if high else f"từ {low} cm trở lên"
         edge = f" (mốc đúng {low} cm được tính vào nhóm này)" if h == low else ""
         price = "miễn phí" if band["price_vnd"] == 0 else _money(band["price_vnd"])
-        lines.append(f"Người cao {h} cm → nhóm vé {group}{edge}: {price} · giá tham khảo, {price_src}, chưa phải báo giá hiện hành")
+        total += band["price_vnd"]
+        lines.append(f"Người cao {h} cm → nhóm vé {group}{edge}: {price} · giá tham khảo, {price_src}")
     for a in ages:
         if a >= 60:
             res = classify_traveler_ticket({"label": f"Người {a} tuổi", "age": a}, ds["ticket_prices"])
             if res["status"] == "unresolved_senior_boundary":
+                complete = False
                 lines.append(f"Người đúng {a} tuổi: chưa xác định được nhóm vé. Nếu áp dụng mốc “từ 60 tuổi”: vé người "
                              f"cao tuổi {_money(bands['standard_senior']['price_vnd'])}; nếu áp dụng “trên 60 tuổi”: tính "
                              f"theo chiều cao. {SENIOR_BOUNDARY_NOTE}")
             elif res.get("price_vnd") is not None:
+                total += res["price_vnd"]
                 lines.append(f"Người {a} tuổi → vé người cao tuổi: {_money(res['price_vnd'])} · giá tham khảo, {price_src} "
                              "(cần giấy tờ tuỳ thân)")
+    return lines, (total if complete and lines else None)
+
+
+def describe_tickets(ds: dict[str, Any], heights: list[int], ages: list[int]) -> list[str]:
+    lines, total = ticket_lines(ds, heights, ages)
+    if total is not None and len(lines) > 1:
+        lines.append(f"Tổng vé vào cổng cả nhóm: {_money(total)} (giá tham khảo)")
     if not lines:
         for b in ds["ticket_prices"]:
             low, high = b.get("min_height_cm"), b.get("max_height_cm_exclusive")
             if b.get("min_age"):
-                group = f"người cao tuổi (mốc {b['min_age']} tuổi cần xác minh)"
+                group = f"Người cao tuổi (mốc {b['min_age']} tuổi cần xác minh)"
             else:
-                group = f"dưới {high} cm" if not low else f"từ {low} đến dưới {high} cm" if high else f"từ {low} cm trở lên"
+                group = f"Dưới {high} cm" if not low else f"Từ {low} đến dưới {high} cm" if high else f"Từ {low} cm trở lên"
             lines.append(f"{group}: {'miễn phí' if b['price_vnd'] == 0 else _money(b['price_vnd'])}")
-        lines.append(f"Giá tham khảo, {price_src}, chưa phải báo giá hiện hành. Vé phân theo chiều cao; "
-                     "nhắn chiều cao từng người (vd “bé cao 100 cm”) để Vivu xếp nhóm.")
-    lines.append("Vé tiêu chuẩn gồm vào cổng và cáp treo khứ hồi; trò có phụ phí tính riêng.")
+        lines.append(f"Giá tham khảo, {source_label(ds, 'PRICE')}. Vé phân theo chiều cao; nhắn chiều cao từng người "
+                     "(vd “bé cao 100 cm”) để Vivu xếp nhóm.")
+    lines.append("Vé tiêu chuẩn gồm vào cổng và cáp treo khứ hồi; trò có phụ phí tính riêng. Giá thực tế có thể khác theo ngày.")
     return lines
 
 
+# ------------------------------------------------------------------ lịch: snapshot gốc (fail-closed)
 def schedule_gaps(ds: dict[str, Any], picked: list[tuple[str, Any]], wants_walk: bool) -> tuple[list[str], list[str]]:
-    """(phần đã có dữ liệu, phần còn thiếu) cho yêu cầu xếp lịch / đi bộ kịp giờ giữa các điểm đã nhắc."""
+    """(phần đã có dữ liệu, phần còn thiếu) cho yêu cầu xếp lịch / đi bộ kịp giờ, khi chưa bật số ước tính."""
     have, missing = [], []
     places = [(k, o) for k, o in picked if k in ("show", "item")]
     for kind, obj in places:
@@ -270,26 +350,138 @@ def schedule_gaps(ds: dict[str, Any], picked: list[tuple[str, Any]], wants_walk:
         else:
             missing.append("Cần biết điểm xuất phát: nhắn rõ đi từ đâu tới đâu (vd “từ Zipline sang Tata Show”)")
         if matrix.is_empty:
-            missing.append("Snapshot chưa có dữ liệu thời gian đi bộ giữa các điểm (walking_distances.json đang trống); "
-                           "Vivu không dùng số phút ước lượng")
-    missing.append("Chưa có trạng thái mở cửa hoặc hàng chờ theo ngày (live_availability=false)")
+            missing.append("Chưa có dữ liệu thời gian đi bộ giữa các điểm; Vivu không tự đoán số phút")
+    missing.append("Chưa có trạng thái mở cửa hoặc hàng chờ theo ngày")
     return have, missing
+
+
+# ------------------------------------------------------------------ lịch: chế độ demo (có số ước tính)
+def _loc(kind: str, obj: dict[str, Any]) -> str | None:
+    return obj.get("location_id") if kind == "show" else obj["id"]
+
+
+def walk_verdict(ds: dict[str, Any], picked: list[tuple[str, Any]]) -> list[str]:
+    """Đi từ A sang B có kịp không (demo): số phút đi bộ ước tính và giờ muộn nhất nên rời A."""
+    places = [(k, o) for k, o in picked if k in ("show", "item")]
+    (ka, a), (kb, b) = places[0], places[-1]
+    minutes = ds["walking_matrix"].get_minutes(_loc(ka, a), _loc(kb, b))
+    if minutes is None:
+        return [f"Chưa tính được quãng đi bộ từ {a['name']} đến {b['name']}."]
+    lines = [f"Đi bộ {a['name']} → {b['name']}: khoảng {minutes} phút ({EST}, tính theo khoảng cách giữa các khu)."]
+    if kb == "show":
+        for s in b["sessions"]:
+            if s["has_published_time"]:
+                leave = _min(s["start"]) - minutes - 5
+                lines.append(f"Muốn kịp suất {s['start']} của {b['name']}: rời {a['name']} trước {_clock(leave)} "
+                             "(đã cộng 5 phút để kịp vào chỗ).")
+        if ka == "item" and a.get("close"):
+            last = _min(a["close"])
+            ok = [s for s in b["sessions"] if s["has_published_time"] and last + minutes + 5 <= _min(s["start"])]
+            if ok:
+                lines.append(f"{a['name']} đóng cửa {a['close']}, nên chơi tới lúc đóng cửa vẫn kịp suất {ok[0]['start']}. ✅")
+    return lines
+
+
+def build_demo_plan(ds: dict[str, Any], picked: list[tuple[str, Any]], start: int | None, end: int | None,
+                    heights: list[int]) -> list[str] | None:
+    """Xếp lịch theo thứ tự khách nhắc: show giữ đúng giờ diễn, trò chơi chen vào khoảng trống. None nếu không có điểm nào."""
+    park = ds["park"]
+    start = start if start is not None else _min(park["open"])
+    end = end if end is not None else _min(park["close"])
+    items = [o for k, o in picked if k == "item" and o["kind"] not in ("gate", "placeholder")]
+    shows = [o for k, o in picked if k == "show"]
+    if not items and not shows:
+        return None
+    matrix = ds["walking_matrix"]
+    rows: list[tuple[int, str]] = [(start, f"{_clock(start)}  Vào cổng chính")]
+    cur, loc, skipped = start, GATE_ID, []
+
+    def try_item(item, limit):
+        nonlocal cur, loc
+        walk = matrix.get_minutes(loc, item["id"]) or 0
+        arrive = max(cur + walk, _min(item["open"]) if item["open"] else cur)
+        finish = arrive + (item.get("queue_minutes") or 0) + (item["duration_minutes"] or 0)
+        close = _min(item["close"]) if item["close"] else end
+        if finish > min(limit, close, end):
+            return False
+        extra = f"đi bộ {walk}′" + (f", xếp hàng {item['queue_minutes']}′" if item.get("queue_minutes") else "")
+        rows.append((arrive, f"{_clock(arrive)}–{_clock(finish)}  {item['name']} ({extra})"))
+        cur, loc = finish, item["id"]
+        return True
+
+    timed = []
+    for g in shows:
+        sessions = [s for s in g["sessions"] if s["has_published_time"]]
+        if not sessions:
+            skipped.append(f"{g['name']}: chưa có giờ diễn")
+        timed.append((g, sessions))
+    pending = list(items)
+    for g, sessions in sorted(timed, key=lambda t: _min(t[1][0]["start"]) if t[1] else 9999):
+        if not sessions:
+            continue
+        loc_show = g.get("location_id") or g.get("venue_id")
+        chosen = None
+        for s in sessions:
+            # chen trò chơi trước suất này nếu vẫn kịp đi bộ tới show
+            for item in list(pending):
+                walk_to_show = matrix.get_minutes(item["id"], loc_show) or 0
+                if try_item(item, _min(s["start"]) - walk_to_show - 5):
+                    pending.remove(item)
+            walk = matrix.get_minutes(loc, loc_show) or 0
+            if cur + walk + 5 <= _min(s["start"]):
+                chosen = (s, walk)
+                break
+        if not chosen:
+            skipped.append(f"{g['name']}: không kịp suất nào sau các điểm trước")
+            continue
+        s, walk = chosen
+        warn = " ⚠ hai nguồn ghi giờ khác nhau" if s.get("conflict_source_id") else ""
+        rows.append((_min(s["start"]), f"{s['start']}–{s['end']}  {g['name']} (đi bộ {walk}′, có mặt trước 5′){warn}"))
+        cur, loc = _min(s["end"]), loc_show
+    for item in pending:
+        if not try_item(item, end):
+            skipped.append(f"{item['name']}: không còn đủ thời gian trước {_clock(end)} hoặc giờ đóng cửa {item['close']}")
+    lines = [text for _, text in sorted(rows, key=lambda r: r[0])]
+    lines.append(f"Kết thúc khoảng {_clock(cur)} · giờ về dự kiến {_clock(end)}")
+    for s in skipped:
+        lines.append("Không xếp được " + s)
+    ticket, total = ticket_lines(ds, heights, [])
+    if total is not None:
+        lines.append(f"Vé vào cổng cả nhóm: {_money(total)} (giá tham khảo, {source_label(ds, 'PRICE')})")
+    elif not heights:
+        lines.append("Nhắn chiều cao từng người để Vivu tính tiền vé (vé phân theo chiều cao).")
+    lines.append(f"Thời gian đi bộ, xếp hàng và thời lượng trò chơi là {EST}; giờ show theo nguồn công bố.")
+    return lines
 
 
 # ------------------------------------------------------------------ điểm vào
 def answer_nha_trang(text: str, ds: dict[str, Any]) -> dict[str, Any]:
     park = ds["park"]
+    demo = bool(ds.get("demo"))
     folded = fold(text)
     picked = find_entities(text, ds)
     heights, ages = find_heights(text), find_ages(text)
-    wants_ticket = bool(TICKET_WORDS.search(folded)) or (bool(heights) and not picked)
-    wants_plan = bool(PLAN_WORDS.search(folded))
+    start, end = find_times(text)
+    places = [o["name"] for k, o in picked if k in ("show", "item")]
+    wants_ticket = bool(TICKET_WORDS.search((text or "").lower())) or (bool(heights) and not picked)
+    wants_plan = bool(PLAN_WORDS.search(folded)) or (demo and len(places) >= 2)
     wants_walk = bool(WALK_WORDS.search(folded))
     sections: list[dict[str, Any]] = []
 
-    if wants_plan:
+    if wants_plan and demo:
+        if wants_walk and len(places) == 2 and not re.search(r"(lich|xep|ke hoach|lo trinh)", folded):
+            sections.append({"title": f"Đi từ {places[0]} sang {places[1]}", "lines": walk_verdict(ds, picked)})
+        else:
+            plan = build_demo_plan(ds, picked, start, end, heights)
+            if plan:
+                sections.append({"title": "Lịch gợi ý (bản demo)", "lines": plan})
+            else:
+                sections.append({"title": "Vivu cần biết bạn muốn đi đâu", "lines": [
+                    "Nhắn tên trò chơi hoặc show muốn đi, kèm giờ đến (vd “9h đến, Alpine Coaster, Underwater World, "
+                    "Biểu diễn chim”). Vivu sẽ xếp theo đúng giờ diễn và tính thời gian đi bộ."]})
+        picked_for_detail = [] if len(places) >= 3 else picked
+    elif wants_plan:
         have, missing = schedule_gaps(ds, picked, wants_walk)
-        places = [o["name"] for k, o in picked if k in ("show", "item")]
         if wants_walk and len(places) >= 2:
             verdict = (f"Vivu chưa thể xác nhận đi từ {places[0]} tới kịp {places[-1]}: còn thiếu dữ liệu bên dưới, "
                        "nên chưa tính được thời gian di chuyển.")
@@ -299,8 +491,11 @@ def answer_nha_trang(text: str, ds: dict[str, Any]) -> dict[str, Any]:
         if have:
             sections.append({"title": "Phần đã có dữ liệu", "lines": have})
         sections.append({"title": "Còn thiếu để xác nhận", "lines": missing})
+        picked_for_detail = picked
+    else:
+        picked_for_detail = picked
 
-    for kind, obj in picked:
+    for kind, obj in picked_for_detail:
         if kind == "show":
             sections.append({"title": obj["name"] + " · biểu diễn", "lines": describe_show(ds, obj)})
         elif kind == "item":
@@ -308,18 +503,20 @@ def answer_nha_trang(text: str, ds: dict[str, Any]) -> dict[str, Any]:
         else:
             sections.append({"title": "Khu " + obj["name"], "lines": describe_zone(ds, obj)})
 
-    if wants_ticket or heights or ages:
+    if (wants_ticket or heights or ages) and not (wants_plan and demo and heights and not wants_ticket):
         sections.append({"title": "Vé vào cổng · giá tham khảo", "lines": describe_tickets(ds, heights, ages)})
 
     if not sections:
         timed = [s for s in ds["show_sessions"] if s["has_published_time"] and not s["is_harbour"]]
+        timed.sort(key=lambda s: _min(s["start"]))
         sections.append({"title": "Vivu chưa nhận ra địa điểm hay show trong câu", "lines": [
             "Bạn thử nhắn tên show, trò chơi hoặc khu (vd “Tata Show”, “Zipline”, “Fairy Land”), "
-            "hỏi vé theo chiều cao (vd “vé cho bé cao 100 cm”), hoặc hỏi đi từ điểm nào sang điểm nào.",
-            "Show có giờ công bố: " + ", ".join(f"{s['name']} {s['start']}" for s in timed)
-            + f" ({source_label(ds, 'MAP')})."]})
+            "hỏi vé theo chiều cao (vd “vé cho bé cao 100 cm”), hoặc nhờ xếp lịch "
+            "(vd “9h đến, Alpine Coaster, Underwater World, Biểu diễn chim”).",
+            "Show trong ngày: " + ", ".join(f"{s['name']} {s['start']}" for s in timed) + "."]})
 
-    head = (f"{park['name']} · snapshot công khai {_date_vi(park['snapshot_date'])} · chưa xác minh trực tiếp")
+    head = f"{park['name']} · dữ liệu công khai {_date_vi(park['snapshot_date'])}"
+    head += f" · ô trống điền {EST}" if demo else " · chưa xác minh trực tiếp"
     body = [head]
     for sec in sections:
         body.append(sec["title"] + ":")

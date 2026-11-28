@@ -12,3 +12,6 @@ Scope: public directory of six park zones plus adjacent Harbour. 159 catalog ent
 
 ## Integration contract
 Keep existing data/park.json and all historical evals intact. This is v1 public-source snapshot with separate schema. Catalog browsing may use the full list. Real scheduling must fail closed on unknown safety/cost/availability/travel constraints; a draft planning mode with explicit estimates and no claim of verified schedule requires lead approval. No default 10-minute travel or synthetic ticket fees in real mode.
+
+## Demo estimates (demo_estimates.json)
+TỰ ƯỚC TÍNH, không có nguồn, chỉ để web demo điền ô còn trống: giờ khu/điểm chưa công bố (lấy giờ chung HOME), thời lượng và xếp hàng theo loại, quãng đi bộ theo khu, vị trí Tata Show và giờ Welcome show / Cho cá ăn. Không thay giá trị có nguồn, không ước tính chiều cao/tuổi/sức khoẻ hay giá vé. Web gắn nhãn "ước tính demo" cho mọi giá trị này và có công tắc tắt để xem dữ liệu gốc.

@@ -1,0 +1,35 @@
+{
+  "_note": "TỰ ƯỚC TÍNH để demo web (nhóm Sao Cũng Được, 28/11/2026). Không phải số chính thức của VinWonders, không có nguồn. Chỉ dùng để điền ô còn trống của snapshot công khai; mọi giá trị lấy từ file này được web gắn nhãn 'ước tính demo'. Không thay giá trị đã có nguồn. Không ước tính điều kiện an toàn (chiều cao, tuổi, sức khoẻ) và giá vé.",
+  "park_hours_fallback": "Điểm/khu chưa có giờ riêng thì lấy giờ chung của công viên (park_metadata.json, nguồn HOME) và gắn nhãn ước tính.",
+  "zone_order": ["fairy_land", "festive_hill", "kings_garden", "world_garden", "sea_world", "tropical_paradise", "harbour"],
+  "walk_minutes": {
+    "same_zone": 5,
+    "between_zones_base": 7,
+    "per_zone_step": 4,
+    "harbour_extra": 10
+  },
+  "duration_minutes_by_kind": {
+    "ride": 10,
+    "sight": 20,
+    "show_venue": 20,
+    "food": 40,
+    "shop": 15,
+    "cluster": 30,
+    "transport": 10,
+    "facility": 10,
+    "gate": 0,
+    "placeholder": 0
+  },
+  "queue_minutes_by_kind": {
+    "ride": 15,
+    "sight": 5
+  },
+  "included_in_ticket_default_kinds": ["ride", "sight", "show_venue", "cluster"],
+  "show_estimates": {
+    "tata": {"zone_id": "tropical_paradise", "venue_text": "khu Tropical Paradise, gần Mythical Temple (bản đồ ghi Mythical Square)"},
+    "welcome": {"zone_id": "fairy_land", "venue_text": "khu Fairy Land, gần cổng chính", "start": "09:15", "end": "09:30", "duration_minutes": 15},
+    "fish_feeding": {"start": "14:00", "end": "14:15", "duration_minutes": 15}
+  },
+  "live_status_text": "Đang mở (giả lập demo)",
+  "unknown_restriction_text": "Theo quy định tại điểm chơi"
+}
