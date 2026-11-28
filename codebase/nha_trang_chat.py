@@ -504,24 +504,66 @@ def arrival_check(ds: dict[str, Any], show: dict[str, Any] | None, route: dict[s
 
 
 # ------------------------------------------------------------------ điểm vào
+def height_check_lines(item: dict[str, Any], heights: list[int]) -> list[str]:
+    """Đủ chiều cao tối thiểu chưa (chỉ khi trò có quy định đã công bố; không đoán điều kiện còn thiếu)."""
+    min_h = item["restrictions"]["min_height_cm"]
+    if min_h is None or not heights:
+        return []
+    return [f"Người cao {h} cm: {'đủ' if h >= min_h else 'chưa đủ'} chiều cao tối thiểu {min_h} cm" for h in heights]
+
+
 def answer_nha_trang(text: str, ds: dict[str, Any], route: dict[str, Any] | None = None,
-                     now: int | None = None) -> dict[str, Any]:
-    """route: kết quả Routes API của phiên (không có toạ độ hay địa chỉ khách); now: phút trong ngày, giờ Việt Nam."""
+                     now: int | None = None, understood: dict[str, Any] | None = None,
+                     ai_picked: list[tuple[str, Any]] | None = None) -> dict[str, Any]:
+    """route: kết quả Routes API của phiên (không có toạ độ hay địa chỉ khách); now: phút trong ngày, giờ Việt Nam.
+
+    understood / ai_picked: kết quả model đã qua nha_trang_ai.validate (ý định, tên trong danh mục, chiều cao…).
+    Không có thì dò từ khoá như cũ. Có hay không, mọi giờ, giá, quãng đi bộ vẫn tính từ dữ liệu ở đây.
+    """
     park = ds["park"]
     demo = bool(ds.get("demo"))
     folded = fold(text)
-    picked = find_entities(text, ds)
-    heights, ages = find_heights(text), find_ages(text)
+    kw_picked = find_entities(text, ds)
+    kw_heights, ages = find_heights(text), find_ages(text)
     start, end = find_times(text)
+    intent = (understood or {}).get("intent")
+    if understood:
+        picked = list(ai_picked or []) or kw_picked
+        heights = understood["heights_cm"] or kw_heights
+        ages = understood["ages"] or ages
+        start = _min(understood["start"]) if understood.get("start") else start
+        end = _min(understood["end"]) if understood.get("end") else end
+    else:
+        picked, heights = kw_picked, kw_heights
     places = [o["name"] for k, o in picked if k in ("show", "item")]
-    wants_ticket = bool(TICKET_WORDS.search((text or "").lower())) or (bool(heights) and not picked)
-    wants_plan = bool(PLAN_WORDS.search(folded)) or (demo and len(places) >= 2)
-    wants_walk = bool(WALK_WORDS.search(folded))
+    if understood:
+        wants_ticket = intent == "ticket"
+        wants_plan = intent in ("plan", "walk_between")
+        wants_walk = intent == "walk_between"
+        asks_arrival = intent == "arrival"
+    else:
+        wants_ticket = bool(TICKET_WORDS.search((text or "").lower())) or (bool(heights) and not picked)
+        wants_plan = bool(PLAN_WORDS.search(folded)) or (demo and len(places) >= 2)
+        wants_walk = bool(WALK_WORDS.search(folded))
+        asks_arrival = bool(re.search(r"\bkip\b", folded)) and bool(ARRIVAL_WORDS.search(folded)) and len(places) <= 1
     sections: list[dict[str, Any]] = []
     shows_picked = [o for k, o in picked if k == "show"]
-    asks_arrival = bool(re.search(r"\bkip\b", folded)) and bool(ARRIVAL_WORDS.search(folded)) and len(places) <= 1
 
-    if asks_arrival:
+    if intent == "recommend" and picked:
+        pref = understood.get("preference") or "câu hỏi của bạn"
+        shortest = min(heights) if heights else None
+        fit, too_short = [], []
+        for kind, obj in picked[:4]:  # Python lọc theo chiều cao tối thiểu đã công bố; không đoán điều kiện còn thiếu
+            min_h = obj.get("restrictions", {}).get("min_height_cm") if kind == "item" else None
+            (too_short if shortest is not None and min_h is not None and shortest < min_h else fit).append((kind, obj))
+        lines = [f"AI chọn theo “{pref}”: " + (", ".join(o["name"] for _, o in fit) or "chưa có trò phù hợp") + "."]
+        for _, obj in too_short:
+            lines.append(f"Bỏ {obj['name']}: cần trẻ từ {obj['restrictions']['min_height_cm']} cm, người thấp nhất "
+                         f"trong nhóm cao {shortest} cm ({source_label(ds, (obj.get('field_sources') or {}).get('min_height_cm') or obj['source_id'])}).")
+        lines.append("Giờ, điều kiện và phí bên dưới lấy từ dữ liệu, không do AI đặt ra.")
+        sections.append({"title": "Gợi ý theo sở thích", "lines": lines})
+        picked_for_detail = fit
+    elif asks_arrival:
         sections += arrival_check(ds, shows_picked[0] if shows_picked else None, route,
                                   now if now is not None else _now_vn())
         picked_for_detail = []
@@ -556,11 +598,15 @@ def answer_nha_trang(text: str, ds: dict[str, Any], route: dict[str, Any] | None
         if kind == "show":
             sections.append({"title": obj["name"] + " · biểu diễn", "lines": describe_show(ds, obj)})
         elif kind == "item":
-            sections.append({"title": obj["name"], "lines": describe_item(ds, obj)})
+            sections.append({"title": obj["name"], "lines": describe_item(ds, obj) + height_check_lines(obj, heights)})
         else:
             sections.append({"title": "Khu " + obj["name"], "lines": describe_zone(ds, obj)})
 
-    if (wants_ticket or heights or ages) and not (wants_plan and demo and heights and not wants_ticket):
+    if understood:
+        show_tickets = wants_ticket
+    else:
+        show_tickets = (wants_ticket or heights or ages) and not (wants_plan and demo and heights and not wants_ticket)
+    if show_tickets:
         sections.append({"title": "Vé vào cổng · giá tham khảo", "lines": describe_tickets(ds, heights, ages)})
 
     if not sections:
@@ -579,4 +625,4 @@ def answer_nha_trang(text: str, ds: dict[str, Any], route: dict[str, Any] | None
         body.append(sec["title"] + ":")
         body.extend("- " + line for line in sec["lines"])
     return {"output": "\n".join(body), "sections": sections, "header": head,
-            "found": [(k, o["name"]) for k, o in picked]}
+            "found": [(k, o["name"]) for k, o in picked], "intent": intent}

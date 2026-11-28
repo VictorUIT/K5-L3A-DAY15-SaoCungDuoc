@@ -8,18 +8,22 @@ from __future__ import annotations
 
 import html
 import re
+import time
 from typing import Any
 
 import streamlit as st
 
+import ai
+import tracing
 from agent import answer
+from nha_trang_ai import INTENTS
 from nha_trang_chat import EST, source_label, source_name, ticket_lines
 from nha_trang_demo import apply_demo_estimates
 from park_provider import KIND_LABELS_VI, NHA_TRANG_PARK_ID, filter_catalog
 from pricing import SENIOR_BOUNDARY_NOTE
 from review_intel import retrieve_attraction_experiences
 from tools import money
-from web import duong_den
+from web import duong_den, planner
 from web.common import beach_css, header, nha_trang_data, nha_trang_kb, nha_trang_reviews
 
 DEMO_KEY = "nt_demo"
@@ -199,6 +203,7 @@ NT_EXAMPLES = {
     "ve100": "Vé cho bé cao đúng 100 cm bao nhiêu?",
     "dibo": "Đi bộ từ Zipline sang Tata Show có kịp không?",
     "kip": "Từ resort đi bây giờ có kịp Tata Show không?",
+    "goiy": "Bé nhà mình cao 1m15, thích nước, nên chơi gì?",
 }
 
 
@@ -220,17 +225,67 @@ def _nt_reset() -> None:
     st.session_state.nt_history, st.session_state.nt_pending = [], None
 
 
+def _understood_text(u: dict[str, Any] | None) -> str:
+    if not u:
+        return ""
+    parts = [INTENTS.get(u["intent"], u["intent"])]
+    if u["places"]:
+        parts.append(", ".join(u["places"]))
+    if u["heights_cm"]:
+        parts.append("cao " + ", ".join(f"{h} cm" for h in u["heights_cm"]))
+    if u["ages"]:
+        parts.append(", ".join(f"{a} tuổi" for a in u["ages"]))
+    if u.get("start") or u.get("end"):
+        parts.append(f"{u.get('start') or '?'}–{u.get('end') or '?'}")
+    if u.get("preference"):
+        parts.append("sở thích: " + u["preference"])
+    return " · ".join(parts)
+
+
 def nt_process() -> None:
+    """Một tin: (nếu có model thật và còn lượt) model đọc hiểu câu → Python kiểm và tính → lưu vào phiên.
+
+    Dùng chung khoá trace, hạn mức mỗi phiên và mỗi giờ với chatbot Vịnh Mây (web/planner.py). Hết lượt hay model lỗi
+    thì vẫn trả lời bằng dò từ khoá. Kết quả chỉ đường (nt_route) chỉ vào phần Python, không gửi cho model.
+    """
     s = st.session_state
     text, s.nt_pending = s.get("nt_pending"), None
     if not text:
         return
+    s.setdefault("used", 0)
     s.nt_history.append({"role": "user", "text": text})
+    use_model, note, summary = ai.MODEL_PROVIDER != "fake", None, None
+    if not use_model:
+        note = "Máy chủ chưa cấu hình model thật: trả lời bằng dò từ khoá."
+    elif s.used >= planner.MAX_PER_SESSION:
+        use_model, note = False, f"Phiên đã dùng hết {planner.MAX_PER_SESSION} lượt AI: trả lời bằng dò từ khoá."
+    pool = planner.shared()
     try:
-        # route: chỉ kết quả Routes API (phương tiện, điểm đến, km, phút), không có toạ độ hay địa chỉ khách
-        reply = answer(text, park_id=NHA_TRANG_PARK_ID, demo=demo_on(), route=s.get("nt_route"))
+        with pool["lock"]:
+            if use_model:
+                now = time.time()
+                while pool["calls"] and now - pool["calls"][0] > 3600:
+                    pool["calls"].popleft()
+                if len(pool["calls"]) >= planner.MAX_PER_HOUR:
+                    use_model, note = False, "Web đã đạt giới hạn lượt AI trong giờ này: trả lời bằng dò từ khoá."
+                else:
+                    pool["calls"].append(now)
+                    tracing.begin("web")
+            try:
+                with st.spinner("Vivu đang đọc câu hỏi…" if use_model else "Vivu đang tra dữ liệu…"):
+                    reply = answer(text, park_id=NHA_TRANG_PARK_ID, demo=demo_on(), route=s.get("nt_route"),
+                                   use_model=use_model)
+            finally:
+                if use_model:
+                    summary, _events = tracing.end()
+        if use_model:
+            s.used += 1
+        if reply.get("model_error") is not None:
+            note = planner.friendly_error(reply["model_error"]) + " Vivu trả lời bằng dò từ khoá."
         s.nt_history.append({"role": "bot", "header": reply["header"], "sections": reply["sections"],
-                             "found": reply["found"]})
+                             "found": reply["found"], "understood": _understood_text(reply.get("understood")),
+                             "dropped": (reply.get("understood") or {}).get("dropped", []),
+                             "note": note, "summary": summary})
     except Exception as e:  # dữ liệu hỏng hay lỗi khác: báo gọn
         s.nt_history.append({"role": "bot", "error": f"Có lỗi khi đọc dữ liệu Nha Trang ({type(e).__name__})."})
 
@@ -252,10 +307,22 @@ def _render_nt_bot(i: int, msg: dict[str, Any]) -> None:
             items = "".join(_line_html(line) for line in sec["lines"])
             st.markdown(f'<p class="nt-sec-title{" warn" if warn else ""}">{html.escape(sec["title"])}</p>'
                         f'<ul class="nt-lines">{items}</ul>', unsafe_allow_html=True)
+        if msg.get("understood"):
+            st.caption("Vivu hiểu: " + msg["understood"])
+        if msg.get("note"):
+            st.caption("ℹ️ " + msg["note"])
         with st.expander("Chi tiết kỹ thuật"):
             found = ", ".join(name for _, name in msg["found"]) or "không có"
-            st.caption("Trả lời bằng Python từ dữ liệu công khai 27/11/2026 · không gọi model · "
-                       f"nhận ra: {found}. Không dùng dữ liệu, giá hay quãng đi bộ của Vịnh Mây.")
+            sm = msg.get("summary")
+            if sm and sm.get("model_calls"):
+                st.caption("AI đọc hiểu câu hỏi · Model: %s · gọi model %d lần · token vào %d / ra %d"
+                           % (", ".join(sm["models"]), sm["model_calls"], sm["tokens_in"], sm["tokens_out"]))
+            else:
+                st.caption("Không gọi model lần này (dò từ khoá).")
+            st.caption(f"Điểm dùng để trả lời: {found}. Giờ, giá, quãng đi bộ và nguồn do Python tính từ dữ liệu "
+                       "công khai 27/11/2026; không dùng dữ liệu của Vịnh Mây; không gửi vị trí của bạn cho AI.")
+            if msg.get("dropped"):
+                st.caption("Python đã bỏ phần AI trả không hợp lệ: " + "; ".join(msg["dropped"]))
 
 
 def nt_conversation(inline: bool) -> None:
